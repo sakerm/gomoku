@@ -57,17 +57,17 @@ var theme= 0;
 //button
 const restartButton = new Path2D()
 restartButton.rect(250, 350, 200, 100)
-restartButton.rect(425,30,200,30)
+restartButton.rect(425,42,200,30)
 restartButton.closePath()
 
 const levelButton = new Path2D()
 levelButton.rect(250, 350, 200, 100)
-levelButton.rect(425,80,200,30)
+levelButton.rect(425,92,200,30)
 levelButton.closePath()
 
 const themeButton = new Path2D()
 themeButton.rect(250, 350, 200, 100)
-themeButton.rect(425,130,200,30)
+themeButton.rect(425,142,200,30)
 themeButton.closePath()
 
 //draw your shape data to the context
@@ -83,9 +83,9 @@ ctx2.stroke(levelButton)
 ctx2.stroke(themeButton)
 ctx2.fillStyle = 'black';
 ctx2.font = "20px Georgia";
-ctx2.fillText(" restart", 490,51);
-ctx2.fillText("   level", 490,101);
-ctx2.fillText(" theme", 492,151);
+ctx2.fillText(" restart", 490,63);
+ctx2.fillText("   level", 490,113);
+ctx2.fillText(" theme", 492,163);
 
 function getXY(score, event){ //adjust mouse click to score coordinates
   const rect = score.getBoundingClientRect()
@@ -108,24 +108,22 @@ document.addEventListener("click",  function (e) {
   if(ctx2.isPointInPath(themeButton, XY.x, XY.y)) {
     // Do Something with the click
     theme +=1;
-    var elmt = document.getElementById("Title");
+    var title = document.getElementById("Title");
+    var cadretime = document.getElementById("myCanvas");
     if (theme == 0)
     {
-        elmt.style.color = '#000000';
-    }
-    else if (theme == 1)
-    {
-        elmt.style.color = '#1D46D5';
-        ctx2.fillStyle = '#1D46D5'
+        title.style.color = '#000000';
+        cadretime.style.border = '4px solid #000000';
+        ctx2.fillStyle = 'white'
         ctx2.fill(restartButton)
         ctx2.fill(levelButton)
         ctx2.fill(themeButton)
-        ctx2.fillStyle = 'white';
+        ctx2.fillStyle = 'black';
         ctx2.font = "20px Georgia";
-        ctx2.fillText(" restart", 490,51);
-        ctx2.fillText("   level", 490,101);
-        ctx2.fillText(" theme", 492,151);
-        ctx2.fillStyle = '#1D46D5';
+        ctx2.fillText(" restart", 490,63);
+        ctx2.fillText("   level", 490,113);
+        ctx2.fillText(" theme", 492,163);
+        ctx2.fillStyle = '#000000';
         ctx2.font = "30px Georgia";
         ctx2.fillText("score", 120,60);
         ctx2.font = "90px Georgia";
@@ -134,24 +132,135 @@ document.addEventListener("click",  function (e) {
         ctx2.fillText(":",140,140);
         ctx2.font = "90px Georgia";
         ctx2.fillText(scoreJ2, 203,140);
-        ctx.fillStyle = '#1D46D5';
-        document.body.style.backgroundImage = "url('https://wallpapercave.com/wp/u9MRcTO.jpg')";
+        ctx.fillStyle = '#000000';
+        document.body.style.backgroundColor = 'white';
+        document.body.style.backgroundImage = 'none';
+    }
+    else if (theme == 1)
+    {
+        title.style.color = '#0407A6';
+        cadretime.style.border = '4px solid #0407A6';
+        ctx2.fillStyle = '#0407A6'
+        ctx2.fill(restartButton)
+        ctx2.fill(levelButton)
+        ctx2.fill(themeButton)
+        ctx2.fillStyle = 'white';
+        ctx2.font = "20px Georgia";
+        ctx2.fillText(" restart", 490,63);
+        ctx2.fillText("   level", 490,113);
+        ctx2.fillText(" theme", 492,163);
+        ctx2.fillStyle = '#0407A6';
+        ctx2.font = "30px Georgia";
+        ctx2.fillText("score", 120,60);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ1, 50,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(":",140,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ2, 203,140);
+        ctx.fillStyle = '#0407A6';
+        document.body.style.backgroundImage = "url('https://media0.giphy.com/media/mX1bWOEGPIAY1yhmKI/giphy.gif')";
     }
     else if (theme == 2)
     {
-        elmt.style.color = '#2EA847';
+        title.style.color = '#2EA847';
+        cadretime.style.border = '4px solid #2EA847';
+        ctx2.fillStyle = '#2EA847'
+        ctx2.fill(restartButton)
+        ctx2.fill(levelButton)
+        ctx2.fill(themeButton)
+        ctx2.fillStyle = 'white';
+        ctx2.font = "20px Georgia";
+        ctx2.fillText(" restart", 490,63);
+        ctx2.fillText("   level", 490,113);
+        ctx2.fillText(" theme", 492,163);
+        ctx2.fillStyle = '#2EA847';
+        ctx2.font = "30px Georgia";
+        ctx2.fillText("score", 120,60);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ1, 50,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(":",140,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ2, 203,140);
+        ctx.fillStyle = '#2EA847';
+        document.body.style.backgroundImage = "url('https://images.alphacoders.com/477/477025.jpg')";
+
     }
     else if (theme == 3)
     {
-        elmt.style.color = '#FF7930';
+        title.style.color = '#FF7930';
+        cadretime.style.border = '4px solid #FF7930';
+        ctx2.fillStyle = '#FF7930'
+        ctx2.fill(restartButton)
+        ctx2.fill(levelButton)
+        ctx2.fill(themeButton)
+        ctx2.fillStyle = 'white';
+        ctx2.font = "20px Georgia";
+        ctx2.fillText(" restart", 490,63);
+        ctx2.fillText("   level", 490,113);
+        ctx2.fillText(" theme", 492,163);
+        ctx2.fillStyle = '#FF7930';
+        ctx2.font = "30px Georgia";
+        ctx2.fillText("score", 120,60);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ1, 50,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(":",140,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ2, 203,140);
+        ctx.fillStyle = '#FF7930';
+        document.body.style.backgroundImage = "url('https://media.giphy.com/media/iikb3dTQ0Skne/giphy.gif')";
     }
     else if (theme == 4)
     {
-        elmt.style.color = '#6832E0';
+        title.style.color = '#6832E0';
+        cadretime.style.border = '4px solid #6832E0';
+        ctx2.fillStyle = '#6832E0'
+        ctx2.fill(restartButton)
+        ctx2.fill(levelButton)
+        ctx2.fill(themeButton)
+        ctx2.fillStyle = 'white';
+        ctx2.font = "20px Georgia";
+        ctx2.fillText(" restart", 490,63);
+        ctx2.fillText("   level", 490,113);
+        ctx2.fillText(" theme", 492,163);
+        ctx2.fillStyle = '#6832E0';
+        ctx2.font = "30px Georgia";
+        ctx2.fillText("score", 120,60);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ1, 50,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(":",140,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ2, 203,140);
+        ctx.fillStyle = '#6832E0';
+        document.body.style.backgroundImage = "url('https://i.redd.it/c0emei8n03w01.jpg')";
     }
     else if (theme == 5)
     {
-        elmt.style.color = '#2EBBF6';
+        title.style.color = '#2EBBF6';
+        cadretime.style.border = '4px solid #2EBBF6';
+        ctx2.fillStyle = '#2EBBF6'
+        ctx2.fill(restartButton)
+        ctx2.fill(levelButton)
+        ctx2.fill(themeButton)
+        ctx2.fillStyle = 'white';
+        ctx2.font = "20px Georgia";
+        ctx2.fillText(" restart", 490,63);
+        ctx2.fillText("   level", 490,113);
+        ctx2.fillText(" theme", 492,163);
+        ctx2.fillStyle = '#2EBBF6';
+        ctx2.font = "30px Georgia";
+        ctx2.fillText("score", 120,60);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ1, 50,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(":",140,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ2, 203,140);
+        ctx.fillStyle = '#2EBBF6';
+        document.body.style.backgroundImage = "url('https://natewren.com/themes/wallpaper2/radpack/radpack_8.jpg')";
         theme = -1;
     }
   }

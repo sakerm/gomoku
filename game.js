@@ -77,7 +77,7 @@ ctx2.fill(restartButton)
 ctx2.fill(levelButton)
 ctx2.fill(themeButton)
 ctx2.lineWidth = 2
-ctx2.strokeStyle = "#000000"
+//ctx2.strokeStyle = "#000000"
 ctx2.stroke(restartButton)
 ctx2.stroke(levelButton)
 ctx2.stroke(themeButton)
@@ -109,11 +109,50 @@ document.addEventListener("click",  function (e) {
     // Do Something with the click
     theme +=1;
     var elmt = document.getElementById("Title");
-    if (theme == 1)
-        elmt.style.color = '#0f0';
-    else
+    if (theme == 0)
     {
-        elmt.style.color = '#ff0';
+        elmt.style.color = '#000000';
+    }
+    else if (theme == 1)
+    {
+        elmt.style.color = '#1D46D5';
+        ctx2.fillStyle = '#1D46D5'
+        ctx2.fill(restartButton)
+        ctx2.fill(levelButton)
+        ctx2.fill(themeButton)
+        ctx2.fillStyle = 'white';
+        ctx2.font = "20px Georgia";
+        ctx2.fillText(" restart", 490,51);
+        ctx2.fillText("   level", 490,101);
+        ctx2.fillText(" theme", 492,151);
+        ctx2.fillStyle = '#1D46D5';
+        ctx2.font = "30px Georgia";
+        ctx2.fillText("score", 120,60);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ1, 50,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(":",140,140);
+        ctx2.font = "90px Georgia";
+        ctx2.fillText(scoreJ2, 203,140);
+        ctx.fillStyle = '#1D46D5';
+        document.body.style.backgroundImage = "url('https://wallpapercave.com/wp/u9MRcTO.jpg')";
+    }
+    else if (theme == 2)
+    {
+        elmt.style.color = '#2EA847';
+    }
+    else if (theme == 3)
+    {
+        elmt.style.color = '#FF7930';
+    }
+    else if (theme == 4)
+    {
+        elmt.style.color = '#6832E0';
+    }
+    else if (theme == 5)
+    {
+        elmt.style.color = '#2EBBF6';
+        theme = -1;
     }
   }
 }, false)

@@ -4,12 +4,6 @@
     text-align: center;
 }
 
-#score
-{
-    position: relative;
-    
-}
-
 .grid
 {
     margin:1em auto; 
@@ -33,6 +27,6 @@
 #canvas1
 {
     border:2px solid #999;
-    background-color:rgb(255, 255, 255);
+  
 }
 

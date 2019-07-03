@@ -141,26 +141,6 @@ function scoring() {
 
 function clickableGrid( rows, cols, callback ){
     var grid = document.createElement('table');
-    grid.className = 'grid';
-   
-    for (var r=0;r<rows;++r){
-        var tr = grid.appendChild(document.createElement('tr'));
-        for (var c=0;c<cols;++c){
-            var cell = tr.appendChild(document.createElement('td'));
-            cell.addEventListener('click',(function(el,r,c){
-                return function() {
-                    //ne peux pas poser plusieurs pieces aux meme endroit
-                    if (el.className == "clicked")
-                    {
-                        alert("you can not put a token");
-                        return ;
-                    }
-                    callback(el,r,c);
-                }
-            })
-            (cell,r,c),false);
-        }
-    }
     return grid;
 }
 

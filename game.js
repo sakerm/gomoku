@@ -56,17 +56,17 @@ var theme= 0;
 
 //button
 const restartButton = new Path2D()
-restartButton.rect(250, 350, 200, 100)
+restartButton.rect(425,42,200,30)
 restartButton.rect(425,42,200,30)
 restartButton.closePath()
 
 const levelButton = new Path2D()
-levelButton.rect(250, 350, 200, 100)
+levelButton.rect(425,92,200,30)
 levelButton.rect(425,92,200,30)
 levelButton.closePath()
 
 const themeButton = new Path2D()
-themeButton.rect(250, 350, 200, 100)
+themeButton.rect(425,142,200,30)
 themeButton.rect(425,142,200,30)
 themeButton.closePath()
 

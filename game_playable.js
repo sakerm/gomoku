@@ -60,6 +60,7 @@ function checkCapture()
 
 function click()
 {
+	timerStart = true;
 	ctx.beginPath();
 	ctx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
 	if (current_player == 1)

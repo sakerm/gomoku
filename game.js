@@ -1,7 +1,7 @@
 //counter
 var boxCounter = 0.0001;
 var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
+var ctx1 = c.getContext("2d");
 var arcStart = 1.5*Math.PI;
 var width = 250
 var height = 150
@@ -17,23 +17,23 @@ if (timerStart)
   var boxMinutes = boxCounter.toString().split(".")[0];
   boxMinutes = boxMinutes.length == 1 ? "0" + boxMinutes : boxMinutes;
   var boxMilMinutes = boxCounter.toString().split(".")[1].substring(0, 3);
-  ctx.clearRect(0, 0, c.width, c.height);
+  ctx1.clearRect(0, 0, c.width, c.height);
   
-  ctx.font = minuteFontSize+"px Arial";
-  ctx.fillText(boxMinutes, (width/2)-(minuteFontSize/1.8), (height/2));
+  ctx1.font = minuteFontSize+"px Arial";
+  ctx1.fillText(boxMinutes, (width/2)-(minuteFontSize/1.8), (height/2));
   //text
-  ctx.font = "20px Georgia"
-  ctx.fillText("timer", 5,20); 
-  ctx.font = "30px Verdana";
+  ctx1.font = "20px Georgia"
+  ctx1.fillText("timer", 5,20);
+  ctx1.font = "30px Verdana";
   //text
-  ctx.font = milMinuteFontSize+"px Arial";
-  ctx.fillText(boxMilMinutes, (width/2)-(milMinuteFontSize/1.2), (height/2)+(minuteFontSize/1.5));
-  ctx.beginPath();
+  ctx1.font = milMinuteFontSize+"px Arial";
+  ctx1.fillText(boxMilMinutes, (width/2)-(milMinuteFontSize/1.2), (height/2)+(minuteFontSize/1.5));
+  ctx1.beginPath();
   var arcLength = (boxCounter*2*Math.PI) % (2*Math.PI);
-  ctx.arc(width/2, height/2, width/4, arcStart, (2*Math.PI) - (0.5*Math.PI) + arcLength);
-  ctx.moveTo(width/2,0);
-  ctx.moveTo(0,height/2);
-  ctx.stroke();
+  ctx1.arc(width/2, height/2, width/4, arcStart, (2*Math.PI) - (0.5*Math.PI) + arcLength);
+  ctx1.moveTo(width/2,0);
+  ctx1.moveTo(0,height/2);
+  ctx1.stroke();
 }, 1000/60);
 //end counter
 
@@ -45,16 +45,13 @@ var theme= 0;
 //button
 const restartButton = new Path2D()
 restartButton.rect(425,42,200,30)
-restartButton.rect(425,42,200,30)
 restartButton.closePath()
 
 const levelButton = new Path2D()
 levelButton.rect(425,92,200,30)
-levelButton.rect(425,92,200,30)
 levelButton.closePath()
 
 const themeButton = new Path2D()
-themeButton.rect(425,142,200,30)
 themeButton.rect(425,142,200,30)
 themeButton.closePath()
 
@@ -120,7 +117,7 @@ document.addEventListener("click",  function (e) {
         ctx2.fillText(":",140,140);
         ctx2.font = "90px Georgia";
         ctx2.fillText(scoreJ2, 203,140);
-        ctx.fillStyle = '#000000';
+        ctx1.fillStyle = '#000000';
         document.body.style.backgroundColor = 'white';
         document.body.style.backgroundImage = 'none';
     }
@@ -146,7 +143,7 @@ document.addEventListener("click",  function (e) {
         ctx2.fillText(":",140,140);
         ctx2.font = "90px Georgia";
         ctx2.fillText(scoreJ2, 203,140);
-        ctx.fillStyle = '#0407A6';
+        ctx1.fillStyle = '#0407A6';
         document.body.style.backgroundImage = "url('https://media0.giphy.com/media/mX1bWOEGPIAY1yhmKI/giphy.gif')";
     }
     else if (theme == 2)
@@ -171,7 +168,7 @@ document.addEventListener("click",  function (e) {
         ctx2.fillText(":",140,140);
         ctx2.font = "90px Georgia";
         ctx2.fillText(scoreJ2, 203,140);
-        ctx.fillStyle = '#2EA847';
+        ctx1.fillStyle = '#2EA847';
         document.body.style.backgroundImage = "url('https://images.alphacoders.com/477/477025.jpg')";
 
     }
@@ -197,7 +194,7 @@ document.addEventListener("click",  function (e) {
         ctx2.fillText(":",140,140);
         ctx2.font = "90px Georgia";
         ctx2.fillText(scoreJ2, 203,140);
-        ctx.fillStyle = '#FF7930';
+        ctx1.fillStyle = '#FF7930';
         document.body.style.backgroundImage = "url('https://media.giphy.com/media/iikb3dTQ0Skne/giphy.gif')";
     }
     else if (theme == 4)
@@ -222,7 +219,7 @@ document.addEventListener("click",  function (e) {
         ctx2.fillText(":",140,140);
         ctx2.font = "90px Georgia";
         ctx2.fillText(scoreJ2, 203,140);
-        ctx.fillStyle = '#6832E0';
+        ctx1.fillStyle = '#6832E0';
         document.body.style.backgroundImage = "url('https://i.redd.it/c0emei8n03w01.jpg')";
     }
     else if (theme == 5)
@@ -247,7 +244,7 @@ document.addEventListener("click",  function (e) {
         ctx2.fillText(":",140,140);
         ctx2.font = "90px Georgia";
         ctx2.fillText(scoreJ2, 203,140);
-        ctx.fillStyle = '#2EBBF6';
+        ctx1.fillStyle = '#2EBBF6';
         document.body.style.backgroundImage = "url('https://natewren.com/themes/wallpaper2/radpack/radpack_8.jpg')";
         theme = -1;
     }

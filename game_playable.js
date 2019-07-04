@@ -53,6 +53,11 @@ function drawCanvas()
 	}
 }
 
+function checkCapture()
+{
+	
+}
+
 function click()
 {
 	ctx.beginPath();
@@ -64,6 +69,7 @@ function click()
 	ctx.fill();
 	ctx.stroke();
 	board[x][y] = current_player;
+	checkCapture();
 	if (current_player == 1)
 		current_player = 2;
 	else

@@ -59,7 +59,7 @@ function deleteCase(xx, yy)
 	ctx.beginPath();
 	ctx.strokeStyle = "white";
 	ctx.fillStyle = "white";
-	ctx.arc(xx*(w/19)+(w/19/2), yy*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
+	ctx.arc(xx*(w/19)+(w/19/2), yy*(h/19)+(h/19/2), w/19/2.2, 0, 2*Math.PI);
 	ctx.fill();
 	ctx.stroke();
 	ctx.strokeStyle = "black";
@@ -134,7 +134,10 @@ function checkWin()
 				&& board[x + 3*addx][y + 3*addy] == current_player
 				&& board[x + 2*addx][y + 2*addy] == current_player
 				&& board[x + 1*addx][y + 1*addy] == current_player)
+		{
 			alert("player " + current_player.toString(10) + " won !");
+			window.location.reload(true);
+		}
 	}
 }
 

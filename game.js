@@ -84,7 +84,7 @@ document.addEventListener("click",  function (e) {
   //use the shape data to determine if there is a collision
   if(ctx2.isPointInPath(restartButton, XY.x, XY.y)) {
     // Do Something with the click
-    alert("clicked in restartButton");
+    window.location.reload(true);
   }
   if(ctx2.isPointInPath(levelButton, XY.x, XY.y)) {
     // Do Something with the click

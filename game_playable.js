@@ -68,131 +68,126 @@ function deleteCase(xx, yy)
 
 function checkCapture()
 {
-	var addx = -1;
-	var addy = -1;
-
-	for (var i = 0; i < 8; i++)
+	if (x <= 15 && board[x + 3][y] == current_player && board[x + 1][y] == opponent && board[x + 2][y] == opponent) // droite
 	{
-		switch (i) {
-			case 0:
-				break ;
-			case 1:
-			case 2:
-				addx++;
-				break ;
-			case 3:
-			case 4:
-				addy++;
-				break ;
-			case 5:
-			case 6:
-				addx--;
-				break ;
-			case 7:
-				addy--;
-				break ;
-		}
-		if (x <= 18-3*addx && y <= 18-3*addy && x >= 3*Math.abs(addx) && y >= 3*Math.abs(addy)
-				&& board[x + 3*addx][y + 3*addy] == current_player
-				&& board[x + addx][y + addy] == opponent
-				&& board[x + 2*addx][y + 2*addy] == opponent)
-		{
-			deleteCase(x + addx, y + addy);
-			deleteCase(x + 2*addx, y + 2*addy);
-		}
+		deleteCase(x + 1, y);
+		deleteCase(x + 2, y);
 	}
+	if (x >= 3 && board[x - 3][y] == current_player && board[x - 1][y] == opponent && board[x - 2][y] == opponent) // gauche
+	{
+		deleteCase(x - 1, y);
+		deleteCase(x - 2, y);
+	}
+	if (y <= 15 && board[x][y + 3] == current_player && board[x][y + 2] == opponent && board[x][y + 1] == opponent) // bas
+	{
+		deleteCase(x, y + 1);
+		deleteCase(x, y + 2);
+	}
+	if (y >= 3 && board[x][y - 3] == current_player && board[x][y - 2] == opponent && board[x][y - 1] == opponent) // haut
+	{
+		deleteCase(x, y - 1);
+		deleteCase(x, y - 2);
+	}
+	if (x <= 15 && y >= 3 && board[x + 3][y - 3] == current_player && board[x + 1][y - 1] == opponent && board[x + 2][y - 2] == opponent) // haut droite
+	{
+		deleteCase(x + 1, y - 1);
+		deleteCase(x + 2, y - 2);
+	}
+	if (x >= 3 && y >= 3 && board[x - 3][y - 3] == current_player && board[x - 1][y - 1] == opponent && board[x - 2][y - 2] == opponent) // haut gauche
+	{
+		deleteCase(x - 1, y - 1);
+		deleteCase(x - 2, y - 2);
+	}
+	if (x >= 3 && y <= 15 && board[x - 3][y + 3] == current_player && board[x - 1][y + 1] == opponent && board[x - 2][y + 2] == opponent) // bas gauche
+	{
+		deleteCase(x - 1, y + 1);
+		deleteCase(x - 2, y + 2);
+	}
+	if (x <= 15 && y <= 15 && board[x + 3][y + 3] == current_player && board[x + 1][y + 1] == opponent && board[x + 2][y + 2] == opponent) // bas droite
+	{
+		deleteCase(x + 1, y + 1);
+		deleteCase(x + 2, y + 2);
+	}
+}
+
+function fiveInRow(j, k, xx, yy)
+{
+	var count = 0;
+
+	for (var i = 0; i < 19; i++)
+	{
+		if (board[xx + i*j][yy + i*k] == current_player)
+			count++;
+		else
+			count = 0;
+		if (count == 5)
+			return true;
+	}
+	return false;
+}
+
+function fiveInRowDiag1()
+{
+	var	h = 0;
+	var count = 0;
+
+	while (x + h > 0 && y + h > 0)
+		h--;
+	while (x + h < 19 && y + h < 19)
+	{
+		if (board[x+h][y+h] == current_player)
+			count++;
+		else
+			count = 0;
+		if (count == 5)
+			return true;
+		h++;
+	}
+	return false;
+}
+
+function fiveInRowDiag2()
+{
+	var	h = 0;
+	var count = 0;
+
+	while (x + h > 0 && y - h < 18)
+		h--;
+	while (x + h < 19 && y - h >= 0)
+	{
+		if (board[x+h][y-h] == current_player)
+			count++;
+		else
+			count = 0;
+		if (count == 5)
+			return true;
+		h++;
+	}
+	return false;
 }
 
 function checkWin()
 {
-	var addx = -1;
-	var addy = -1;
+	var win = false;
 
-	for (var i = 0; i < 8; i++)
+	if (fiveInRow(1, 0, 0, y)) // horizontal
+		win = true;
+	else if (fiveInRow(0, 1, x, 0)) // vertcial
+		win = true;
+	else if (fiveInRowDiag1())
+		win = true;
+	else if (fiveInRowDiag2())
+		win = true;
+	if (win)
 	{
-		switch (i) {
-			case 0:
-				break ;
-			case 1:
-			case 2:
-				addx++;
-				break ;
-			case 3:
-			case 4:
-				addy++;
-				break ;
-			case 5:
-			case 6:
-				addx--;
-				break ;
-			case 7:
-				addy--;
-				break ;
-		}
-		if (x <= 18-4*addx && y <= 18-4*addy && x >= 4*Math.abs(addx) && y >= 4*Math.abs(addy)
-				&& board[x + 4*addx][y + 4*addy] == current_player
-				&& board[x + 3*addx][y + 3*addy] == current_player
-				&& board[x + 2*addx][y + 2*addy] == current_player
-				&& board[x + 1*addx][y + 1*addy] == current_player)
-		{
-			alert("player " + current_player.toString(10) + " won !");
-			window.location.reload(true);
-		}
+		alert("player " + current_player.toString(10) + " won !");
+		window.location.reload(true);
 	}
 }
 
 function detectThree()
 {
-	var	nb = 0;
-	var player = 1;
-	var opp = 0;
-	var addx = -1;
-	var addy = -1;
-
-	for (var i = 0; i < 8; i++)
-	{
-		switch (i) {
-			case 0:
-				break ;
-			case 1:
-			case 2:
-				addx++;
-				break ;
-			case 3:
-			case 4:
-				addy++;
-				break ;
-			case 5:
-			case 6:
-				addx--;
-				break ;
-			case 7:
-				addy--;
-				break ;
-		}
-		if (x <= 18-4*addx && y <= 18-4*addy && x >= 4*Math.abs(addx) && y >= 4*Math.abs(addy))
-		{
-			if (x - addx > 0 && x - addx <= 18 && board[x - addx][y - addy] != opponent) // != opponent ou != 0 a voir si 4 ça comptre comme un three
-			{
-				for (var j = 0; j < 4; j++)
-				{
-					if (board[x + j*addx + addx][y + j*addy + addy] == current_player)
-						player++;
-					if (board[x + j*addx + addx][y + j*addy + addy] == opponent)
-						opp++;
-					if (j == 3 && board[x + j*addx + addx][y + j*addy + addy] != 0)
-						opp++;
-				}
-				if (player >= 3 && opp == 0)
-					nb++;
-				player = 1;
-				opp = 0;
-			}
-		}
-	}
-	if (nb != 0)
-		alert(nb);
-	return (nb);
+	return 0;
 }
 
 function click()

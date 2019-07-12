@@ -185,9 +185,95 @@ function checkWin()
 	}
 }
 
+function threeAll(xx, yy)
+{
+	var sx = 1;
+	var	sy = 1;
+	var	s;
+	var	count;
+	var endx = 14;
+	var	endy = 14;
+	var	end;
+	var	j;
+	var	m;
+	var	n;
+
+	if ((x == 18 || x == 0) && xx != 0)
+		return false;
+	if ((y == 18 || y == 0) && yy != 0)
+		return false;
+	if (x - 3 > 0)
+		sx = x - 3;
+	if (x + 3 < 18)
+		endx = x;
+	if (y - 3 > 0)
+		sy = y - 3;
+	if (y + 3 < 18)
+		endy = y;
+	end = (endx > endy && yy != 0) ? endy : endx;
+	s = (sx > sy && yy != 0) ? sy : sx;
+	for (var i = s; i <= end; i++)
+	{
+		count = 1;
+		for (j = 0; j < 4; j)
+		{
+			if (board[(xx != 0) ? sx - 1 : x][(yy != 0) ? sy - 1 : y] == opponent)
+			{
+				j++;
+				break ;
+			}
+			m = (xx != 0) ? sx + j : x;
+			if (m > 18)
+				break ;
+			n = (yy != 0) ? sy + j : y;
+			if (n > 18)
+				break ;
+			if (board[m][n] == current_player)
+				count++;
+			if (board[m][n] == opponent)
+				count = 1;
+			if (count >= 3)
+			{
+				j++;
+				break ;
+			}
+			j++;
+		}
+		m = (xx != 0) ? sx + j : x;
+		if (m > 18)
+			m = 18;
+		n = (yy != 0) ? sy + j : y;
+		if (n > 18)
+			n = 18;
+		if (board[m][n] == opponent)
+			count = 1;
+		if (count >= 3)
+			return true;
+		sx++;
+		sy++;
+	}
+	return false;
+}
+
+function threeLast()
+{
+	return false;
+}
+
 function detectThree()
 {
-	return 0;
+	var	nb = 0;
+	if (threeAll(1, 0))
+		nb++;
+	if (threeAll(0, 1))
+		nb++;
+	if (threeAll(1, 1))
+		nb++;
+	if (threeLast())
+		nb++;
+	if (nb != 0)
+		alert(nb);
+	return nb;
 }
 
 function click()

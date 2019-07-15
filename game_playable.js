@@ -225,11 +225,23 @@ function threeAll(xx, yy)
 		return false;
 	count += checkside(3, xx, yy, 0, false);
 	count += checkside(3, -xx, -yy, 0, false);
-	if (count >= 4)
+	if (count != 3)
 	{
 		count = 1;
 		count += checkside(3, xx, yy, 0, true);
 		count += checkside(3, -xx, -yy, 0, true);
+	}
+	if (count != 3)
+	{
+		count = 1;
+		count += checkside(3, xx, yy, 0, false);
+		count += checkside(3, -xx, -yy, 0, true);
+	}
+	if (count != 3)
+	{
+		count = 1;
+		count += checkside(3, xx, yy, 0, true);
+		count += checkside(3, -xx, -yy, 0, false);
 	}
 	if (count == 3)
 		return true;

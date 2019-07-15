@@ -185,78 +185,54 @@ function checkWin()
 	}
 }
 
-function threeAll(xx, yy)
+function checkside(it, xx, yy, offset, nospace)
 {
-	var sx = 1;
-	var	sy = 1;
-	var	s;
-	var	count;
-	var endx = 14;
-	var	endy = 14;
-	var	end;
-	var	j;
-	var	m;
-	var	n;
-
-	if ((x == 18 || x == 0) && xx != 0)
-		return false;
-	if ((y == 18 || y == 0) && yy != 0)
-		return false;
-	if (x - 3 > 0)
-		sx = x - 3;
-	if (x + 3 < 18)
-		endx = x;
-	if (y - 3 > 0)
-		sy = y - 3;
-	if (y + 3 < 18)
-		endy = y;
-	end = (endx > endy && yy != 0) ? endy : endx;
-	s = (sx > sy && yy != 0) ? sy : sx;
-	for (var i = s; i <= end; i++)
+	var ret = 0;
+	var i;
+	for (i = 1 + offset; i <= it + offset; i++)
 	{
-		count = 1;
-		for (j = 0; j < 4; j)
+		if (x+i*xx < 0 || x+i*xx > 18 || y+i*yy < 0 || y+i*yy > 18)
+			return 0;
+		if (board[x+i*xx][y+i*yy] == current_player)
+			ret++;
+		else if (board[x+i*xx][y+i*yy] == opponent)
+			return 0;
+		else if (x+(i+1)*xx < 0 || x+(i+1)*xx > 18 || y+(i+1)*yy < 0 || y+(i+1)*yy > 18)
+			break ;
+		else if (board[x+i*xx][y+i*yy] == 0 && board[x+(i+1)*xx][y+(i+1)*yy] == current_player)
 		{
-			if (board[(xx != 0) ? sx - 1 : x][(yy != 0) ? sy - 1 : y] == opponent)
-			{
-				j++;
-				break ;
-			}
-			m = (xx != 0) ? sx + j : x;
-			if (m > 18)
-				break ;
-			n = (yy != 0) ? sy + j : y;
-			if (n > 18)
-				break ;
-			if (board[m][n] == current_player)
-				count++;
-			if (board[m][n] == opponent)
-				count = 1;
-			if (count >= 3)
-			{
-				j++;
-				break ;
-			}
-			j++;
+			if (!nospace)
+				ret += checkside(it - i, xx, yy, i);
+			break ;
 		}
-		m = (xx != 0) ? sx + j : x;
-		if (m > 18)
-			m = 18;
-		n = (yy != 0) ? sy + j : y;
-		if (n > 18)
-			n = 18;
-		if (board[m][n] == opponent)
-			count = 1;
-		if (count >= 3)
-			return true;
-		sx++;
-		sy++;
+		else
+			break ;
 	}
-	return false;
+	if ((x+i*xx < 0 || x+i*xx > 18 || y+i*yy < 0 || y+i*yy > 18) || board[x+i*xx][y+i*yy] != 0)
+		return 0;
+	return ret;
 }
 
-function threeLast()
+function threeAll(xx, yy)
 {
+	var count = 1;
+
+	if (((x == 0 || x >= 18) && xx != 0)
+			|| ((y == 0 || y >= 18) && yy != 0)
+			|| (board[x - xx][y - yy] == 0 && board[x + xx][y + yy] == 0
+				&& (x - xx*2 >= 0 && x + xx*2 <= 18)
+				&& !(board[x - xx*2][y - yy*2] == current_player ^ board[x + xx*2][y + yy*2] == current_player)))
+		return false;
+	count += checkside(3, xx, yy, 0, false);
+	count += checkside(3, -xx, -yy, 0, false);
+	if (count >= 4)
+	{
+		count = 1;
+		count += checkside(3, xx, yy, 0, true);
+		count += checkside(3, -xx, -yy, 0, true);
+	}
+	if (count == 3)
+		return true;
 	return false;
 }
 
@@ -269,7 +245,7 @@ function detectThree()
 		nb++;
 	if (threeAll(1, 1))
 		nb++;
-	if (threeLast())
+	if (threeAll(1, -1))
 		nb++;
 	if (nb != 0)
 		alert(nb);

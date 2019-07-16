@@ -220,18 +220,26 @@ function checkBlanks(xx, yy)
 {
 	var nb = 0;
 
-	if (x+xx*2 <= 18 && x+xx*2 >= 0 && y+yy*2 <= 18 && y+yy*2 >= 0
-		&& board[x+xx*2][y+yy*2] == 0 && board[x+xx][y+yy] != opponent)
-		nb++;
-	if (x-xx*2 <= 18 && x-xx*2 >= 0 && y-yy*2 <= 18 && y-yy*2 >= 0
-		&& board[x-xx*2][y-yy*2] == 0 && board[x-xx][y-yy] != opponent)
-		nb++;
-	if (x+xx <= 18 && x+xx >= 0 && y+yy <= 18 && y+yy >= 0
-		&& board[x+xx][y+yy] == 0)
-		nb++;
-	if (x-xx <= 18 && x-xx >= 0 && y-yy <= 18 && y-yy >= 0
-		&& board[x-xx][y-yy] == 0)
-		nb++;
+	for (var i = 1; (x+xx*i >= 0 && x+xx*i <= 18 && y+yy*i >= 0 && y+yy*i <= 18); i++)
+	{
+		if (board[x+xx*i][y+yy*i] == 0)
+		{
+			nb++;
+			break ;
+		}
+		if (board[x+xx*i][y+yy*i] == opponent)
+			return false;
+	}
+	for (var i = 1; (x-xx*i >= 0 && x-xx*i <= 18 && y-yy*i >= 0 && y-yy*i <= 18); i++)
+	{
+		if (board[x-xx*i][y-yy*i] == 0)
+		{
+			nb++;
+			break ;
+		}
+		if (board[x-xx*i][y-yy*i] == opponent)
+			return false;
+	}
 	if (nb >= 2)
 		return true;
 	return false;

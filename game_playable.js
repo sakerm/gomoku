@@ -223,23 +223,11 @@ function checkBlanks(xx, yy)
 	if (x+xx*2 <= 18 && x+xx*2 >= 0 && y+yy*2 <= 18 && y+yy*2 >= 0
 		&& board[x+xx*2][y+yy*2] == 0)
 		nb++;
-	if (x+xx*2 <= 18 && x+xx*2 >= 0 && y+yy*2 <= 18 && y+yy*2 >= 0
-		&& board[x+xx*2][y+yy*2] == 0)
-		nb++;
-	if (x-xx*2 <= 18 && x-xx*2 >= 0 && y-yy*2 <= 18 && y-yy*2 >= 0
-		&& board[x-xx*2][y-yy*2] == 0)
-		nb++;
 	if (x-xx*2 <= 18 && x-xx*2 >= 0 && y-yy*2 <= 18 && y-yy*2 >= 0
 		&& board[x-xx*2][y-yy*2] == 0)
 		nb++;
 	if (x+xx <= 18 && x+xx >= 0 && y+yy <= 18 && y+yy >= 0
 		&& board[x+xx][y+yy] == 0)
-		nb++;
-	if (x+xx <= 18 && x+xx >= 0 && y+yy <= 18 && y+yy >= 0
-		&& board[x+xx][y+yy] == 0)
-		nb++;
-	if (x-xx <= 18 && x-xx >= 0 && y-yy <= 18 && y-yy >= 0
-		&& board[x-xx][y-yy] == 0)
 		nb++;
 	if (x-xx <= 18 && x-xx >= 0 && y-yy <= 18 && y-yy >= 0
 		&& board[x-xx][y-yy] == 0)

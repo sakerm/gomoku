@@ -185,7 +185,7 @@ function checkWin()
 	}
 }
 
-function checkside(it, xx, yy, offset, nospace)
+function checkside(it, xx, yy, offset, nospace, nbspace)
 {
 	var ret = 0;
 	var i;
@@ -202,7 +202,10 @@ function checkside(it, xx, yy, offset, nospace)
 		else if (board[x+i*xx][y+i*yy] == 0 && board[x+(i+1)*xx][y+(i+1)*yy] == current_player)
 		{
 			if (!nospace)
-				ret += checkside(it - i, xx, yy, i);
+			{
+				nbspace[0] += 1;
+				ret += checkside(it - i, xx, yy, i, nbspace);
+			}
 			break ;
 		}
 		else
@@ -216,6 +219,7 @@ function checkside(it, xx, yy, offset, nospace)
 function threeAll(xx, yy)
 {
 	var count = 1;
+	var nbspace = [0];
 
 	if (((x == 0 || x >= 18) && xx != 0)
 			|| ((y == 0 || y >= 18) && yy != 0)
@@ -223,42 +227,44 @@ function threeAll(xx, yy)
 				&& (x - xx*2 >= 0 && x + xx*2 <= 18)
 				&& !(board[x - xx*2][y - yy*2] == current_player ^ board[x + xx*2][y + yy*2] == current_player)))
 		return false;
-	count += checkside(3, xx, yy, 0, false);
-	count += checkside(3, -xx, -yy, 0, false);
+	count += checkside(3, xx, yy, 0, false, nbspace);
+	count += checkside(3, -xx, -yy, 0, false, nbspace);
 	if (count != 3)
 	{
 		count = 1;
-		count += checkside(3, xx, yy, 0, true);
-		count += checkside(3, -xx, -yy, 0, true);
+		count += checkside(3, xx, yy, 0, true, nbspace);
+		count += checkside(3, -xx, -yy, 0, true, nbspace);
 	}
 	if (count != 3)
 	{
+		nbspace[0] = 0;
 		count = 1;
-		count += checkside(3, xx, yy, 0, false);
-		count += checkside(3, -xx, -yy, 0, true);
+		count += checkside(3, xx, yy, 0, false, nbspace);
+		count += checkside(3, -xx, -yy, 0, true, nbspace);
+		if (count == 3 && nbspace[0] == 1)
+			return 2;
 	}
 	if (count != 3)
 	{
+		nbspace[0] = 0;
 		count = 1;
-		count += checkside(3, xx, yy, 0, true);
-		count += checkside(3, -xx, -yy, 0, false);
+		count += checkside(3, xx, yy, 0, true, nbspace);
+		count += checkside(3, -xx, -yy, 0, false, nbspace);
+		if (count == 3 && nbspace[0] == 1)
+			return 2;
 	}
 	if (count == 3)
-		return true;
-	return false;
+		return 1;
+	return 0;
 }
 
 function detectThree()
 {
 	var	nb = 0;
-	if (threeAll(1, 0))
-		nb++;
-	if (threeAll(0, 1))
-		nb++;
-	if (threeAll(1, 1))
-		nb++;
-	if (threeAll(1, -1))
-		nb++;
+	nb += threeAll(1, 0);
+	nb += threeAll(1, 1);
+	nb += threeAll(0, 1);
+	nb += threeAll(1, -1);
 	if (nb != 0)
 		alert(nb);
 	return nb;

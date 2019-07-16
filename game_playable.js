@@ -221,10 +221,10 @@ function checkBlanks(xx, yy)
 	var nb = 0;
 
 	if (x+xx*2 <= 18 && x+xx*2 >= 0 && y+yy*2 <= 18 && y+yy*2 >= 0
-		&& board[x+xx*2][y+yy*2] == 0 && board[x+xx][y+yy] == current_player)
+		&& board[x+xx*2][y+yy*2] == 0 && board[x+xx][y+yy] != opponent)
 		nb++;
 	if (x-xx*2 <= 18 && x-xx*2 >= 0 && y-yy*2 <= 18 && y-yy*2 >= 0
-		&& board[x-xx*2][y-yy*2] == 0 && board[x-xx][y-yy] == current_player)
+		&& board[x-xx*2][y-yy*2] == 0 && board[x-xx][y-yy] != opponent)
 		nb++;
 	if (x+xx <= 18 && x+xx >= 0 && y+yy <= 18 && y+yy >= 0
 		&& board[x+xx][y+yy] == 0)

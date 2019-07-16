@@ -216,6 +216,39 @@ function checkside(it, xx, yy, offset, nospace, nbspace)
 	return ret;
 }
 
+function checkBlanks(xx, yy)
+{
+	var nb = 0;
+
+	if (x+xx*2 <= 18 && x+xx*2 >= 0 && y+yy*2 <= 18 && y+yy*2 >= 0
+		&& board[x+xx*2][y+yy*2] == 0)
+		nb++;
+	if (x+xx*2 <= 18 && x+xx*2 >= 0 && y+yy*2 <= 18 && y+yy*2 >= 0
+		&& board[x+xx*2][y+yy*2] == 0)
+		nb++;
+	if (x-xx*2 <= 18 && x-xx*2 >= 0 && y-yy*2 <= 18 && y-yy*2 >= 0
+		&& board[x-xx*2][y-yy*2] == 0)
+		nb++;
+	if (x-xx*2 <= 18 && x-xx*2 >= 0 && y-yy*2 <= 18 && y-yy*2 >= 0
+		&& board[x-xx*2][y-yy*2] == 0)
+		nb++;
+	if (x+xx <= 18 && x+xx >= 0 && y+yy <= 18 && y+yy >= 0
+		&& board[x+xx][y+yy] == 0)
+		nb++;
+	if (x+xx <= 18 && x+xx >= 0 && y+yy <= 18 && y+yy >= 0
+		&& board[x+xx][y+yy] == 0)
+		nb++;
+	if (x-xx <= 18 && x-xx >= 0 && y-yy <= 18 && y-yy >= 0
+		&& board[x-xx][y-yy] == 0)
+		nb++;
+	if (x-xx <= 18 && x-xx >= 0 && y-yy <= 18 && y-yy >= 0
+		&& board[x-xx][y-yy] == 0)
+		nb++;
+	if (nb >= 2)
+		return true;
+	return false;
+}
+
 function threeAll(xx, yy)
 {
 	var count = 1;
@@ -226,7 +259,9 @@ function threeAll(xx, yy)
 			|| (board[x - xx][y - yy] == 0 && board[x + xx][y + yy] == 0
 				&& (x - xx*2 >= 0 && x + xx*2 <= 18)
 				&& !(board[x - xx*2][y - yy*2] == current_player ^ board[x + xx*2][y + yy*2] == current_player)))
-		return false;
+		return 0;
+	if (!checkBlanks(xx, yy))
+		return 0;
 	count += checkside(3, xx, yy, 0, false, nbspace);
 	count += checkside(3, -xx, -yy, 0, false, nbspace);
 	if (count != 3)

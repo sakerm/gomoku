@@ -1,5 +1,3 @@
-function	game() {
-
 var board = [
 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -21,15 +19,14 @@ var board = [
 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
-
 var current_player = 1;
 var opponent = 2;
-var	ia = false;
-var	game_canvas = document.getElementById("game");
 var	x;
 var y;
+var	ia = false;
+var	game_canvas = document.getElementById("game");
 var	playing = true;
-var	ctx = game_canvas.getContext("2d");
+var	ctxx = game_canvas.getContext("2d");
 var w = game_canvas.width;
 var h = game_canvas.height;
 
@@ -45,24 +42,24 @@ function drawCanvas()
 {
 	for (var i = 0; i < 18; i++)
 	{
-		ctx.beginPath();
-		ctx.moveTo(w/19 + i*(w/19), 0);
-		ctx.lineTo(w/19 + i*(w/19), h);
-		ctx.moveTo(0, h/19 + i*(h/19));
-		ctx.lineTo(w, h/19 + i*(h/19));
-		ctx.stroke();
+		ctxx.beginPath();
+		ctxx.moveTo(w/19 + i*(w/19), 0);
+		ctxx.lineTo(w/19 + i*(w/19), h);
+		ctxx.moveTo(0, h/19 + i*(h/19));
+		ctxx.lineTo(w, h/19 + i*(h/19));
+		ctxx.stroke();
 	}
 }
 
 function deleteCase(xx, yy)
 {
-	ctx.beginPath();
-	ctx.strokeStyle = "white";
-	ctx.fillStyle = "white";
-	ctx.arc(xx*(w/19)+(w/19/2), yy*(h/19)+(h/19/2), w/19/2.2, 0, 2*Math.PI);
-	ctx.fill();
-	ctx.stroke();
-	ctx.strokeStyle = "black";
+	ctxx.beginPath();
+	ctxx.strokeStyle = "white";
+	ctxx.fillStyle = "white";
+	ctxx.arc(xx*(w/19)+(w/19/2), yy*(h/19)+(h/19/2), w/19/2.2, 0, 2*Math.PI);
+	ctxx.fill();
+	ctxx.stroke();
+	ctxx.strokeStyle = "black";
 	board[xx][yy] = 0;
 }
 
@@ -178,11 +175,7 @@ function checkWin()
 		win = true;
 	else if (fiveInRowDiag2())
 		win = true;
-	if (win)
-	{
-		alert("player " + current_player.toString(10) + " won !");
-		window.location.reload(true);
-	}
+	return win;
 }
 
 function checkside(it, xx, yy, offset, nospace, nbspace)
@@ -296,24 +289,26 @@ function detectThree()
 	nb += threeAll(1, 1);
 	nb += threeAll(0, 1);
 	nb += threeAll(1, -1);
-	if (nb != 0)
-		alert(nb);
 	return nb;
 }
 
 function click()
 {
 	timerStart = true;
-	ctx.beginPath();
-	ctx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
+	ctxx.beginPath();
+	ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
 	if (current_player == 1)
-		ctx.fillStyle = "blue";
+		ctxx.fillStyle = "blue";
 	else
-		ctx.fillStyle = "red";
-	ctx.fill();
-	ctx.stroke();
+		ctxx.fillStyle = "red";
+	ctxx.fill();
+	ctxx.stroke();
 	board[x][y] = current_player;
-	checkWin();
+	if (checkWin())
+	{
+		alert("player " + current_player.toString(10) + " won !");
+		window.location.reload(true);
+	}
 	checkCapture();
 	if (current_player == 1)
 	{
@@ -325,6 +320,14 @@ function click()
 		current_player = 1;
 		opponent = 2;
 	}
+	if (current_player == 2)
+	{
+		var ret_ia = minmax([0, 0], 3, -999999, 999999, current_player, true);
+		x = ret_ia[0];
+		y = ret_ia[1];
+		console.log(ret_ia)
+		click();
+	}
 }
 
 drawCanvas();
@@ -333,7 +336,3 @@ game_canvas.addEventListener('mousedown', function(e) {
     if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree() <= 1)
     	click();
 });
-
-}
-
-game();

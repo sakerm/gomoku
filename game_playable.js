@@ -323,7 +323,7 @@ function click()
 	}
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 4, -999999, 999999, current_player, true);
+		var ret_ia = minmax([0, 0], 4, -999999, 999999, current_player);
 		console.log(nbaa);
 		nbaa = 0;
 		x = ret_ia[0];

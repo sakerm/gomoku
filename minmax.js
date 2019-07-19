@@ -56,6 +56,7 @@ function	heuristique(i, j, player)
 {
 	var	score = 0;
 
+	score += getRandomInt(500);
 	if (checkWin(i, j, player))
 		score += 5000;
 	if (player == current_player)
@@ -63,7 +64,7 @@ function	heuristique(i, j, player)
 	return -score;
 }
 
-function	minmax(position, depth, alpha, beta, player, start)
+function	minmax(position, depth, alpha, beta, player)
 {
 	var	score;
 	var	maxScore;
@@ -89,7 +90,7 @@ function	minmax(position, depth, alpha, beta, player, start)
 				if (board[i][j] == 0)
 				{
 					board[i][j] = player;
-					score = minmax([i, j], depth - 1, opponent, false);
+					score = minmax([i, j], depth - 1, alpha, beta, opponent);
 					board[i][j] = 0;
 					if (score[2] > maxScore[2])
 						maxScore = [i, j, score[2]];
@@ -112,7 +113,7 @@ function	minmax(position, depth, alpha, beta, player, start)
 				if (board[i][j] == 0)
 				{
 					board[i][j] = player;
-					score = minmax([i, j], depth - 1, current_player, false);
+					score = minmax([i, j], depth - 1, alpha, beta, current_player);
 					board[i][j] = 0;
 					if (score[2] < minScore[2])
 						minScore = [i, j, score[2]];

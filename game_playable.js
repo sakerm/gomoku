@@ -107,13 +107,13 @@ function checkCapture()
 	}
 }
 
-function fiveInRow(j, k, xx, yy)
+function fiveInRow(j, k, xx, yy, player)
 {
 	var count = 0;
 
 	for (var i = 0; i < 19; i++)
 	{
-		if (board[xx + i*j][yy + i*k] == current_player)
+		if (board[xx + i*j][yy + i*k] == player)
 			count++;
 		else
 			count = 0;
@@ -123,16 +123,16 @@ function fiveInRow(j, k, xx, yy)
 	return false;
 }
 
-function fiveInRowDiag1()
+function fiveInRowDiag1(i, j, player)
 {
 	var	h = 0;
 	var count = 0;
 
-	while (x + h > 0 && y + h > 0)
+	while (i + h > 0 && j + h > 0)
 		h--;
-	while (x + h < 19 && y + h < 19)
+	while (i + h < 19 && j + h < 19)
 	{
-		if (board[x+h][y+h] == current_player)
+		if (board[i+h][j+h] == player)
 			count++;
 		else
 			count = 0;
@@ -143,16 +143,16 @@ function fiveInRowDiag1()
 	return false;
 }
 
-function fiveInRowDiag2()
+function fiveInRowDiag2(i, j, player)
 {
 	var	h = 0;
 	var count = 0;
 
-	while (x + h > 0 && y - h < 18)
+	while (i + h > 0 && j - h < 18)
 		h--;
-	while (x + h < 19 && y - h >= 0)
+	while (i + h < 19 && j - h >= 0)
 	{
-		if (board[x+h][y-h] == current_player)
+		if (board[i+h][j-h] == player)
 			count++;
 		else
 			count = 0;
@@ -163,17 +163,17 @@ function fiveInRowDiag2()
 	return false;
 }
 
-function checkWin()
+function checkWin(i, j, player)
 {
 	var win = false;
 
-	if (fiveInRow(1, 0, 0, y)) // horizontal
+	if (fiveInRow(1, 0, 0, j, player)) // horizontal
 		win = true;
-	else if (fiveInRow(0, 1, x, 0)) // vertcial
+	else if (fiveInRow(0, 1, i, 0, player)) // vertcial
 		win = true;
-	else if (fiveInRowDiag1())
+	else if (fiveInRowDiag1(i, j, player))
 		win = true;
-	else if (fiveInRowDiag2())
+	else if (fiveInRowDiag2(i, j, player))
 		win = true;
 	return win;
 }
@@ -304,10 +304,11 @@ function click()
 	ctxx.fill();
 	ctxx.stroke();
 	board[x][y] = current_player;
-	if (checkWin())
+	if (checkWin(x, y, current_player))
 	{
 		alert("player " + current_player.toString(10) + " won !");
 		window.location.reload(true);
+		return ;
 	}
 	checkCapture();
 	if (current_player == 1)
@@ -322,7 +323,9 @@ function click()
 	}
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 3, -999999, 999999, current_player, true);
+		var ret_ia = minmax([0, 0], 4, -999999, 999999, current_player, true);
+		console.log(nbaa);
+		nbaa = 0;
 		x = ret_ia[0];
 		y = ret_ia[1];
 		console.log(ret_ia)

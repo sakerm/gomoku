@@ -52,78 +52,91 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-function	heuristique(i, j, player)
+function	heuristique(i, j, playerv)
 {
 	var	score = 0;
 
-	score += getRandomInt(500);
-	if (checkWin(i, j, player))
-		score += 5000;
-	if (player == current_player)
+	//score += getRandomInt(500);
+	if (checkWin(i, j, current_player))
+	{
+		if (current_player == playerv)
+			score += 5000;
+		else
+			score -= 5000;
+	}
+	if (checkWin(i, j, opponent))
+	{
+		if (opponent == playerv)
+			score += 5000;
+		else
+			score -= 5000;
+	}
+	if (playerv == current_player)
 		return score;
 	return -score;
 }
 
-function	minmax(position, depth, alpha, beta, player)
+function	minmax(position, depth, alpha, beta, playerk)
 {
 	var	score;
-	var	maxScore;
-	var	minScore;
+	var	RetScore;
 	var	topLeft = getTopLeft();
 	var	botRight = getBotRight();
 	var a;
 
 	nbaa++;
-	if (depth == 0 || (a = checkWin(position[0], position[1], player)))
+	if (depth == 0 || checkWin(position[0], position[1], current_player) || checkWin(position[0], position[1], opponent))
+		return [position[0], position[1], heuristique(position[0], position[1], playerk)];
+	if (playerk == current_player)
 	{
-		if (a == true)
-			console.log("win");
-		return [position[0], position[1], heuristique(position[0], position[1], player)];
-	}
-	if (player == current_player)
-	{
-		maxScore = [0, 0, -1000000];
+		RetScore = [0, 0, -1000000];
 		for (var i = topLeft[0]; i <= botRight[0]; i++)
 		{
 			for (var j = topLeft[1]; j <= botRight[1]; j++)
 			{
 				if (board[i][j] == 0)
 				{
-					board[i][j] = player;
+					board[i][j] = playerk;
 					score = minmax([i, j], depth - 1, alpha, beta, opponent);
 					board[i][j] = 0;
-					if (score[2] > maxScore[2])
-						maxScore = [i, j, score[2]];
+					if (score[2] > RetScore[2])
+					{
+						//console.log(score[2]);
+						RetScore = [i, j, score[2]];
+					}
 					if (score[2] > alpha)
 						alpha = score[2];
 					if (beta <= alpha)
-						return maxScore;
+						return RetScore;
 				}
 			}
 		}
-		return maxScore;
+		return RetScore;
 	}
 	else
 	{
-		minScore = [0, 0, 1000000];
+		RetScore = [0, 0, 1000000];
 		for (var i = topLeft[0]; i <= botRight[0]; i++)
 		{
 			for (var j = topLeft[1]; j <= botRight[1]; j++)
 			{
 				if (board[i][j] == 0)
 				{
-					board[i][j] = player;
+					board[i][j] = playerk;
 					score = minmax([i, j], depth - 1, alpha, beta, current_player);
 					board[i][j] = 0;
-					if (score[2] < minScore[2])
-						minScore = [i, j, score[2]];
+					if (score[2] < RetScore[2])
+					{
+						//console.log(score[2]);
+						RetScore = [i, j, score[2]];
+					}
 					if (score[2] < beta)
 						beta = score[2];
 					if (beta <= alpha)
-						return minScore;
+						return RetScore;
 				}
 			}
 		}
-		return minScore;
+		return RetScore;
 	}
 }

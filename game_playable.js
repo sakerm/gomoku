@@ -167,6 +167,7 @@ function checkWin(i, j, player)
 {
 	var win = false;
 
+	nbaa++;
 	if (fiveInRow(1, 0, 0, j, player)) // horizontal
 		win = true;
 	else if (fiveInRow(0, 1, i, 0, player)) // vertcial
@@ -323,7 +324,7 @@ function click()
 	}
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 2, -999999, 999999, current_player);
+		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player);
 		console.log(nbaa);
 		nbaa = 0;
 		x = ret_ia[0];

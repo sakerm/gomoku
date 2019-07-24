@@ -48,46 +48,52 @@ function	getBotRight()
 	return [right, bot];
 }
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-function	heuristique(i, j, playerv)
+function	heuristique(i, j, player, win1, win2)
 {
 	var	score = 0;
 
-	//score += getRandomInt(500);
-	if (checkWin(i, j, current_player))
+	if (win1)
 	{
-		if (current_player == playerv)
+		if (current_player == player)
 			score += 5000;
 		else
 			score -= 5000;
 	}
-	if (checkWin(i, j, opponent))
+	if (win2)
 	{
-		if (opponent == playerv)
+		if (opponent == player)
 			score += 5000;
 		else
 			score -= 5000;
 	}
-	if (playerv == current_player)
+	if (player == current_player)
 		return score;
 	return -score;
 }
 
-function	minmax(position, depth, alpha, beta, playerk)
+function	minmax(position, depth, alpha, beta, player)
 {
 	var	score;
 	var	RetScore;
 	var	topLeft = getTopLeft();
 	var	botRight = getBotRight();
 	var a;
+	var	win1;
+	var	win2;
 
-	nbaa++;
-	if (depth == 0 || checkWin(position[0], position[1], current_player) || checkWin(position[0], position[1], opponent))
-		return [position[0], position[1], heuristique(position[0], position[1], playerk)];
-	if (playerk == current_player)
+	if ((win1 = checkWin(position[0], position[1], current_player)))
+	{
+		win2 = checkWin(position[0], position[1], opponent);
+		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2)];
+	}
+	if ((win2 = checkWin(position[0], position[1], opponent)))
+	{
+		win1 = checkWin(position[0], position[1], current_player);
+		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2)];
+	}
+	if (depth == 0)
+		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2)];
+	if (player == current_player)
 	{
 		RetScore = [0, 0, -1000000];
 		for (var i = topLeft[0]; i <= botRight[0]; i++)
@@ -96,14 +102,11 @@ function	minmax(position, depth, alpha, beta, playerk)
 			{
 				if (board[i][j] == 0)
 				{
-					board[i][j] = playerk;
+					board[i][j] = player;
 					score = minmax([i, j], depth - 1, alpha, beta, opponent);
 					board[i][j] = 0;
 					if (score[2] > RetScore[2])
-					{
-						//console.log(score[2]);
 						RetScore = [i, j, score[2]];
-					}
 					if (score[2] > alpha)
 						alpha = score[2];
 					if (beta <= alpha)
@@ -122,14 +125,11 @@ function	minmax(position, depth, alpha, beta, playerk)
 			{
 				if (board[i][j] == 0)
 				{
-					board[i][j] = playerk;
+					board[i][j] = player;
 					score = minmax([i, j], depth - 1, alpha, beta, current_player);
 					board[i][j] = 0;
 					if (score[2] < RetScore[2])
-					{
-						//console.log(score[2]);
 						RetScore = [i, j, score[2]];
-					}
 					if (score[2] < beta)
 						beta = score[2];
 					if (beta <= alpha)

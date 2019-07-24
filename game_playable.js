@@ -239,16 +239,16 @@ function checkBlanks(xx, yy)
 	return false;
 }
 
-function threeAll(xx, yy)
+function threeAll(xx, yy, i, j)
 {
 	var count = 1;
 	var nbspace = [0];
 
-	if (((x == 0 || x >= 18) && xx != 0)
-			|| ((y == 0 || y >= 18) && yy != 0)
-			|| (board[x - xx][y - yy] == 0 && board[x + xx][y + yy] == 0
-				&& (x - xx*2 >= 0 && x + xx*2 <= 18)
-				&& !(board[x - xx*2][y - yy*2] == current_player ^ board[x + xx*2][y + yy*2] == current_player)))
+	if (((i == 0 || i >= 18) && xx != 0)
+			|| ((j == 0 || j >= 18) && yy != 0)
+			|| (board[i - xx][j - yy] == 0 && board[i + xx][j + yy] == 0
+				&& (i - xx*2 >= 0 && i + xx*2 <= 18)
+				&& !(board[i - xx*2][j - yy*2] == current_player ^ board[i + xx*2][j + yy*2] == current_player)))
 		return 0;
 	if (!checkBlanks(xx, yy))
 		return 0;
@@ -283,13 +283,19 @@ function threeAll(xx, yy)
 	return 0;
 }
 
-function detectThree()
+function detectThree(i, j)
 {
 	var	nb = 0;
-	nb += threeAll(1, 0);
-	nb += threeAll(1, 1);
-	nb += threeAll(0, 1);
-	nb += threeAll(1, -1);
+	nb += threeAll(1, 0, i, j);
+	if (nb >= 2)
+		return nb;
+	nb += threeAll(1, 1, i, j);
+	if (nb >= 2)
+		return nb;
+	nb += threeAll(0, 1, i, j);
+	if (nb >= 2)
+		return nb;
+	nb += threeAll(1, -1, i, j);
 	return nb;
 }
 
@@ -337,6 +343,6 @@ function click()
 drawCanvas();
 game_canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(game_canvas, e);
-    if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree() <= 1)
+    if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree(x, y) <= 1)
     	click();
 });

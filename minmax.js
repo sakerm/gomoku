@@ -1,5 +1,31 @@
 var	nbaa = 0;
 
+function	distance(hx, hy)
+{
+	var xx;
+	var yy;
+
+	if (hx < 1)
+		xx = 0;
+	else
+		xx = hx - 1;
+	while (xx <= hx + 1 && xx <= 18)
+	{
+		if (hy < 1)
+			yy = 0;
+		else
+			yy = hy - 1;
+		while (yy <= hy + 1 && yy <= 18)
+		{
+			if ((yy != hy || xx != hx) && board[xx][yy] != 0)
+				return true;
+			yy++;
+		}
+		xx++;
+	}
+	return false;
+}
+
 function	getTopLeft()
 {
 	var	left = -1;
@@ -48,29 +74,6 @@ function	getBotRight()
 	return [right, bot];
 }
 
-function	heuristique(i, j, player, win1, win2)
-{
-	var	score = 0;
-
-	if (win1)
-	{
-		if (current_player == player)
-			score += 5000;
-		else
-			score -= 5000;
-	}
-	if (win2)
-	{
-		if (opponent == player)
-			score += 5000;
-		else
-			score -= 5000;
-	}
-	if (player == current_player)
-		return score;
-	return -score;
-}
-
 function	minmax(position, depth, alpha, beta, player)
 {
 	var	score;
@@ -100,7 +103,7 @@ function	minmax(position, depth, alpha, beta, player)
 		{
 			for (var j = topLeft[1]; j <= botRight[1]; j++)
 			{
-				if (board[i][j] == 0)
+				if (board[i][j] == 0 && distance(i, j) && detectThree(i, j) < 2)
 				{
 					board[i][j] = player;
 					score = minmax([i, j], depth - 1, alpha, beta, opponent);
@@ -123,7 +126,7 @@ function	minmax(position, depth, alpha, beta, player)
 		{
 			for (var j = topLeft[1]; j <= botRight[1]; j++)
 			{
-				if (board[i][j] == 0)
+				if (board[i][j] == 0 && distance(i, j) && detectThree(i, j) < 2)
 				{
 					board[i][j] = player;
 					score = minmax([i, j], depth - 1, alpha, beta, current_player);

@@ -343,7 +343,7 @@ function coordCloseThree(i, j, player, revers)
 			ret.push([i+2, j]);
 			break ;
 		}
-		if (board[i+counti*revers][j] == 0 && nbpieces > 1 || (board[i+counti*revers][j] == 0 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j] == player))
+		if (board[i+counti*revers][j] == 0 && nbpieces > 2 || (board[i+counti*revers][j] == 0 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j] == player))
 		{
 			if (counti >= 3 && board[i+(counti-1)*revers][j] != player)
 				break;
@@ -354,9 +354,9 @@ function coordCloseThree(i, j, player, revers)
 			nbpieces++;
 		else if (counti > 1)
 		{
-			if (nbpieces > 1 && revers == -1 && board[i+1, j] == 0)
+			if (nbpieces > 2 && revers == -1 && board[i+1, j] == 0)
 				ret.push([i+1, j]);
-			else if (nbpieces > 1 && revers == 1 && board[i-1, j] == 0)
+			else if (nbpieces > 2 && revers == 1 && board[i-1, j] == 0)
 				ret.push([i-1, j]);
 			if (i-1 >= 0 && i+1 <= 18 && board[i-1][j] == player && board[i+1][j] == 0)
 				ret.push([i+1, j]);
@@ -382,7 +382,7 @@ function coordCloseThree(i, j, player, revers)
 			ret.push([i, j+2]);
 			break ;
 		}
-		if (board[i][j+countj*revers] == 0 && nbpieces > 1 || (board[i][j+countj*revers] == 0 && j+(countj+1)*revers < 19 && board[i][j+(countj+1)*revers] == player))
+		if (board[i][j+countj*revers] == 0 && nbpieces > 2 || (board[i][j+countj*revers] == 0 && j+(countj+1)*revers < 19 && board[i][j+(countj+1)*revers] == player))
 		{
 			if (countj >= 3 && board[i][j+(countj-1)*revers] != player)
 				break;
@@ -393,9 +393,9 @@ function coordCloseThree(i, j, player, revers)
 			nbpieces++;
 		else if (countj > 1)
 		{
-			if (nbpieces > 1 && revers == -1 && board[i, j+1] == 0)
+			if (nbpieces > 2 && revers == -1 && board[i, j+1] == 0)
 				ret.push([i, j+1]);
-			else if (nbpieces > 1 && revers == 1 && board[i, j-1] == 0)
+			else if (nbpieces > 2 && revers == 1 && board[i, j-1] == 0)
 				ret.push([i, j-1]);
 			if (i-1 >= 0 && i+1 <= 18 && board[i][j-1] == player && board[i][j+1] == 0)
 				ret.push([i, j+1]);
@@ -422,7 +422,7 @@ function coordCloseThree(i, j, player, revers)
 			ret.push([i+2, j+2]);
 			break ;
 		}
-		if (board[i+counti*revers][j+countj*revers] == 0 && nbpieces > 1 || (board[i+counti*revers][j+countj*revers] == 0 && j+(countj+1)*revers < 19 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j+(countj+1)*revers] == player))
+		if (board[i+counti*revers][j+countj*revers] == 0 && nbpieces > 2 || (board[i+counti*revers][j+countj*revers] == 0 && j+(countj+1)*revers < 19 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j+(countj+1)*revers] == player))
 		{
 			if (countj >= 3 && counti >= 3 && board[i+(counti-1)*revers][j+(countj-1)*revers] != player)
 				break;
@@ -433,9 +433,9 @@ function coordCloseThree(i, j, player, revers)
 			nbpieces++;
 		else if (countj > 1 && counti > 1)
 		{
-			if (nbpieces > 1 && revers == -1 && board[i+1, j+1] == 0)
+			if (nbpieces > 2 && revers == -1 && board[i+1, j+1] == 0)
 				ret.push([i+1, j+1]);
-			else if (nbpieces > 1 && revers == 1 && board[i-1, j-1] == 0)
+			else if (nbpieces > 2 && revers == 1 && board[i-1, j-1] == 0)
 				ret.push([i-1, j-1]);
 			if (i-1 >= 0 && i+1 <= 18 && j-1 >= 0 && j+1 <= 18 && board[i-1][j-1] == player && board[i+1][j+1] == 0)
 				ret.push([i+1, j+1]);
@@ -463,7 +463,7 @@ function coordCloseThree(i, j, player, revers)
 			ret.push([i+2, j-2]);
 			break ;
 		}
-		if (board[i+counti*revers][j-countj*revers] == 0 && nbpieces > 1 || (board[i+counti*revers][j-countj*revers] == 0 && j-(countj+1)*revers < 19 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j-(countj+1)*revers] == player))
+		if (board[i+counti*revers][j-countj*revers] == 0 && nbpieces > 2 || (board[i+counti*revers][j-countj*revers] == 0 && j-(countj+1)*revers < 19 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j-(countj+1)*revers] == player))
 		{
 			if (countj >= 3 && counti >= 3 && board[i+(counti-1)*revers][j-(countj-1)*revers] != player)
 				break;
@@ -474,9 +474,9 @@ function coordCloseThree(i, j, player, revers)
 			nbpieces++;
 		else if (countj > 1 && counti > 1)
 		{
-			if (nbpieces > 1 && revers == -1 && board[i+1, j-1] == 0)
+			if (nbpieces > 2 && revers == -1 && board[i+1, j-1] == 0)
 				ret.push([i+1, j-1]);
-			else if (nbpieces > 1 && revers == 1 && board[i-1, j+1] == 0)
+			else if (nbpieces > 2 && revers == 1 && board[i-1, j+1] == 0)
 				ret.push([i-1, j+1]);
 			if (i-1 >= 0 && i+1 <= 18 && j-1 >= 0 && j+1 <= 18 && board[i-1][j+1] == player && board[i+1][j-1] == 0)
 				ret.push([i+1, j-1]);

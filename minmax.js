@@ -87,6 +87,7 @@ function	minmax(position, depth, alpha, beta, player, prio)
 	var	prio_checked = false;
 	var	nb_prio = 0;
 	var	nb_prio_in_tmpThree = 0;
+	var	doublon = [];
 
 	if ((win1 = checkWin(position[0], position[1], current_player)))
 	{
@@ -113,7 +114,7 @@ function	minmax(position, depth, alpha, beta, player, prio)
 					{
 						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
 						{
-							if (prio[h][l] !== undefined && prio[h][l].length == 2 && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
+							if (prio[h][l] !== undefined && prio[h][l].length == 2 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
 							{
 								nb_prio_in_tmpThree = prio.length;
 								for (var p = 0; p < tmpThree[1].length; p++)
@@ -131,6 +132,8 @@ function	minmax(position, depth, alpha, beta, player, prio)
 									return RetScore;
 								nb_prio++;
 							}
+							if (prio[h][l] !== undefined && prio[h][l].length == 2)
+								doublon.push([prio[h][l][0], prio[h][l][1]]);
 						}
 					}
 					prio_checked = true;
@@ -164,7 +167,7 @@ function	minmax(position, depth, alpha, beta, player, prio)
 					{
 						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
 						{
-							if (prio[h][l] !== undefined && prio[h][l].length == 2 && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
+							if (prio[h][l] !== undefined && prio[h][l].length == 2 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
 							{
 								nb_prio_in_tmpThree = prio.length;
 								for (var p = 0; p < tmpThree[1].length; p++)
@@ -182,6 +185,8 @@ function	minmax(position, depth, alpha, beta, player, prio)
 									return RetScore;
 								nb_prio++;
 							}
+							if (prio[h][l] !== undefined && prio[h][l].length == 2)
+								doublon.push([prio[h][l][0], prio[h][l][1]]);
 						}
 					}
 					prio_checked = true;

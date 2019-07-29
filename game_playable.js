@@ -577,19 +577,19 @@ async function click(ThreeLastPlay)
 	g_priorities = g_priorities.filter(function (e) {
 		return e.length != 0;
 	})
-	g_priorities = [...new Set(g_priorities)];
-	for (var i = 0; i < g_priorities.length; i++)
-	{
-		for (var j = 0; j < g_priorities[i].length; j++)
-		{
-			if (g_priorities[i][j] === undefined || g_priorities[i][j].length != 2)
-				delete(g_priorities[i][j]);
-			else if (board[g_priorities[i][j][0]][g_priorities[i][j][1]] == 0)
-				delete(g_priorities[i][j]);
-		}
-		if (g_priorities[i].length == 0)
-			delete(g_priorities[i]);
-	}
+	//g_priorities = [...new Set(g_priorities)];
+	//for (var i = 0; i < g_priorities.length; i++)
+	//{
+	//	for (var j = 0; j < g_priorities[i].length; j++)
+	//	{
+	//		if (g_priorities[i][j] === undefined || g_priorities[i][j].length != 2)
+	//			delete(g_priorities[i][j]);
+	//		else if (board[g_priorities[i][j][0]][g_priorities[i][j][1]] == 0)
+	//			delete(g_priorities[i][j]);
+	//	}
+	//	if (g_priorities[i].length == 0)
+	//		delete(g_priorities[i]);
+	//}
 	console.log(g_priorities);
 }
 

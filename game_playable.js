@@ -497,7 +497,7 @@ function detectThree(i, j, player)
 
 	priorities.push(coordCloseThree(i, j, player, 1));
 	priorities.push(coordCloseThree(i, j, player, -1));
-	console.log(priorities);
+	//console.log(priorities);
 	tmp = threeAll(1, 0, i, j, player);
 	nb += tmp[0];
 	priorities.push(tmp[1].slice());
@@ -527,9 +527,12 @@ function resolveAfter2Seconds() {
 	});
 }
 
+var	g_priorities = [];
 
 async function click(ThreeLastPlay)
 {
+	for (var p = 0; p < ThreeLastPlay[1].length; p++)
+		g_priorities.push(ThreeLastPlay[1][p]);
 	timerStart = true;
 	ctxx.beginPath();
 	ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
@@ -560,14 +563,21 @@ async function click(ThreeLastPlay)
 	await resolveAfter2Seconds();
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 8, -999999, 999999, current_player, ThreeLastPlay[1]);
-		console.log(nbaa);
+		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player, g_priorities);
+		//console.log(nbaa);
 		nbaa = 0;
 		x = ret_ia[0];
 		y = ret_ia[1];
-		console.log(ret_ia)
+		ThreeLastPlay = detectThree(x, y, current_player);
+		for (var p = 0; p < ThreeLastPlay[1].length; p++)
+			g_priorities.push(ThreeLastPlay[1][p]);
+		//console.log(ret_ia)
 		click(ThreeLastPlay);
 	}
+	g_priorities = g_priorities.filter(function (e) {
+		return e.length != 0;
+	})
+	console.log(g_priorities);
 }
 
 drawCanvas();

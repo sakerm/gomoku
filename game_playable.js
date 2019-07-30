@@ -304,13 +304,13 @@ function coordThree(xx, yy, i, j, player)
 		while (board[is][js] != 0 || board[is+xx][js+yy] == player)
 		{
 			if (board[is][js] == 0)
-				ret.push([is, js]);
+				ret.push([is, js, 3]);
 			is += xx;
 			js += yy;
 			if (!(is+xx >= 0 && is+xx <= 18 && js+yy >= 0 && js+yy <= 18))
 				break ;
 		}
-		ret.push([is, js]);
+		ret.push([is, js, 3]);
 	}
 	i -= xx;
 	j -= yy;
@@ -319,13 +319,13 @@ function coordThree(xx, yy, i, j, player)
 		while (board[i][j] != 0 || board[i-xx][j-yy] == player)
 		{
 			if (board[i][j] == 0)
-				ret.push([i, j]);
+				ret.push([i, j, 3]);
 			i -= xx;
 			j -= yy;
 			if (!(i-xx >= 0 && i-xx <= 18 && j-yy >= 0 && j-yy <= 18))
 				break ;
 		}
-		ret.push([i, j]);
+		ret.push([i, j, 3]);
 	}
 	return ret;
 }
@@ -349,20 +349,20 @@ function coordCloseThree(i, j, player, revers)
 				if (savei - 1 >= 0 && board[savei-1][j] == 0 && savei-1 != i)
 				{
 					if (savei - 1 == i)
-						ret.push([savei-2, j])
+						ret.push([savei-2, j, nbpieces])
 					else
-						ret.push([savei-1, j])
+						ret.push([savei-1, j, nbpieces])
 				}
 				while(savei <= i+counti && i+counti < 18)
 				{
 					if (board[savei][j] == 0 && savei != i)
-						ret.push([savei, j])
+						ret.push([savei, j, nbpieces])
 					savei++;
 				}
 				while(savei < 18 && (board[savei][j] == player || savei == i))
 					savei++;
 				if (board[savei][j] == 0 && savei != i && (board[savei-1][j] == player || savei-1 == i))
-					ret.push([savei, j])
+					ret.push([savei, j, nbpieces])
 				break ;
 			}
 			if (board[i+counti][j] == player || counti == 0)
@@ -399,20 +399,20 @@ function coordCloseThree(i, j, player, revers)
 				if (savej - 1 >= 0 && board[i][savej-1] == 0 && savej-1 != j)
 				{
 					if (savej - 1 == j)
-						ret.push([i, savej-2])
+						ret.push([i, savej-2, nbpieces])
 					else
-						ret.push([i, savej-1])
+						ret.push([i, savej-1, nbpieces])
 				}
 				while(savej <= j+countj && j+countj < 18)
 				{
 					if (board[i][savej] == 0 && savej != j)
-						ret.push([i, savej])
+						ret.push([i, savej, nbpieces])
 					savej++;
 				}
 				while(savej < 18 && (board[i][savej] == player || savej == j))
 					savej++;
 				if (board[i][savej] == 0 && savej != j && (board[i][savej-1] == player || savej-1 == j))
-					ret.push([i, savej])
+					ret.push([i, savej, nbpieces])
 				break ;
 			}
 			if (board[i][j+countj] == player || countj == 0)
@@ -452,14 +452,14 @@ function coordCloseThree(i, j, player, revers)
 				if (savej-1 >= 0 && savei-1 >= 0 && board[savei-1][savej-1] == 0 && savej-1 != j && savei-1 != i)
 				{
 					if (savej - 1 == j && savei-1 == j)
-						ret.push([savei-2, savej-2])
+						ret.push([savei-2, savej-2, nbpieces])
 					else
-						ret.push([savei-1, savej-1])
+						ret.push([savei-1, savej-1, nbpieces])
 				}
 				while(savej <= j+countj && j+countj < 18 && savei <= i+counti && i+counti < 18)
 				{
 					if (board[savei][savej] == 0 && savej != j && savei != i)
-						ret.push([savei, savej])
+						ret.push([savei, savej, nbpieces])
 					savej++;
 					savei++;
 				}
@@ -469,7 +469,7 @@ function coordCloseThree(i, j, player, revers)
 					savej++;
 				}
 				if (board[savei][savej] == 0 && savej != j && savei != i && (board[savei-1][savej-1] == player || (savej-1 == j && savei-1 == i)))
-					ret.push([savei, savej])
+					ret.push([savei, savej, nbpieces])
 				break ;
 			}
 			if (board[i+counti][j+countj] == player || (countj == 0 && counti == 0))
@@ -515,14 +515,14 @@ function coordCloseThree(i, j, player, revers)
 				if (savej-1 >= 0 && savei+1 <= 18 && board[savei+1][savej-1] == 0 && savej-1 != j && savei+1 != i)
 				{
 					if (savej - 1 == j && savei+1 == i)
-						ret.push([savei+2, savej-2])
+						ret.push([savei+2, savej-2, nbpieces])
 					else
-						ret.push([savei+1, savej-1])
+						ret.push([savei+1, savej-1, nbpieces])
 				}
 				while(savej <= j+countj && j+countj < 18 && savei <= i+counti && i+counti > 0)
 				{
 					if (board[savei][savej] == 0 && savej != j && savei != i)
-						ret.push([savei, savej])
+						ret.push([savei, savej, nbpieces])
 					savej++;
 					savei--;
 				}
@@ -532,7 +532,7 @@ function coordCloseThree(i, j, player, revers)
 					savej++;
 				}
 				if (board[savei][savej] == 0 && savej != j && savei != i && (board[savei+1][savej-1] == player || (savej-1 == j && savei+1 == i)))
-					ret.push([savei, savej])
+					ret.push([savei, savej, nbpieces])
 				break ;
 			}
 			if (board[i+counti][j+countj] == player || (countj == 0 && counti == 0))
@@ -563,6 +563,28 @@ function coordCloseThree(i, j, player, revers)
 		return(ret);
 }
 
+function orderComparator(a, b)
+{
+	if (a[2] > b[2])
+		return -1;
+	else if (a[2] < b[2])
+		return 1;
+	return 0;
+}
+
+var	test = false;
+
+function orderPrio(prio)
+{
+	var	ret = [];
+
+	for (var i = 0; i < prio.length; i++)
+		ret = ret.concat(prio[i]);
+	ret = ret.sort(orderComparator);
+	//console.log(ret);
+	return [ret];
+}
+
 function detectThree(i, j, player)
 {
 	var	nb = 0;
@@ -574,25 +596,26 @@ function detectThree(i, j, player)
 //	priorities.push(coordCloseThree(i, j, player, -1));
 //	console.log(priorities);
 
+	nbDetect++;
 	tmp = threeAll(1, 0, i, j, player);
 	nb += tmp[0];
-	priorities.push(tmp[1].slice());
+	priorities.push(tmp[1]);
 	if (nb >= 2)
 		return [nb, priorities];
 	tmp = threeAll(1, 1, i, j, player);
 	nb += tmp[0];
-	priorities.push(tmp[1].slice());
+	priorities.push(tmp[1]);
 	if (nb >= 2)
 		return [nb, priorities];
 	tmp = threeAll(0, 1, i, j, player);
 	nb += tmp[0];
-	priorities.push(tmp[1].slice());
+	priorities.push(tmp[1]);
 	if (nb >= 2)
 		return [nb, priorities];
 	tmp = threeAll(1, -1, i, j, player);
 	nb += tmp[0];
-	priorities.push(tmp[1].slice());
-	return [nb, priorities];
+	priorities.push(tmp[1]);
+	return [nb, orderPrio(priorities)];
 }
 
 function resolveAfter2Seconds() {
@@ -604,6 +627,7 @@ function resolveAfter2Seconds() {
 }
 
 var	g_priorities = [];
+var	nbDetect = 0;
 
 async function click(ThreeLastPlay)
 {
@@ -640,8 +664,15 @@ async function click(ThreeLastPlay)
 	if (current_player == 2)
 	{
 		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player, g_priorities);
-	//	console.log(nbaa);
+		console.log("nb heuristique: ", nbHeuristique);
+		console.log("nb minmax: ", nbaa);
+		console.log("nb distance: ", nbDistance);
+		console.log("nb detect: ", nbDetect);
 		nbaa = 0;
+		nbHeuristique = 0;
+		nbDistance = 0;
+		nbDetect = 0;
+		test = false;
 		x = ret_ia[0];
 		y = ret_ia[1];
 		ThreeLastPlay = detectThree(x, y, current_player);
@@ -650,7 +681,10 @@ async function click(ThreeLastPlay)
 		//console.log(ret_ia)
 		click(ThreeLastPlay);
 	}
-	//console.log(g_priorities);
+	//console.log("priorities global: ", g_priorities);
+	g_priorities = g_priorities.filter(function (a) {
+		return a.length != 0;
+	});
 }
 
 drawCanvas();

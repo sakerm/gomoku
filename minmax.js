@@ -1,10 +1,12 @@
 var	nbaa = 0;
+var	nbDistance = 0;
 
 function	distance(hx, hy)
 {
 	var xx;
 	var yy;
 
+	nbDistance++;
 	if (hx < 1)
 		xx = 0;
 	else
@@ -89,18 +91,24 @@ function	minmax(position, depth, alpha, beta, player, prio)
 	var	nb_prio_in_tmpThree = 0;
 	var	doublon = [];
 
+	nbaa++;
+	prio = prio.filter(function (a) {
+		return a.length != 0;
+	});
+	//if (depth == 6)
+		//console.log(prio);
 	if ((win1 = checkWin(position[0], position[1], current_player)))
 	{
 		win2 = false;
-		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2)];
+		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio)];
 	}
 	if ((win2 = checkWin(position[0], position[1], opponent)))
 	{
 		win1 = false;
-		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2)];
+		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio)];
 	}
 	if (depth == 0)
-		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2)];
+		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2, prio)];
 	if (player == current_player && prio)
 	{
 		RetScore = [0, 0, -10000000];
@@ -114,8 +122,11 @@ function	minmax(position, depth, alpha, beta, player, prio)
 					{
 						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
 						{
-							if (prio[h][l] !== undefined && prio[h][l].length == 2 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
+							if (prio[h][l] !== undefined && prio[h][l].length == 3 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
 							{
+								tmpThree[1] = tmpThree[1].filter(function (a) {
+									return a.length != 0;
+								});
 								nb_prio_in_tmpThree = prio.length;
 								for (var p = 0; p < tmpThree[1].length; p++)
 									prio.push(tmpThree[1][p]);
@@ -167,8 +178,11 @@ function	minmax(position, depth, alpha, beta, player, prio)
 					{
 						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
 						{
-							if (prio[h][l] !== undefined && prio[h][l].length == 2 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
+							if (prio[h][l] !== undefined && prio[h][l].length == 3 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
 							{
+								tmpThree[1] = tmpThree[1].filter(function (a) {
+									return a.length != 0;
+								});
 								nb_prio_in_tmpThree = prio.length;
 								for (var p = 0; p < tmpThree[1].length; p++)
 									prio.push(tmpThree[1][p]);

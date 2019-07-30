@@ -1,4 +1,6 @@
-function	heuristique(i, j, player, win1, win2)
+var	nbHeuristique = 0;
+
+function	heuristique(i, j, player, win1, win2, prio)
 {
 	var	score = 0;
 
@@ -16,6 +18,7 @@ function	heuristique(i, j, player, win1, win2)
 		else
 			score -= 50000;
 	}
+	nbHeuristique++;
 	if (player == current_player)
 		return score;
 	return -score;

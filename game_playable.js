@@ -381,7 +381,7 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 			}
-			if (nbpieces != 3)
+			if (nbpieces != 2)
 				counti++;
 		}
 		nbpieces = 0;
@@ -431,7 +431,7 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 			}
-			if (nbpieces != 3)
+			if (nbpieces != 2)
 				countj++;
 		}
 		nbpieces = 0;
@@ -491,7 +491,7 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 			}
-			if (nbpieces != 3)
+			if (nbpieces != 2)
 			{
 				counti++;
 				countj++;
@@ -503,7 +503,7 @@ function coordCloseThree(i, j, player, revers)
 		savej = 0;
 		counti = 0;
 		countj = 0;
-		while ((i+counti > 0 && i+counti < 18 && j+countj > 0 && j+countj <= 18) && countj > -3 && counti < 3 || (board[i+counti][j+countj] == player && j+countj > 0 && i+counti > 0))
+		while ((i+counti > 0 && i+counti < 18 && j+countj > 0 && j+countj <= 18) && countj > -3 && counti < 3 || (board[i+counti][j+countj] == player && j+countj > 0 && i+counti < 18))
 		{
 			counti++;
 			countj--;
@@ -514,6 +514,7 @@ function coordCloseThree(i, j, player, revers)
 			{
 				if (savej-1 >= 0 && savei+1 <= 18 && board[savei+1][savej-1] == 0 && savej-1 != j && savei+1 != i)
 				{
+<<<<<<< HEAD
 					if (savej - 1 == j && savei+1 == i)
 						ret.push([savei+2, savej-2, nbpieces])
 					else
@@ -554,7 +555,7 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 			}
-			if (nbpieces != 3)
+			if (nbpieces != 2)
 			{
 				counti--;
 				countj++;

@@ -351,7 +351,7 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 				countpiecesi = savei;
-				while ((board[countpiecesi][j] == player || board[countpiecesi][j] == 0) && space < 2)
+				while ((board[countpiecesi][j] == player || board[countpiecesi][j] == 0) && space < 2 && countpiecesi < 18)
 				{
 					if (board[countpiecesi][j] == 0 && countpiecesi != i)
 						space++;
@@ -414,7 +414,7 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 				countpiecesj = savej;
-				while ((board[i][countpiecesj] == player || board[i][countpiecesj] == 0) && space < 2)
+				while ((board[i][countpiecesj] == player || board[i][countpiecesj] == 0) && space < 2 && countpiecesj < 18)
 				{
 					if (board[i][countpiecesj] == 0 && countpiecesj != j)
 						space++;
@@ -481,7 +481,7 @@ function coordCloseThree(i, j, player, revers)
 				nbpieces = 0;
 				countpiecesi = savei;
 				countpiecesj = savej;
-				while ((board[countpiecesi][countpiecesj] == player || board[countpiecesi][countpiecesj] == 0) && space < 2)
+				while ((board[countpiecesi][countpiecesj] == player || board[countpiecesi][countpiecesj] == 0) && space < 2 && countpiecesi < 18 && countpiecesj < 18)
 				{
 					if (board[countpiecesi][countpiecesj] == 0 && countpiecesj != j && countpiecesi != i)
 						space++;
@@ -559,7 +559,7 @@ function coordCloseThree(i, j, player, revers)
 				nbpieces = 0;
 				countpiecesi = savei;
 				countpiecesj = savej;
-				while ((board[countpiecesi][countpiecesj] == player || board[countpiecesi][countpiecesj] == 0) && space < 2)
+				while ((board[countpiecesi][countpiecesj] == player || board[countpiecesi][countpiecesj] == 0) && space < 2 && countpiecesi > 0 && countpiecesj < 18)
 				{
 					if (board[countpiecesi][countpiecesj] == 0 && countpiecesj != j && countpiecesi != i)
 						space++;
@@ -720,10 +720,10 @@ async function click(ThreeLastPlay)
 	if (current_player == 2)
 	{
 		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player, g_priorities);
-		console.log("nb heuristique: ", nbHeuristique);
-		console.log("nb minmax: ", nbaa);
-		console.log("nb distance: ", nbDistance);
-		console.log("nb detect: ", nbDetect);
+	//	console.log("nb heuristique: ", nbHeuristique);
+	//	console.log("nb minmax: ", nbaa);
+	//	console.log("nb distance: ", nbDistance);
+	//	console.log("nb detect: ", nbDetect);
 		nbaa = 0;
 		nbHeuristique = 0;
 		nbDistance = 0;

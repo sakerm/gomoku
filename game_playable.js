@@ -344,7 +344,7 @@ function coordCloseThree(i, j, player, revers)
 			counti--;
 		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && counti != 4)
 		{
-			if (nbpieces == 3)
+			if (nbpieces == 2)
 			{
 				if (savei - 1 >= 0 && board[savei-1][j] == 0 && savei-1 != i)
 				{
@@ -392,10 +392,9 @@ function coordCloseThree(i, j, player, revers)
 		countj = 0;
 		while ((i+counti > 0 && i+counti <= 18 && j+countj > 0 && j+countj <= 18) && countj > -3 || (board[i][j+countj] == player && j+countj > 0))
 			countj--;
-		console.log("countj", countj)
 		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && countj != 4)
 		{
-			if (nbpieces == 3)
+			if (nbpieces == 2)
 			{
 				if (savej - 1 >= 0 && board[i][savej-1] == 0 && savej-1 != j)
 				{
@@ -432,7 +431,6 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 			}
-			console.log("pieces", nbpieces);
 			if (nbpieces != 3)
 				countj++;
 		}
@@ -449,7 +447,7 @@ function coordCloseThree(i, j, player, revers)
 		}
 		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && countj != 4 && counti != 4)
 		{
-			if (nbpieces == 3)
+			if (nbpieces == 2)
 			{
 				if (savej-1 >= 0 && savei-1 >= 0 && board[savei-1][savej-1] == 0 && savej-1 != j && savei-1 != i)
 				{
@@ -493,14 +491,12 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 			}
-			console.log("pieces", nbpieces);
 			if (nbpieces != 3)
 			{
 				counti++;
 				countj++;
 			}
 		}
-		//////////////////////////////////////////////////////////////////////////////////////////
 		nbpieces = 0;
 		space = 0;
 		savei = 0;
@@ -514,7 +510,7 @@ function coordCloseThree(i, j, player, revers)
 		}
 		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && countj != 4 && counti != -4)
 		{
-			if (nbpieces == 3)
+			if (nbpieces == 2)
 			{
 				if (savej-1 >= 0 && savei+1 <= 18 && board[savei+1][savej-1] == 0 && savej-1 != j && savei+1 != i)
 				{
@@ -558,7 +554,6 @@ function coordCloseThree(i, j, player, revers)
 				space = 0;
 				nbpieces = 0;
 			}
-			console.log("pieces", nbpieces);
 			if (nbpieces != 3)
 			{
 				counti--;
@@ -645,7 +640,7 @@ async function click(ThreeLastPlay)
 	if (current_player == 2)
 	{
 		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player, g_priorities);
-		console.log(nbaa);
+	//	console.log(nbaa);
 		nbaa = 0;
 		x = ret_ia[0];
 		y = ret_ia[1];
@@ -654,22 +649,6 @@ async function click(ThreeLastPlay)
 			g_priorities.push(ThreeLastPlay[1][p]);
 		//console.log(ret_ia)
 		click(ThreeLastPlay);
-	}
-	g_priorities = g_priorities.filter(function (e) {
-		return e.length != 0;
-	})
-	g_priorities = [...new Set(g_priorities)];
-	for (var i = 0; i < g_priorities.length; i++)
-	{
-		for (var j = 0; j < g_priorities[i].length; j++)
-		{
-			if (g_priorities[i][j] === undefined || g_priorities[i][j].length != 2)
-				delete(g_priorities[i][j]);
-			else if (board[g_priorities[i][j][0]][g_priorities[i][j][1]] == 0)
-				delete(g_priorities[i][j]);
-		}
-		if (g_priorities[i].length == 0)
-			delete(g_priorities[i]);
 	}
 	//console.log(g_priorities);
 }

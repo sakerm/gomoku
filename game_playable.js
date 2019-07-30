@@ -333,167 +333,239 @@ function coordThree(xx, yy, i, j, player)
 function coordCloseThree(i, j, player, revers)
 {
 	var ret = [];
-	var nbpieces = 1;
+	var nbpieces = 0;
+	var space = 0;
+	var savei = 0;
+	var savej = 0;
 	var counti = 0;
 	var countj = 0;
 
-	while (i+counti*revers >= 0 && i+counti*revers <= 18 && j+countj*revers >= 0 && j+countj*revers <= 18)
-	{
-		counti++;
-		if (!(i+counti*revers >= 0 && i+counti*revers <= 18 && j+countj >= 0 && j+countj <= 18 && i+(counti+1)*revers >= 0 && i+(counti+1)*revers <= 18 && j+countj >= 0 && j+countj <= 18))
-		{		if (i-1 >= 0 && i+1 <= 18 && board[i-1][j] == player && board[i+1][j] == 0)
-			ret.push([i+1, j]);
-		if (i-1 >= 0 && i+1 <= 18 && board[i+1][j] == player && board[i-1][j] == 0)
-			ret.push([i-1, j]);
-		if (i-2 >= 0 && i+2 <= 18 && board[i-1][j] == player && board[i-2][j] == 0)
-			ret.push([i-2, j]);
-		if (i-2 >= 0 && i+2 <= 18 && board[i+1][j] == player && board[i+2][j] == 0)
-			ret.push([i+2, j]);
-			break ;
-		}
-		if (board[i+counti*revers][j] == 0 && nbpieces > 2 || (board[i+counti*revers][j] == 0 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j] == player))
+		while ((i+counti > 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && counti > -3 || (board[i+counti][j] == player && i+counti > 0))
+			counti--;
+		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && counti != 4)
 		{
-			if (counti >= 3 && board[i+(counti-1)*revers][j] != player)
-				break;
-			ret.push([i+counti*revers, j]);
-
+			if (nbpieces == 3)
+			{
+				if (savei - 1 >= 0 && board[savei-1][j] == 0 && savei-1 != i)
+				{
+					if (savei - 1 == i)
+						ret.push([savei-2, j])
+					else
+						ret.push([savei-1, j])
+				}
+				while(savei <= i+counti && i+counti < 18)
+				{
+					if (board[savei][j] == 0 && savei != i)
+						ret.push([savei, j])
+					savei++;
+				}
+				while(savei < 18 && (board[savei][j] == player || savei == i))
+					savei++;
+				if (board[savei][j] == 0 && savei != i && (board[savei-1][j] == player || savei-1 == i))
+					ret.push([savei, j])
+				break ;
+			}
+			if (board[i+counti][j] == player || counti == 0)
+			{
+				nbpieces++;
+				space = 0;
+				if (nbpieces == 1)
+					savei = i+counti;
+			}
+			else if (board[i+counti][j] == 0)
+				space++;
+			else if (space == 2 || (board[i+counti][j] != player && board[i+counti][j] != 0))
+			{
+				savei = 0;
+				savej = 0;
+				space = 0;
+				nbpieces = 0;
+			}
+			if (nbpieces != 3)
+				counti++;
 		}
-		else if (board[i+counti*revers][j] == player)
-			nbpieces++;
-		else if (counti > 1)
+		nbpieces = 0;
+		space = 0;
+		savei = 0;
+		savej = 0;
+		counti = 0;
+		countj = 0;
+		while ((i+counti > 0 && i+counti <= 18 && j+countj > 0 && j+countj <= 18) && countj > -3 || (board[i][j+countj] == player && j+countj > 0))
+			countj--;
+		console.log("countj", countj)
+		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && countj != 4)
 		{
-			if (nbpieces > 2 && revers == -1 && board[i+1, j] == 0)
-				ret.push([i+1, j]);
-			else if (nbpieces > 2 && revers == 1 && board[i-1, j] == 0)
-				ret.push([i-1, j]);
-			if (i-1 >= 0 && i+1 <= 18 && board[i-1][j] == player && board[i+1][j] == 0)
-				ret.push([i+1, j]);
-			if (i-1 >= 0 && i+1 <= 18 && board[i+1][j] == player && board[i-1][j] == 0)
-				ret.push([i-1, j]);
-			break;
+			if (nbpieces == 3)
+			{
+				if (savej - 1 >= 0 && board[i][savej-1] == 0 && savej-1 != j)
+				{
+					if (savej - 1 == j)
+						ret.push([i, savej-2])
+					else
+						ret.push([i, savej-1])
+				}
+				while(savej <= j+countj && j+countj < 18)
+				{
+					if (board[i][savej] == 0 && savej != j)
+						ret.push([i, savej])
+					savej++;
+				}
+				while(savej < 18 && (board[i][savej] == player || savej == j))
+					savej++;
+				if (board[i][savej] == 0 && savej != j && (board[i][savej-1] == player || savej-1 == j))
+					ret.push([i, savej])
+				break ;
+			}
+			if (board[i][j+countj] == player || countj == 0)
+			{
+				nbpieces++;
+				space = 0;
+				if (nbpieces == 1)
+					savej = j+countj;
+			}
+			else if (board[i][j+countj] == 0)
+				space++;
+			else if (space == 2 || (board[i][j+countj] != player && board[i][j+countj] != 0))
+			{
+				savei = 0;
+				savej = 0;
+				space = 0;
+				nbpieces = 0;
+			}
+			console.log("pieces", nbpieces);
+			if (nbpieces != 3)
+				countj++;
 		}
-	}
-	counti = 0;
-	countj = 0;
-	nbpieces = 1;
-	while (i+counti*revers >= 0 && i+counti*revers <= 18 && j+countj*revers >= 0 && j+countj*revers <= 18)
-	{
-		countj++;
-		if (!(i+counti*revers >= 0 && i+counti*revers <= 18 && j+countj*revers >= 0 && j+countj*revers <= 18 && i+counti >= 0 && i+counti <= 18 && j+(countj+1)*revers >= 0 && j+(counti+1)*revers <= 18))
-		{		if (j-1 >= 0 && j+1 <= 18 && board[i][j-1] == player && board[i][j+1] == 0)
-			ret.push([i, j+1]);
-		if (j-1 >= 0 && j+1 <= 18 && board[i][j+1] == player && board[i][j-1] == 0)
-			ret.push([i, j-1]);
-		if (j-2 >= 0 && j+2 <= 18 && board[i][j-1] == player && board[i][j-2] == 0)
-			ret.push([i, j-2]);
-		if (j-2 >= 0 && j+2 <= 18 && board[i][j+1] == player && board[i][j+2] == 0)
-			ret.push([i, j+2]);
-			break ;
-		}
-		if (board[i][j+countj*revers] == 0 && nbpieces > 2 || (board[i][j+countj*revers] == 0 && j+(countj+1)*revers < 19 && board[i][j+(countj+1)*revers] == player))
+		nbpieces = 0;
+		space = 0;
+		savei = 0;
+		savej = 0;
+		counti = 0;
+		countj = 0;
+		while ((i+counti > 0 && i+counti <= 18 && j+countj > 0 && j+countj <= 18) && countj > -3 && counti > -3 || (board[i+counti][j+countj] == player && j+countj > 0 && i+counti > 0))
 		{
-			if (countj >= 3 && board[i][j+(countj-1)*revers] != player)
-				break;
-			ret.push([i, j+countj*revers]);
-
+			counti--;
+			countj--;
 		}
-		else if (board[i][j+countj*revers] == player)
-			nbpieces++;
-		else if (countj > 1)
+		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && countj != 4 && counti != 4)
 		{
-			if (nbpieces > 2 && revers == -1 && board[i, j+1] == 0)
-				ret.push([i, j+1]);
-			else if (nbpieces > 2 && revers == 1 && board[i, j-1] == 0)
-				ret.push([i, j-1]);
-			if (i-1 >= 0 && i+1 <= 18 && board[i][j-1] == player && board[i][j+1] == 0)
-				ret.push([i, j+1]);
-			if (j-1 >= 0 && j+1 <= 18 && board[i][j+1] == player && board[i][j-1] == 0)
-				ret.push([i, j-1]);
-			break;
+			if (nbpieces == 3)
+			{
+				if (savej-1 >= 0 && savei-1 >= 0 && board[savei-1][savej-1] == 0 && savej-1 != j && savei-1 != i)
+				{
+					if (savej - 1 == j && savei-1 == j)
+						ret.push([savei-2, savej-2])
+					else
+						ret.push([savei-1, savej-1])
+				}
+				while(savej <= j+countj && j+countj < 18 && savei <= i+counti && i+counti < 18)
+				{
+					if (board[savei][savej] == 0 && savej != j && savei != i)
+						ret.push([savei, savej])
+					savej++;
+					savei++;
+				}
+				while(savej < 18 && savei < 18 && (board[savei][savej] == player || (savej == j && savei == i)))
+				{
+					savei++;
+					savej++;
+				}
+				if (board[savei][savej] == 0 && savej != j && savei != i && (board[savei-1][savej-1] == player || (savej-1 == j && savei-1 == i)))
+					ret.push([savei, savej])
+				break ;
+			}
+			if (board[i+counti][j+countj] == player || (countj == 0 && counti == 0))
+			{
+				nbpieces++;
+				space = 0;
+				if (nbpieces == 1)
+				{
+					savei = i+counti;
+					savej = j+countj;
+				}
+			}
+			else if (board[i+counti][j+countj] == 0)
+				space++;
+			else if (space == 2 || (board[i+counti][j+countj] != player && board[i+counti][j+countj] != 0))
+			{
+				savei = 0;
+				savej = 0;
+				space = 0;
+				nbpieces = 0;
+			}
+			console.log("pieces", nbpieces);
+			if (nbpieces != 3)
+			{
+				counti++;
+				countj++;
+			}
 		}
-	}
-	counti = 0;
-	countj = 0;
-	nbpieces = 1;
-	while (i+counti*revers >= 0 && i+counti*revers <= 18 && j+countj*revers >= 0 && j+countj*revers <= 18)
-	{
-		countj++;
-		counti++;
-		if (!(i+counti*revers >= 0 && i+counti*revers <= 18 && j+countj*revers >= 0 && j+countj*revers <= 18 && i+(counti+1)*revers >= 0 && i+(counti+1)*revers <= 18 && j+(countj+1)*revers >= 0 && j+(countj+1)*revers <= 18))
-		{		if (j-1 >= 0 && j+1 <= 18 && i-1 >= 0 && i+1 <= 18 && board[i-1][j-1] == player)
-			ret.push([i+1, j+1]);
-		if (j-1 >= 0 && j+1 <= 18 && i-1 >= 0 && i+1 <= 18 && board[i+1][j+1] == player && board[i-1][j-1] == 0)
-			ret.push([i-1, j-1]);
-		if (j-2 >= 0 && j+2 <= 18 && i-2 >= 0 && i+2 <= 18 && board[i-1][j-1] == player && board[i-2][j-2] == 0)
-			ret.push([i-2, j-2]);
-		if (j-2 >= 0 && j+2 <= 18 && i-2 >= 0 && i+2 <= 18 && board[i+1][j+1] == player && board[i+2][j+2] == 0)
-			ret.push([i+2, j+2]);
-			break ;
-		}
-		if (board[i+counti*revers][j+countj*revers] == 0 && nbpieces > 2 || (board[i+counti*revers][j+countj*revers] == 0 && j+(countj+1)*revers < 19 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j+(countj+1)*revers] == player))
+		//////////////////////////////////////////////////////////////////////////////////////////
+		nbpieces = 0;
+		space = 0;
+		savei = 0;
+		savej = 0;
+		counti = 0;
+		countj = 0;
+		while ((i+counti > 0 && i+counti < 18 && j+countj > 0 && j+countj <= 18) && countj > -3 && counti < 3 || (board[i+counti][j+countj] == player && j+countj > 0 && i+counti > 0))
 		{
-			if (countj >= 3 && counti >= 3 && board[i+(counti-1)*revers][j+(countj-1)*revers] != player)
-				break;
-			ret.push([i+counti*revers, j+countj*revers]);
-
+			counti++;
+			countj--;
 		}
-		else if (board[i+countj*revers][j+countj*revers] == player)
-			nbpieces++;
-		else if (countj > 1 && counti > 1)
+		while((i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && countj != 4 && counti != -4)
 		{
-			if (nbpieces > 2 && revers == -1 && board[i+1, j+1] == 0)
-				ret.push([i+1, j+1]);
-			else if (nbpieces > 2 && revers == 1 && board[i-1, j-1] == 0)
-				ret.push([i-1, j-1]);
-			if (i-1 >= 0 && i+1 <= 18 && j-1 >= 0 && j+1 <= 18 && board[i-1][j-1] == player && board[i+1][j+1] == 0)
-				ret.push([i+1, j+1]);
-			if (j-1 >= 0 && j+1 <= 18 && i-1 >= 0 && i+1 <= 18 && board[i+1][j+1] == player && board[i-1][j-1] == 0)
-				ret.push([i-1, j-1]);
-			break;
+			if (nbpieces == 3)
+			{
+				if (savej-1 >= 0 && savei+1 <= 18 && board[savei+1][savej-1] == 0 && savej-1 != j && savei+1 != i)
+				{
+					if (savej - 1 == j && savei+1 == i)
+						ret.push([savei+2, savej-2])
+					else
+						ret.push([savei+1, savej-1])
+				}
+				while(savej <= j+countj && j+countj < 18 && savei <= i+counti && i+counti > 0)
+				{
+					if (board[savei][savej] == 0 && savej != j && savei != i)
+						ret.push([savei, savej])
+					savej++;
+					savei--;
+				}
+				while(savej < 18 && savei > 0 && (board[savei][savej] == player || (savej == j && savei == i)))
+				{
+					savei--;
+					savej++;
+				}
+				if (board[savei][savej] == 0 && savej != j && savei != i && (board[savei+1][savej-1] == player || (savej-1 == j && savei+1 == i)))
+					ret.push([savei, savej])
+				break ;
+			}
+			if (board[i+counti][j+countj] == player || (countj == 0 && counti == 0))
+			{
+				nbpieces++;
+				space = 0;
+				if (nbpieces == 1)
+				{
+					savei = i+counti;
+					savej = j+countj;
+				}
+			}
+			else if (board[i+counti][j+countj] == 0)
+				space++;
+			else if (space == 2 || (board[i+counti][j+countj] != player && board[i+counti][j+countj] != 0))
+			{
+				savei = 0;
+				savej = 0;
+				space = 0;
+				nbpieces = 0;
+			}
+			console.log("pieces", nbpieces);
+			if (nbpieces != 3)
+			{
+				counti--;
+				countj++;
+			}
 		}
-	}
-	counti = 0;
-	countj = 0;
-	nbpieces = 1;
-	//============================================
-	while (i+counti*revers >= 0 && i+counti*revers <= 18 && j-countj*revers >= 0 && j-countj*revers <= 18)
-	{
-		countj++;
-		counti++;
-		if (!(i+counti*revers >= 0 && i+counti*revers <= 18 && j-countj*revers >= 0 && j-countj*revers <= 18 && i+(counti+1)*revers >= 0 && i+(counti+1)*revers <= 18 && j-(countj+1)*revers >= 0 && j-(countj+1)*revers <= 18))
-		{		if (j-1 >= 0 && j+1 <= 18 && i-1 >= 0 && i+1 <= 18 && board[i-1][j+1] == player)
-			ret.push([i+1, j-1]);
-		if (j-1 >= 0 && j+1 <= 18 && i-1 >= 0 && i+1 <= 18 && board[i+1][j-1] == player && board[i-1][j+1] == 0)
-			ret.push([i-1, j+1]);
-		if (j-2 >= 0 && j+2 <= 18 && i-2 >= 0 && i+2 <= 18 && board[i-1][j+1] == player && board[i-2][j+2] == 0)
-			ret.push([i-2, j+2]);
-		if (j-2 >= 0 && j+2 <= 18 && i-2 >= 0 && i+2 <= 18 && board[i+1][j-1] == player && board[i+2][j-2] == 0)
-			ret.push([i+2, j-2]);
-			break ;
-		}
-		if (board[i+counti*revers][j-countj*revers] == 0 && nbpieces > 2 || (board[i+counti*revers][j-countj*revers] == 0 && j-(countj+1)*revers < 19 && i+(counti+1)*revers < 19 && board[i+(counti+1)*revers][j-(countj+1)*revers] == player))
-		{
-			if (countj >= 3 && counti >= 3 && board[i+(counti-1)*revers][j-(countj-1)*revers] != player)
-				break;
-			ret.push([i+counti*revers, j-countj*revers]);
-
-		}
-		else if (board[i+countj*revers][j-countj*revers] == player)
-			nbpieces++;
-		else if (countj > 1 && counti > 1)
-		{
-			if (nbpieces > 2 && revers == -1 && board[i+1, j-1] == 0)
-				ret.push([i+1, j-1]);
-			else if (nbpieces > 2 && revers == 1 && board[i-1, j+1] == 0)
-				ret.push([i-1, j+1]);
-			if (i-1 >= 0 && i+1 <= 18 && j-1 >= 0 && j+1 <= 18 && board[i-1][j+1] == player && board[i+1][j-1] == 0)
-				ret.push([i+1, j-1]);
-			if (j-1 >= 0 && j+1 <= 18 && i-1 >= 0 && i+1 <= 18 && board[i+1][j-1] == player && board[i-1][j+1] == 0)
-				ret.push([i-1, j+1]);
-			break;
-		}
-	}
-	return (ret);
+		return(ret);
 }
 
 function detectThree(i, j, player)
@@ -504,8 +576,9 @@ function detectThree(i, j, player)
 
 
 	priorities.push(coordCloseThree(i, j, player, 1));
-	priorities.push(coordCloseThree(i, j, player, -1));
-	//console.log(priorities);
+//	priorities.push(coordCloseThree(i, j, player, -1));
+//	console.log(priorities);
+
 	tmp = threeAll(1, 0, i, j, player);
 	nb += tmp[0];
 	priorities.push(tmp[1].slice());
@@ -571,7 +644,7 @@ async function click(ThreeLastPlay)
 	await resolveAfter2Seconds();
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 8, -999999, 999999, current_player, g_priorities);
+		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player, g_priorities);
 		console.log(nbaa);
 		nbaa = 0;
 		x = ret_ia[0];

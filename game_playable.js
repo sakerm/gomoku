@@ -69,49 +69,49 @@ function checkCapture()
 	{
 		deleteCase(x + 1, y);
 		deleteCase(x + 2, y);
-		g_priorities.push([[x+1, y][[x+2, y]]]);
+		g_priorities.push([[x+1, y, 8][[x+2, y, 8]]]);
 	}
 	if (x >= 3 && board[x - 3][y] == current_player && board[x - 1][y] == opponent && board[x - 2][y] == opponent) // gauche
 	{
 		deleteCase(x - 1, y);
 		deleteCase(x - 2, y);
-		g_priorities.push([[x-1, y][[x-2, y]]]);
+		g_priorities.push([[x-1, y, 8][[x-2, y, 8]]]);
 	}
 	if (y <= 15 && board[x][y + 3] == current_player && board[x][y + 2] == opponent && board[x][y + 1] == opponent) // bas
 	{
 		deleteCase(x, y + 1);
 		deleteCase(x, y + 2);
-		g_priorities.push([[x, y+1][[x, y+2]]]);
+		g_priorities.push([[x, y+1, 8][[x, y+2, 8]]]);
 	}
 	if (y >= 3 && board[x][y - 3] == current_player && board[x][y - 2] == opponent && board[x][y - 1] == opponent) // haut
 	{
 		deleteCase(x, y - 1);
 		deleteCase(x, y - 2);
-		g_priorities.push([[x, y-1][[x, y-2]]]);
+		g_priorities.push([[x, y-1, 8][[x, y-2, 8]]]);
 	}
 	if (x <= 15 && y >= 3 && board[x + 3][y - 3] == current_player && board[x + 1][y - 1] == opponent && board[x + 2][y - 2] == opponent) // haut droite
 	{
 		deleteCase(x + 1, y - 1);
 		deleteCase(x + 2, y - 2);
-		g_priorities.push([[x+1, y-1][[x+2, y-2]]]);
+		g_priorities.push([[x+1, y-1, 8][[x+2, y-2, 8]]]);
 	}
 	if (x >= 3 && y >= 3 && board[x - 3][y - 3] == current_player && board[x - 1][y - 1] == opponent && board[x - 2][y - 2] == opponent) // haut gauche
 	{
 		deleteCase(x - 1, y - 1);
 		deleteCase(x - 2, y - 2);
-		g_priorities.push([[x-1, y-1][[x-2, y-2]]]);
+		g_priorities.push([[x-1, y-1 , 8][[x-2, y-2, 8]]]);
 	}
 	if (x >= 3 && y <= 15 && board[x - 3][y + 3] == current_player && board[x - 1][y + 1] == opponent && board[x - 2][y + 2] == opponent) // bas gauche
 	{
 		deleteCase(x - 1, y + 1);
 		deleteCase(x - 2, y + 2);
-		g_priorities.push([[x-1, y+1][[x-2, y+2]]]);
+		g_priorities.push([[x-1, y+1, 8][[x-2, y+2, 8]]]);
 	}
 	if (x <= 15 && y <= 15 && board[x + 3][y + 3] == current_player && board[x + 1][y + 1] == opponent && board[x + 2][y + 2] == opponent) // bas droite
 	{
 		deleteCase(x + 1, y + 1);
 		deleteCase(x + 2, y + 2);
-		g_priorities.push([[x+1, y+1][[x+2, y+2]]]);
+		g_priorities.push([[x+1, y+1, 8][[x+2, y+2, 8]]]);
 	}
 }
 
@@ -720,10 +720,10 @@ async function click(ThreeLastPlay)
 	if (current_player == 2)
 	{
 		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player, g_priorities);
-	//	console.log("nb heuristique: ", nbHeuristique);
-	//	console.log("nb minmax: ", nbaa);
-	//	console.log("nb distance: ", nbDistance);
-	//	console.log("nb detect: ", nbDetect);
+		console.log("nb heuristique: ", nbHeuristique);
+		console.log("nb minmax: ", nbaa);
+		console.log("nb distance: ", nbDistance);
+		console.log("nb detect: ", nbDetect);
 		nbaa = 0;
 		nbHeuristique = 0;
 		nbDistance = 0;

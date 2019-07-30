@@ -90,13 +90,30 @@ function	minmax(position, depth, alpha, beta, player, prio)
 	var	nb_prio = 0;
 	var	nb_prio_in_tmpThree = 0;
 	var	doublon = [];
+	var	aa = 0;
 
 	nbaa++;
 	prio = prio.filter(function (a) {
 		return a.length != 0;
 	});
+	prio = orderPrio(prio);
+	//for (var kk = 1; kk < prio[0].length; kk++)
+	//{
+	//	if (prio[0][kk][2] != prio[0][kk-1][2] && prio[0][kk][2] != 8 && prio[0][kk - 1][2] != 8)
+	//	{
+	//		aa = kk;
+	//		break ;
+	//	}
+	//}
 	//if (depth == 6)
-		//console.log(prio);
+	//	console.log(prio);
+	//if (aa >= 1)
+	//{
+	//	while (aa < prio[0].length)
+	//		prio[0].pop();
+	//}
+	if (depth == 6)
+		console.log(prio);
 	if ((win1 = checkWin(position[0], position[1], current_player)))
 	{
 		win2 = false;

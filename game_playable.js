@@ -514,7 +514,6 @@ function coordCloseThree(i, j, player, revers)
 			{
 				if (savej-1 >= 0 && savei+1 <= 18 && board[savei+1][savej-1] == 0 && savej-1 != j && savei+1 != i)
 				{
-<<<<<<< HEAD
 					if (savej - 1 == j && savei+1 == i)
 						ret.push([savei+2, savej-2, nbpieces])
 					else

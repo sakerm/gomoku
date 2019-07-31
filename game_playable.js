@@ -719,7 +719,7 @@ async function click(ThreeLastPlay)
 	await resolveAfter2Seconds();
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 6, -999999, 999999, current_player, g_priorities);
+		var ret_ia = minmax([0, 0], 10, -999999, 999999, current_player, g_priorities);
 		console.log("nb heuristique: ", nbHeuristique);
 		console.log("nb minmax: ", nbaa);
 		console.log("nb distance: ", nbDistance);

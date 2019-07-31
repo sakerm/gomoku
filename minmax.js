@@ -91,29 +91,29 @@ function	minmax(position, depth, alpha, beta, player, prio)
 	var	nb_prio_in_tmpThree = 0;
 	var	doublon = [];
 	var	aa = 0;
+	var	end_prio;
+	var	prio_nb = 0;
 
 	nbaa++;
 	prio = prio.filter(function (a) {
 		return a.length != 0;
 	});
 	prio = orderPrio(prio);
-	//for (var kk = 1; kk < prio[0].length; kk++)
-	//{
-	//	if (prio[0][kk][2] != prio[0][kk-1][2] && prio[0][kk][2] != 8 && prio[0][kk - 1][2] != 8)
-	//	{
-	//		aa = kk;
-	//		break ;
-	//	}
-	//}
-	//if (depth == 6)
-	//	console.log(prio);
-	//if (aa >= 1)
-	//{
-	//	while (aa < prio[0].length)
-	//		prio[0].pop();
-	//}
-	if (depth == 6)
-		console.log(prio);
+	end_prio = prio[0].length;
+	for (var i = 1; i < prio[0].length; i++)
+	{
+		if (prio[0][i] !== undefined && prio[0][i][2] != 8 && board[prio[0][i][0]][prio[0][i][1]] == 0)
+		{
+			if (prio_nb == 0)
+				prio_nb = prio[0][i][2];
+			if (prio[0][i][2] != prio_nb)
+			{
+				end_prio = i;
+				break ;
+			}
+		}
+	}
+
 	if ((win1 = checkWin(position[0], position[1], current_player)))
 	{
 		win2 = false;
@@ -137,7 +137,7 @@ function	minmax(position, depth, alpha, beta, player, prio)
 				{
 					for (var h = 0; h < prio.length; h++)
 					{
-						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
+						for (var l = 0; prio[h] !== undefined && l < end_prio; l++)
 						{
 							if (prio[h][l] !== undefined && prio[h][l].length == 3 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
 							{
@@ -150,6 +150,7 @@ function	minmax(position, depth, alpha, beta, player, prio)
 								board[prio[h][l][0]][prio[h][l][1]] = player;
 								score = minmax(prio[h][l], depth - 1, alpha, beta, opponent, prio);
 								board[prio[h][l][0]][prio[h][l][1]] = 0;
+								prio[0].push([prio[h][l][0], prio[h][l][1]]);
 								while (prio.length > nb_prio_in_tmpThree)
 									prio.pop();
 								if (score[2] > RetScore[2])
@@ -193,7 +194,7 @@ function	minmax(position, depth, alpha, beta, player, prio)
 				{
 					for (var h = 0; h < prio.length; h++)
 					{
-						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
+						for (var l = 0; prio[h] !== undefined && l < end_prio; l++)
 						{
 							if (prio[h][l] !== undefined && prio[h][l].length == 3 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
 							{
@@ -206,6 +207,7 @@ function	minmax(position, depth, alpha, beta, player, prio)
 								board[prio[h][l][0]][prio[h][l][1]] = player;
 								score = minmax(prio[h][l], depth - 1, alpha, beta, current_player, prio);
 								board[prio[h][l][0]][prio[h][l][1]] = 0;
+								prio[0].push([prio[h][l][0], prio[h][l][1]]);
 								while (prio.length > nb_prio_in_tmpThree)
 									prio.pop();
 								if (score[2] < RetScore[2])

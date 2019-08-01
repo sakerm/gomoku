@@ -49,6 +49,14 @@ function drawCanvas()
 		ctxx.lineTo(w, h/19 + i*(h/19));
 		ctxx.stroke();
 	}
+	ctxx.font = "10px Arial";
+	for (var i = 0; i < 19; i++)
+	{
+		for (var j = 0; j < 19; j++)
+		{
+			ctxx.fillText(i + " " + j, i*(w/19)+(w/(19*3.5)), (h/19)*(j+1)-(h/(19*15)));
+		}
+	}
 }
 
 function deleteCase(xx, yy)
@@ -61,6 +69,8 @@ function deleteCase(xx, yy)
 	ctxx.stroke();
 	ctxx.strokeStyle = "black";
 	board[xx][yy] = 0;
+	ctxx.fillStyle = "black";
+	ctxx.fillText(xx + " " + yy, xx*(w/19)+(w/(19*3.5)), (h/19)*(yy+1)-(h/(19*15)));
 }
 
 function checkCapture()
@@ -69,49 +79,41 @@ function checkCapture()
 	{
 		deleteCase(x + 1, y);
 		deleteCase(x + 2, y);
-		g_priorities.push([[x+1, y, 8][[x+2, y, 8]]]);
 	}
 	if (x >= 3 && board[x - 3][y] == current_player && board[x - 1][y] == opponent && board[x - 2][y] == opponent) // gauche
 	{
 		deleteCase(x - 1, y);
 		deleteCase(x - 2, y);
-		g_priorities.push([[x-1, y, 8][[x-2, y, 8]]]);
 	}
 	if (y <= 15 && board[x][y + 3] == current_player && board[x][y + 2] == opponent && board[x][y + 1] == opponent) // bas
 	{
 		deleteCase(x, y + 1);
 		deleteCase(x, y + 2);
-		g_priorities.push([[x, y+1, 8][[x, y+2, 8]]]);
 	}
 	if (y >= 3 && board[x][y - 3] == current_player && board[x][y - 2] == opponent && board[x][y - 1] == opponent) // haut
 	{
 		deleteCase(x, y - 1);
 		deleteCase(x, y - 2);
-		g_priorities.push([[x, y-1, 8][[x, y-2, 8]]]);
 	}
 	if (x <= 15 && y >= 3 && board[x + 3][y - 3] == current_player && board[x + 1][y - 1] == opponent && board[x + 2][y - 2] == opponent) // haut droite
 	{
 		deleteCase(x + 1, y - 1);
 		deleteCase(x + 2, y - 2);
-		g_priorities.push([[x+1, y-1, 8][[x+2, y-2, 8]]]);
 	}
 	if (x >= 3 && y >= 3 && board[x - 3][y - 3] == current_player && board[x - 1][y - 1] == opponent && board[x - 2][y - 2] == opponent) // haut gauche
 	{
 		deleteCase(x - 1, y - 1);
 		deleteCase(x - 2, y - 2);
-		g_priorities.push([[x-1, y-1 , 8][[x-2, y-2, 8]]]);
 	}
 	if (x >= 3 && y <= 15 && board[x - 3][y + 3] == current_player && board[x - 1][y + 1] == opponent && board[x - 2][y + 2] == opponent) // bas gauche
 	{
 		deleteCase(x - 1, y + 1);
 		deleteCase(x - 2, y + 2);
-		g_priorities.push([[x-1, y+1, 8][[x-2, y+2, 8]]]);
 	}
 	if (x <= 15 && y <= 15 && board[x + 3][y + 3] == current_player && board[x + 1][y + 1] == opponent && board[x + 2][y + 2] == opponent) // bas droite
 	{
 		deleteCase(x + 1, y + 1);
 		deleteCase(x + 2, y + 2);
-		g_priorities.push([[x+1, y+1, 8][[x+2, y+2, 8]]]);
 	}
 }
 
@@ -257,9 +259,9 @@ function threeAll(xx, yy, i, j, player)
 			|| (board[i - xx][j - yy] == 0 && board[i + xx][j + yy] == 0
 				&& (i - xx*2 >= 0 && i + xx*2 <= 18)
 				&& !(board[i - xx*2][j - yy*2] == player ^ board[i + xx*2][j + yy*2] == player)))
-		return [0, []];
+		return 0;
 	if (!checkBlanks(xx, yy, player, i, j))
-		return [0, []];
+		return 0;
 	count += checkside(3, xx, yy, 0, false, nbspace, player, i, j);
 	count += checkside(3, -xx, -yy, 0, false, nbspace, player, i, j);
 	if (count != 3)
@@ -275,7 +277,7 @@ function threeAll(xx, yy, i, j, player)
 		count += checkside(3, xx, yy, 0, false, nbspace, player, i, j);
 		count += checkside(3, -xx, -yy, 0, true, nbspace, player, i, j);
 		if (count == 3 && nbspace[0] == 1)
-			return [2, coordThree(xx, yy, i, j, player)];
+			return 2;
 	}
 	if (count != 3)
 	{
@@ -284,50 +286,11 @@ function threeAll(xx, yy, i, j, player)
 		count += checkside(3, xx, yy, 0, true, nbspace, player, i, j);
 		count += checkside(3, -xx, -yy, 0, false, nbspace, player, i, j);
 		if (count == 3 && nbspace[0] == 1)
-			return [2, coordThree(xx, yy, i, j, player)];
+			return 2;
 	}
 	if (count == 3)
-		return [1, coordThree(xx, yy, i, j, player)];
-	return [0, []];
-}
-
-function coordThree(xx, yy, i, j, player)
-{
-	var ret = [];
-	var	is = i;
-	var	js = j;
-
-	is += xx;
-	js += yy;
-	if (is+xx >= 0 && is+xx <= 18 && js+yy >= 0 && js+yy <= 18)
-	{
-		while (board[is][js] != 0 || board[is+xx][js+yy] == player)
-		{
-			if (board[is][js] == 0)
-				ret.push([is, js, 3]);
-			is += xx;
-			js += yy;
-			if (!(is+xx >= 0 && is+xx <= 18 && js+yy >= 0 && js+yy <= 18))
-				break ;
-		}
-		ret.push([is, js, 3]);
-	}
-	i -= xx;
-	j -= yy;
-	if (i-xx >= 0 && i-xx <= 18 && j-yy >= 0 && j-yy <= 18)
-	{
-		while (board[i][j] != 0 || board[i-xx][j-yy] == player)
-		{
-			if (board[i][j] == 0)
-				ret.push([i, j, 3]);
-			i -= xx;
-			j -= yy;
-			if (!(i-xx >= 0 && i-xx <= 18 && j-yy >= 0 && j-yy <= 18))
-				break ;
-		}
-		ret.push([i, j, 3]);
-	}
-	return ret;
+		return 1;
+	return 0;
 }
 
 function coordCloseThree(i, j, player, revers)
@@ -619,59 +582,23 @@ function coordCloseThree(i, j, player, revers)
 		return(ret);
 }
 
-function orderComparator(a, b)
-{
-	if (a[2] > b[2])
-		return -1;
-	else if (a[2] < b[2])
-		return 1;
-	return 0;
-}
-
-var	test = false;
-
-function orderPrio(prio)
-{
-	var	ret = [];
-
-	for (var i = 0; i < prio.length; i++)
-		ret = ret.concat(prio[i]);
-	ret = ret.sort(orderComparator);
-	//console.log(ret);
-	return [ret];
-}
-
 function detectThree(i, j, player)
 {
 	var	nb = 0;
-	var	priorities = [];
 	var tmp;
 
-
-	priorities.push(coordCloseThree(i, j, player, 1));
-//	priorities.push(coordCloseThree(i, j, player, -1));
-//	console.log(priorities);
-
 	nbDetect++;
-	tmp = threeAll(1, 0, i, j, player);
-	nb += tmp[0];
-	priorities.push(tmp[1]);
+	nb = threeAll(1, 0, i, j, player);
 	if (nb >= 2)
-		return [nb, priorities];
-	tmp = threeAll(1, 1, i, j, player);
-	nb += tmp[0];
-	priorities.push(tmp[1]);
+		return nb;
+	nb += threeAll(1, 1, i, j, player);
 	if (nb >= 2)
-		return [nb, priorities];
-	tmp = threeAll(0, 1, i, j, player);
-	nb += tmp[0];
-	priorities.push(tmp[1]);
+		return nb;
+	nb += threeAll(0, 1, i, j, player);
 	if (nb >= 2)
-		return [nb, priorities];
-	tmp = threeAll(1, -1, i, j, player);
-	nb += tmp[0];
-	priorities.push(tmp[1]);
-	return [nb, orderPrio(priorities)];
+		return nb;
+	nb += threeAll(1, -1, i, j, player);
+	return nb;
 }
 
 function resolveAfter2Seconds() {
@@ -682,13 +609,10 @@ function resolveAfter2Seconds() {
 	});
 }
 
-var	g_priorities = [];
 var	nbDetect = 0;
 
-async function click(ThreeLastPlay)
+async function click()
 {
-	for (var p = 0; p < ThreeLastPlay[1].length; p++)
-		g_priorities.push(ThreeLastPlay[1][p]);
 	timerStart = true;
 	ctxx.beginPath();
 	ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
@@ -719,7 +643,7 @@ async function click(ThreeLastPlay)
 	await resolveAfter2Seconds();
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 10, -999999, 999999, current_player, g_priorities);
+		var ret_ia = minmax([0, 0], 10, -999999, 999999, current_player);
 		console.log("nb heuristique: ", nbHeuristique);
 		console.log("nb minmax: ", nbaa);
 		console.log("nb distance: ", nbDistance);
@@ -731,22 +655,13 @@ async function click(ThreeLastPlay)
 		test = false;
 		x = ret_ia[0];
 		y = ret_ia[1];
-		ThreeLastPlay = detectThree(x, y, current_player);
-		for (var p = 0; p < ThreeLastPlay[1].length; p++)
-			g_priorities.push(ThreeLastPlay[1][p]);
-		//console.log(ret_ia)
-		click(ThreeLastPlay);
+		click();
 	}
-	//console.log("priorities global: ", g_priorities);
-	g_priorities = g_priorities.filter(function (a) {
-		return a.length != 0;
-	});
 }
 
 drawCanvas();
 game_canvas.addEventListener('mousedown', function(e) {
-	var ThreeLastPlay;
     getCursorPosition(game_canvas, e);
-    if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && (ThreeLastPlay = (detectThree(x, y, current_player)))[0] <= 1)
-    	click(ThreeLastPlay);
+    if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree(x, y, current_player) <= 1)
+    	click();
 });

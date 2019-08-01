@@ -76,7 +76,32 @@ function	getBotRight()
 	return [right, bot];
 }
 
-function	minmax(position, depth, alpha, beta, player, prio)
+var	test = false;
+
+function	getPriorities(topLeft, botRight, target)
+{
+	var		free = [];
+	var		locked = [];
+	
+	getPrioritiesVertical(free, locked, topLeft, botRight, target);
+	getPrioritiesHorizontal(free, locked, topLeft, botRight, target);
+	getPrioritiesDiag1(free, locked, target);
+	getPrioritiesDiag1_2(free, locked, target);
+	getPrioritiesDiag2(free, locked, target);
+	getPrioritiesDiag2_2(free, locked, target);
+
+	if (target == 3 && (free.length > 0 || locked.length > 0))
+		return fusion_tab(free, locked);
+	if (free.length > 0)
+		return free;
+	else if (locked.length > 0)
+		return locked;
+	else if (target > 2)
+		return getPriorities(topLeft, botRight, target - 1);
+	return [];
+}
+
+function	minmax(position, depth, alpha, beta, player)
 {
 	var	score;
 	var	RetScore;
@@ -87,17 +112,15 @@ function	minmax(position, depth, alpha, beta, player, prio)
 	var	win2;
 	var	tmpThree;
 	var	prio_checked = false;
-	var	nb_prio = 0;
-	var	nb_prio_in_tmpThree = 0;
-	var	doublon = [];
-	var	aa = 0;
+	var nb_prio = 0;
+	var prio = getPriorities(topLeft, botRight, 4);
 
+	if (depth == 10)
+	{
+		console.log(prio);
+	}
+	test = true;
 	nbaa++;
-	prio = prio.filter(function (a) {
-		return a.length != 0;
-	});
-	prio = orderPrio(prio);
-
 	if ((win1 = checkWin(position[0], position[1], current_player)))
 	{
 		win2 = false;
@@ -121,40 +144,26 @@ function	minmax(position, depth, alpha, beta, player, prio)
 				{
 					for (var h = 0; h < prio.length; h++)
 					{
-						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
+						if (prio[h] !== undefined && prio[h].length == 2 && board[prio[h][0]][prio[h][1]] == 0)
 						{
-							if (prio[h][l] !== undefined && prio[h][l].length == 3 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
-							{
-								tmpThree[1] = tmpThree[1].filter(function (a) {
-									return a.length != 0;
-								});
-								nb_prio_in_tmpThree = prio.length;
-								for (var p = 0; p < tmpThree[1].length; p++)
-									prio.push(tmpThree[1][p]);
-								board[prio[h][l][0]][prio[h][l][1]] = player;
-								score = minmax(prio[h][l], depth - 1, alpha, beta, opponent, prio);
-								board[prio[h][l][0]][prio[h][l][1]] = 0;
-								prio[0].push([prio[h][l][0], prio[h][l][1]]);
-								while (prio.length > nb_prio_in_tmpThree)
-									prio.pop();
-								if (score[2] > RetScore[2])
-									RetScore = [prio[h][l][0], prio[h][l][1], score[2]];
-								if (score[2] > alpha)
-									alpha = score[2];
-								if (beta <= alpha)
-									return RetScore;
-								nb_prio++;
-							}
-							if (prio[h][l] !== undefined && prio[h][l].length == 2)
-								doublon.push([prio[h][l][0], prio[h][l][1]]);
+							board[prio[h][0]][prio[h][1]] = player;
+							score = minmax(prio[h], depth - 1, alpha, beta, opponent);
+							board[prio[h][0]][prio[h][1]] = 0;
+							if (score[2] > RetScore[2])
+								RetScore = [prio[h][0], prio[h][1], score[2]];
+							if (score[2] > alpha)
+								alpha = score[2];
+							if (beta <= alpha)
+								return RetScore;
+							nb_prio++;
 						}
 					}
 					prio_checked = true;
 				}
-				if (nb_prio == 0 && board[i][j] == 0 && distance(i, j) && (tmpThree = detectThree(i, j, player))[0] < 2)
+				if (nb_prio == 0 && board[i][j] == 0 && distance(i, j) && detectThree(i, j, player) < 2)
 				{
 					board[i][j] = player;
-					score = minmax([i, j], depth - 1, alpha, beta, opponent, tmpThree[1]);
+					score = minmax([i, j], depth - 1, alpha, beta, opponent);
 					board[i][j] = 0;
 					if (score[2] > RetScore[2])
 						RetScore = [i, j, score[2]];
@@ -178,40 +187,26 @@ function	minmax(position, depth, alpha, beta, player, prio)
 				{
 					for (var h = 0; h < prio.length; h++)
 					{
-						for (var l = 0; prio[h] !== undefined && l < prio[h].length; l++)
+						if (prio[h] !== undefined && prio[h].length == 2 && board[prio[h][0]][prio[h][1]] == 0)
 						{
-							if (prio[h][l] !== undefined && prio[h][l].length == 3 && doublon.includes([prio[h][l][0], prio[h][l][1]]) == false && board[prio[h][l][0]][prio[h][l][1]] == 0 && (tmpThree = detectThree(prio[h][l][0], prio[h][l][1], player))[0] < 2)
-							{
-								tmpThree[1] = tmpThree[1].filter(function (a) {
-									return a.length != 0;
-								});
-								nb_prio_in_tmpThree = prio.length;
-								for (var p = 0; p < tmpThree[1].length; p++)
-									prio.push(tmpThree[1][p]);
-								board[prio[h][l][0]][prio[h][l][1]] = player;
-								score = minmax(prio[h][l], depth - 1, alpha, beta, current_player, prio);
-								board[prio[h][l][0]][prio[h][l][1]] = 0;
-								prio[0].push([prio[h][l][0], prio[h][l][1]]);
-								while (prio.length > nb_prio_in_tmpThree)
-									prio.pop();
-								if (score[2] < RetScore[2])
-									RetScore = [prio[h][l][0], prio[h][l][1], score[2]];
-								if (score[2] < beta)
-									beta = score[2];
-								if (beta <= alpha)
-									return RetScore;
-								nb_prio++;
-							}
-							if (prio[h][l] !== undefined && prio[h][l].length == 2)
-								doublon.push([prio[h][l][0], prio[h][l][1]]);
+							board[prio[h][0]][prio[h][1]] = player;
+							score = minmax(prio[h], depth - 1, alpha, beta, current_player);
+							board[prio[h][0]][prio[h][1]] = 0;
+							if (score[2] < RetScore[2])
+								RetScore = [prio[h][0], prio[h][1], score[2]];
+							if (score[2] < beta)
+								beta = score[2];
+							if (beta <= alpha)
+								return RetScore;
+							nb_prio++;
 						}
 					}
 					prio_checked = true;
 				}
-				if (nb_prio == 0 && board[i][j] == 0 && distance(i, j) && (tmpThree = detectThree(i, j, player))[0] < 2)
+				if (nb_prio == 0 && board[i][j] == 0 && distance(i, j) && detectThree(i, j, player) < 2)
 				{
 					board[i][j] = player;
-					score = minmax([i, j], depth - 1, alpha, beta, current_player, tmpThree[1]);
+					score = minmax([i, j], depth - 1, alpha, beta, current_player);
 					board[i][j] = 0;
 					if (score[2] < RetScore[2])
 						RetScore = [i, j, score[2]];

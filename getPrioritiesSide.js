@@ -63,7 +63,7 @@ function	getPrioritiesVertical(free, locked, topLeft, botRight, target)
 				opened_left = true;
 				if (current_color == 0 && board[i][j] != 0)
 					current_color = board[i][j];
-				if (j - 1 >= 0 && board[i][j - 1] == 0 && my_include([tmpCoords], [i, j-1]) == false && detectThree(i, j-1, current_color) < 2)
+				if (j - 1 >= 0 && board[i][j - 1] == 0 && current_color != 0 && my_include([tmpCoords], [i, j-1]) == false && detectThree(i, j-1, current_color) < 2)
 					tmpCoords.push([i, j-1]);
 				else
 					opened_left = false;
@@ -85,9 +85,8 @@ function	getPrioritiesVertical(free, locked, topLeft, botRight, target)
 								opened_right = false;
 							if (opened_right && opened_left)
 								free = fusion_tab(free, tmpCoords);
-							else if ((!opened_right && opened_left) || (opened_right && !opened_left))
+							else if ((!opened_right && opened_left) || (opened_right && !opened_left) || target == 4)
 								locked = fusion_tab(locked, tmpCoords);
-							j += target+bonusRange;
 						}
 					}
 				}
@@ -143,7 +142,7 @@ function	getPrioritiesHorizontal(free, locked, topLeft, botRight, target)
 				opened_left = true;
 				if (current_color == 0 && board[j][i] != 0)
 					current_color = board[j][i];
-				if (j - 1 >= 0 && board[j-1][i] == 0 && my_include([tmpCoords], [j-1, i]) == false && detectThree(j-1, i, current_color) < 2)
+				if (j - 1 >= 0 && board[j-1][i] == 0 && current_color != 0 && my_include([tmpCoords], [j-1, i]) == false && detectThree(j-1, i, current_color) < 2)
 					tmpCoords.push([j-1, i]);
 				else
 					opened_left = false;
@@ -165,9 +164,8 @@ function	getPrioritiesHorizontal(free, locked, topLeft, botRight, target)
 								opened_right = false;
 							if (opened_right && opened_left)
 								free = fusion_tab(free, tmpCoords);
-							else if ((!opened_right && opened_left) || (opened_right && !opened_left))
+							else if ((!opened_right && opened_left) || (opened_right && !opened_left) || target == 4)
 								locked = fusion_tab(locked, tmpCoords);
-							j += target+bonusRange;
 						}
 					}
 				}
@@ -214,7 +212,7 @@ function	getPrioritiesDiag1(free, locked, target)
 	{
 		if (is_valuable_line_d1(i, target))
 		{
-			for (var j = 0; j <= 18; j++)
+			for (var j = 0; j <= 14 && i - j >= 0; j++)
 			{
 				tmpCoords = [];
 				nbPieces = 0;
@@ -223,13 +221,13 @@ function	getPrioritiesDiag1(free, locked, target)
 				opened_left = true;
 				if (current_color == 0 && board[j][i - j] != 0)
 					current_color = board[j][i - j];
-				if (j-1 >= 0 && board[j-1][i-(j-1)] == 0 && my_include([tmpCoords], [j-1, i-(j-1)]) == false && detectThree(j-1, i-(j-1), current_color) < 2)
+				if (j-1 >= 0 && board[j-1][i-(j-1)] == 0 && current_color != 0 && my_include([tmpCoords], [j-1, i-(j-1)]) == false && detectThree(j-1, i-(j-1), current_color) < 2)
 					tmpCoords.push([j-1, i-(j-1)]);
 				else
 					opened_left = false;
 				if (current_color != 0)
 				{
-					for (var k = j; k < j+target+bonusRange && k <= 18; k++)
+					for (var k = j; k < j+target+bonusRange && i - k >= 0 && k <= 18; k++)
 					{
 						if (board[k][i-k] == current_color)
 							nbPieces++;
@@ -245,9 +243,8 @@ function	getPrioritiesDiag1(free, locked, target)
 								opened_right = false;
 							if (opened_right && opened_left)
 								free = fusion_tab(free, tmpCoords);
-							else if ((!opened_right && opened_left) || (opened_right && !opened_left))
+							else if ((!opened_right && opened_left) || (opened_right && !opened_left) || target == 4)
 								locked = fusion_tab(locked, tmpCoords);
-							j += target+bonusRange;
 						}
 					}
 				}
@@ -303,7 +300,7 @@ function	getPrioritiesDiag1_2(free, locked, target)
 				opened_left = true;
 				if (current_color == 0 && board[i+j][18-i] != 0)
 					current_color = board[i+j][18-i];
-				if (i+j-1 >= 0 && board[i+j-1][18-(i-1)] == 0 && my_include([tmpCoords], [i+j-1, 18-(i-1)]) == false && detectThree(i+j-1, 18-(i-1), current_color) < 2)
+				if (i+j-1 >= 0 && board[i+j-1][18-(i-1)] == 0 && current_color != 0 && my_include([tmpCoords], [i+j-1, 18-(i-1)]) == false && detectThree(i+j-1, 18-(i-1), current_color) < 2)
 					tmpCoords.push([i+j-1, 18-(i-1)]);
 				else
 					opened_left = false;
@@ -325,9 +322,8 @@ function	getPrioritiesDiag1_2(free, locked, target)
 								opened_right = false;
 							if (opened_right && opened_left)
 								free = fusion_tab(free, tmpCoords);
-							else if ((!opened_right && opened_left) || (opened_right && !opened_left))
+							else if ((!opened_right && opened_left) || (opened_right && !opened_left) || target == 4)
 								locked = fusion_tab(locked, tmpCoords);
-							i += target+bonusRange;
 						}
 					}
 				}
@@ -383,7 +379,7 @@ function	getPrioritiesDiag2(free, locked, target)
 				opened_left = true;
 				if (current_color == 0 && board[j-(18-i)][i] != 0)
 					current_color = board[j-(18-i)][i];
-				if (j-(18-i)-1 >= 0 && board[j-(18-i)-1][i-1] == 0 && my_include([tmpCoords], [j-(18-i)-1, i-1]) == false && detectThree(j-(18-i)-1, i-1, current_color) < 2)
+				if (j-(18-i)-1 >= 0 && board[j-(18-i)-1][i-1] == 0 && current_color != 0 && my_include([tmpCoords], [j-(18-i)-1, i-1]) == false && detectThree(j-(18-i)-1, i-1, current_color) < 2)
 					tmpCoords.push([j-(18-i)-1, i-1]);
 				else
 					opened_left = false;
@@ -405,9 +401,8 @@ function	getPrioritiesDiag2(free, locked, target)
 								opened_right = false;
 							if (opened_right && opened_left)
 								free = fusion_tab(free, tmpCoords);
-							else if ((!opened_right && opened_left) || (opened_right && !opened_left))
+							else if ((!opened_right && opened_left) || (opened_right && !opened_left) || target == 4)
 								locked = fusion_tab(locked, tmpCoords);
-							i -= target+bonusRange;
 						}
 					}
 				}
@@ -463,7 +458,7 @@ function	getPrioritiesDiag2_2(free, locked, target)
 				opened_left = true;
 				if (current_color == 0 && board[j+i][i] != 0)
 					current_color = board[j+i][i];
-				if (j+i-1 >= 0 && board[j+i-1][i-1] == 0 && my_include([tmpCoords], [j+i-1, i-1]) == false && detectThree(j+i-1, i-1, current_color) < 2)
+				if (j+i-1 >= 0 && board[j+i-1][i-1] == 0 && current_color != 0 && my_include([tmpCoords], [j+i-1, i-1]) == false && detectThree(j+i-1, i-1, current_color) < 2)
 					tmpCoords.push([j+i-1, i-1]);
 				else
 					opened_left = false;
@@ -485,9 +480,8 @@ function	getPrioritiesDiag2_2(free, locked, target)
 								opened_right = false;
 							if (opened_right && opened_left)
 								free = fusion_tab(free, tmpCoords);
-							else if ((!opened_right && opened_left) || (opened_right && !opened_left))
+							else if ((!opened_right && opened_left) || (opened_right && !opened_left) || target == 4)
 								locked = fusion_tab(locked, tmpCoords);
-							//i -= target+bonusRange;
 						}
 					}
 				}

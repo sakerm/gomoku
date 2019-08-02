@@ -97,7 +97,7 @@ function checkNbPieces(i, j, player)
 	return(nbpieces);
 }
 
-function	heuristique(i, j, player, win1, win2, prio)
+function	heuristique(i, j, player, win1, win2, prio, nbcap)
 {
 	var	score = 0;
 	var nb = 0;
@@ -117,7 +117,7 @@ function	heuristique(i, j, player, win1, win2, prio)
 			score -= 50000;
 	}
 	nb = checkNbPieces(i, j, player);
-	score += nb * 10;
+	score += nb * 10 + nbcap*2;
 	nbHeuristique++;
 	if (player == current_player)
 		return score;

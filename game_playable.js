@@ -29,6 +29,7 @@ var	playing = true;
 var	ctxx = game_canvas.getContext("2d");
 var w = game_canvas.width;
 var h = game_canvas.height;
+var	compterur_de_coups = 0;
 
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect();
@@ -387,6 +388,7 @@ var	nbDetect = 0;
 
 async function click()
 {
+	compterur_de_coups++;
 	timerStart = true;
 	ctxx.beginPath();
 	ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
@@ -417,20 +419,31 @@ async function click()
 	await resolveAfter2Seconds();
 	if (current_player == 2)
 	{
-		var ret_ia = minmax([0, 0], 10, -999999, 999999, current_player);
-		console.log("nb heuristique: ", nbHeuristique);
-		console.log("nb minmax: ", nbaa);
-		console.log("nb distance: ", nbDistance);
-		console.log("nb detect: ", nbDetect);
-		nbaa = 0;
-		nbHeuristique = 0;
-		nbDistance = 0;
-		nbDetect = 0;
-		test = false;
-		x = ret_ia[0];
-		y = ret_ia[1];
-		click();
+		setTimeout(function(){
+			var ret_ia = minmax([8, 8], 10, -999999, 999999, current_player, 0);
+			x = ret_ia[0];
+			y = ret_ia[1];
+			click();
+		}, 50);
+//		console.log("nb heuristique: ", nbHeuristique);
+//		console.log("nb minmax: ", nbaa);
+//		console.log("nb distance: ", nbDistance);
+//		console.log("nb detect: ", nbDetect);
+//		nbaa = 0;
+//		nbHeuristique = 0;
+//		nbDistance = 0;
+//		nbDetect = 0;
+//		test = false;
 	}
+	//else
+	//{
+	//	setTimeout(function(){
+	//		var ret_ia = minmax([8, 8], 10, -999999, 999999, current_player, 0);
+	//		x = ret_ia[0];
+	//		y = ret_ia[1];
+	//		click();
+	//	}, 50);
+	//}
 }
 
 drawCanvas();

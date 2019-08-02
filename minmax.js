@@ -101,7 +101,7 @@ function	getPriorities(topLeft, botRight, target)
 	return [];
 }
 
-function	minmax(position, depth, alpha, beta, player)
+function	minmax(position, depth, alpha, beta, player, nbcap)
 {
 	var	score;
 	var	RetScore;
@@ -116,24 +116,24 @@ function	minmax(position, depth, alpha, beta, player)
 	var prio = getPriorities(topLeft, botRight, 4);
 	var	captures;
 
-	if (depth == 10)
-	{
-		console.log(prio);
-	}
+	//if (depth == 10)
+	//{
+	//	console.log(prio);
+	//}
 	test = true;
 	nbaa++;
 	if ((win1 = checkWin(position[0], position[1], current_player)))
 	{
 		win2 = false;
-		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio)];
+		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap)];
 	}
 	if ((win2 = checkWin(position[0], position[1], opponent)))
 	{
 		win1 = false;
-		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio)];
+		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap)];
 	}
 	if (depth == 0)
-		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2, prio)];
+		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2, prio, nbcap)];
 	if (player == current_player && prio)
 	{
 		RetScore = [0, 0, -10000000];
@@ -149,7 +149,7 @@ function	minmax(position, depth, alpha, beta, player)
 						{
 							board[prio[h][0]][prio[h][1]] = player;
 							captures = checkCaptureSim(prio[h][0], prio[h][1], current_player, opponent);
-							score = minmax(prio[h], depth - 1, alpha, beta, opponent);
+							score = minmax(prio[h], depth - 1, alpha, beta, opponent, captures.length + nbcap);
 							for (var p = 0; p < captures.length; p++)
 								board[captures[p][0]][captures[p][1]] = captures[p][2];
 							board[prio[h][0]][prio[h][1]] = 0;
@@ -168,7 +168,10 @@ function	minmax(position, depth, alpha, beta, player)
 				{
 					board[i][j] = player;
 					captures = checkCaptureSim(i, j, current_player, opponent);
-					score = minmax([i, j], depth - 1, alpha, beta, opponent);
+					if (depth >= 8)
+						score = minmax([i, j], depth - 5, alpha, beta, opponent, captures.length + nbcap);
+					else
+						score = minmax([i, j], depth - 1, alpha, beta, opponent, captures.length + nbcap);
 					for (var p = 0; p < captures.length; p++)
 						board[captures[p][0]][captures[p][1]] = captures[p][2];
 					board[i][j] = 0;
@@ -177,6 +180,8 @@ function	minmax(position, depth, alpha, beta, player)
 					if (score[2] > alpha)
 						alpha = score[2];
 					if (beta <= alpha)
+						return RetScore;
+					if (compterur_de_coups <= 2)
 						return RetScore;
 				}
 			}
@@ -198,7 +203,7 @@ function	minmax(position, depth, alpha, beta, player)
 						{
 							board[prio[h][0]][prio[h][1]] = player;
 							captures = checkCaptureSim(prio[h][0], prio[h][1], opponent, current_player);
-							score = minmax(prio[h], depth - 1, alpha, beta, current_player);
+							score = minmax(prio[h], depth - 1, alpha, beta, current_player, captures.length + nbcap);
 							for (var p = 0; p < captures.length; p++)
 								board[captures[p][0]][captures[p][1]] = captures[p][2];
 							board[prio[h][0]][prio[h][1]] = 0;
@@ -217,7 +222,10 @@ function	minmax(position, depth, alpha, beta, player)
 				{
 					board[i][j] = player;
 					captures = checkCaptureSim(i, j, opponent, current_player);
-					score = minmax([i, j], depth - 1, alpha, beta, current_player);
+					if (depth >= 8)
+						score = minmax([i, j], depth - 5, alpha, beta, current_player, captures.length + nbcap);
+					else
+						score = minmax([i, j], depth - 1, alpha, beta, current_player, captures.length + nbcap);
 					for (var p = 0; p < captures.length; p++)
 						board[captures[p][0]][captures[p][1]] = captures[p][2];
 					board[i][j] = 0;
@@ -226,6 +234,8 @@ function	minmax(position, depth, alpha, beta, player)
 					if (score[2] < beta)
 						beta = score[2];
 					if (beta <= alpha)
+						return RetScore;
+					if (compterur_de_coups <= 2)
 						return RetScore;
 				}
 			}

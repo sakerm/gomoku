@@ -117,6 +117,69 @@ function checkCapture()
 	}
 }
 
+function checkCaptureSim(i, j, player, other)
+{
+	var	ret = [];
+
+	if (i <= 15 && board[i + 3][j] == player && board[i + 1][j] == other && board[i + 2][j] == other) // droite
+	{
+		board[i+1][j] = 0;
+		board[i+2][j] = 0;
+		ret.push([i+1, j, other]);
+		ret.push([i+2, j, other]);
+	}
+	if (i >= 3 && board[i - 3][j] == player && board[i - 1][j] == other && board[i - 2][j] == other) // gauche
+	{
+		board[i-1][j] = 0;
+		board[i-2][j] = 0;
+		ret.push([i-1, j, other]);
+		ret.push([i-2, j, other]);
+	}
+	if (j <= 15 && board[i][j + 3] == player && board[i][j + 2] == other && board[i][j + 1] == other) // bas
+	{
+		board[i][j+1] = 0;
+		board[i][j+2] = 0;
+		ret.push([i, j+1, other]);
+		ret.push([i, j+2, other]);
+	}
+	if (j >= 3 && board[i][j - 3] == player && board[i][j - 2] == other && board[i][j - 1] == other) // haut
+	{
+		board[i][j-1] = 0;
+		board[i][j-2] = 0;
+		ret.push([i, j-1, other]);
+		ret.push([i, j-2, other]);
+	}
+	if (i <= 15 && j >= 3 && board[i + 3][j - 3] == player && board[i + 1][j - 1] == other && board[i + 2][j - 2] == other) // haut droite
+	{
+		board[i+1][j-1] = 0;
+		board[i+2][j-2] = 0;
+		ret.push([i+1, j-1, other]);
+		ret.push([i+2, j-2, other]);
+	}
+	if (i >= 3 && j >= 3 && board[i - 3][j - 3] == player && board[i - 1][j - 1] == other && board[i - 2][j - 2] == other) // haut gauche
+	{
+		board[i-1][j-1] = 0;
+		board[i-2][j-2] = 0;
+		ret.push([i-1, j-1, other]);
+		ret.push([i-2, j-2, other]);
+	}
+	if (i >= 3 && j <= 15 && board[i - 3][j + 3] == player && board[i - 1][j + 1] == other && board[i - 2][j + 2] == other) // bas gauche
+	{
+		board[i-1][j+1] = 0;
+		board[i-2][j+2] = 0;
+		ret.push([i-1, j+1, other]);
+		ret.push([i-2, j+2, other]);
+	}
+	if (i <= 15 && j <= 15 && board[i + 3][j + 3] == player && board[i + 1][j + 1] == other && board[i + 2][j + 2] == other) // bas droite
+	{
+		board[i+1][j+1] = 0;
+		board[i+2][j+2] = 0;
+		ret.push([i+1, j+1, other]);
+		ret.push([i+2, j+2, other]);
+	}
+	return ret;
+}
+
 function fiveInRow(j, k, xx, yy, player)
 {
 	var count = 0;

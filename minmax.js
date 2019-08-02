@@ -114,6 +114,7 @@ function	minmax(position, depth, alpha, beta, player)
 	var	prio_checked = false;
 	var nb_prio = 0;
 	var prio = getPriorities(topLeft, botRight, 4);
+	var	captures;
 
 	if (depth == 10)
 	{
@@ -147,7 +148,10 @@ function	minmax(position, depth, alpha, beta, player)
 						if (prio[h] !== undefined && prio[h].length == 2 && board[prio[h][0]][prio[h][1]] == 0)
 						{
 							board[prio[h][0]][prio[h][1]] = player;
+							captures = checkCaptureSim(prio[h][0], prio[h][1], current_player, opponent);
 							score = minmax(prio[h], depth - 1, alpha, beta, opponent);
+							for (var p = 0; p < captures.length; p++)
+								board[captures[p][0]][captures[p][1]] = captures[p][2];
 							board[prio[h][0]][prio[h][1]] = 0;
 							if (score[2] > RetScore[2])
 								RetScore = [prio[h][0], prio[h][1], score[2]];
@@ -163,7 +167,10 @@ function	minmax(position, depth, alpha, beta, player)
 				if (nb_prio == 0 && board[i][j] == 0 && distance(i, j) && detectThree(i, j, player) < 2)
 				{
 					board[i][j] = player;
+					captures = checkCaptureSim(i, j, current_player, opponent);
 					score = minmax([i, j], depth - 1, alpha, beta, opponent);
+					for (var p = 0; p < captures.length; p++)
+						board[captures[p][0]][captures[p][1]] = captures[p][2];
 					board[i][j] = 0;
 					if (score[2] > RetScore[2])
 						RetScore = [i, j, score[2]];
@@ -190,7 +197,10 @@ function	minmax(position, depth, alpha, beta, player)
 						if (prio[h] !== undefined && prio[h].length == 2 && board[prio[h][0]][prio[h][1]] == 0)
 						{
 							board[prio[h][0]][prio[h][1]] = player;
+							captures = checkCaptureSim(prio[h][0], prio[h][1], opponent, current_player);
 							score = minmax(prio[h], depth - 1, alpha, beta, current_player);
+							for (var p = 0; p < captures.length; p++)
+								board[captures[p][0]][captures[p][1]] = captures[p][2];
 							board[prio[h][0]][prio[h][1]] = 0;
 							if (score[2] < RetScore[2])
 								RetScore = [prio[h][0], prio[h][1], score[2]];
@@ -206,7 +216,10 @@ function	minmax(position, depth, alpha, beta, player)
 				if (nb_prio == 0 && board[i][j] == 0 && distance(i, j) && detectThree(i, j, player) < 2)
 				{
 					board[i][j] = player;
+					captures = checkCaptureSim(i, j, opponent, current_player);
 					score = minmax([i, j], depth - 1, alpha, beta, current_player);
+					for (var p = 0; p < captures.length; p++)
+						board[captures[p][0]][captures[p][1]] = captures[p][2];
 					board[i][j] = 0;
 					if (score[2] < RetScore[2])
 						RetScore = [i, j, score[2]];

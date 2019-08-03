@@ -29,10 +29,10 @@ var	playing = true;
 var	ctxx = game_canvas.getContext("2d");
 var w = game_canvas.width;
 var h = game_canvas.height;
-var	compterur_de_coups = 0;
+//var	compterur_de_coups = 0;
 
 function getCursorPosition(canvas, event) {
-    const rect = canvas.getBoundingClientRect();
+		const rect = canvas.getBoundingClientRect();
     y = event.clientY - rect.top;
     x = event.clientX - rect.left;
     x = Math.trunc(x / (w/19));
@@ -389,6 +389,11 @@ var	nbDetect = 0;
 async function click()
 {
 	compterur_de_coups++;
+	ctx2.clearRect(103,105,100,40)
+  ctx2.fillStyle = secondColor;
+	ctx2.fillStyle = color;
+  ctx2.font = "20px Georgia";
+	ctx2.fillText(compterur_de_coups, 145,133);
 	timerStart = true;
 	ctxx.beginPath();
 	ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
@@ -420,7 +425,7 @@ async function click()
 	if (current_player == 2)
 	{
 		setTimeout(function(){
-			var ret_ia = minmax([8, 8], 10, -999999, 999999, current_player, 0);
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
 			x = ret_ia[0];
 			y = ret_ia[1];
 			click();

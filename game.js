@@ -6,12 +6,16 @@ var height = 150
 var minuteFontSize = width*(3/20);
 var milMinuteFontSize = width*(1/10);
 var timerStart = false;
+var level = 2;
+var color = "black"
+var secondColor = 'white'
 //end counter
 
 //scoring
 var score = document.getElementById("canvas1");
 var ctx2 = score.getContext("2d");
 var theme= 0;
+var	compterur_de_coups = 0;
 
 //button
 const restartButton = new Path2D()
@@ -26,22 +30,28 @@ const themeButton = new Path2D()
 themeButton.rect(400,142,200,30)
 themeButton.closePath()
 
+const compteur = new Path2D()
+compteur.rect(103,105,100,40)
+compteur.closePath()
+
 //draw your shape data to the context
 ctx2.fillStyle = "#FFFFFF"
-ctx2.fillStyle = "rgba(225,225,225,0.5)"
+ctx2.fillStyle = "rgba(225,225,225,0)"
 ctx2.fill(restartButton)
 ctx2.fill(levelButton)
 ctx2.fill(themeButton)
+ctx2.fill(compteur)
 ctx2.lineWidth = 2
-//ctx2.strokeStyle = "#000000"
 ctx2.stroke(restartButton)
 ctx2.stroke(levelButton)
 ctx2.stroke(themeButton)
+ctx2.stroke(compteur)
 ctx2.fillStyle = 'black';
 ctx2.font = "20px Georgia";
 ctx2.fillText(" restart", 465,63);
-ctx2.fillText("   level", 465,113);
+ctx2.fillText("  level " + level, 465,113);
 ctx2.fillText(" theme", 467,163);
+ctx2.fillText(compterur_de_coups, 145,133);
 
 //ok-----------------------------------------------------------------------------------------------------
 setInterval(function() {
@@ -54,6 +64,7 @@ setInterval(function() {
     var boxMilMinutes = boxCounter.toString().split(".")[1].substring(0, 3);
     ctx2.clearRect(700, 0, 900, 300);
     
+    ctx2.fillStyle = color;
     ctx2.font = minuteFontSize+"px Arial";
     ctx2.fillText(boxMinutes, 805, (height/2) + 25);
     //text
@@ -88,7 +99,16 @@ document.addEventListener("click",  function (e) {
   }
   if(ctx2.isPointInPath(levelButton, XY.x, XY.y)) {
     // Do Something with the click
-    alert("clicked in levelButton");
+    level++;
+    if (level > 10)
+      level = 2;
+    ctx2.clearRect(405,95,190,25);
+    ctx2.fillStyle = secondColor;
+    ctx2.fill(levelButton)
+    ctx2.fillStyle = color;
+    ctx2.font = "20px Georgia";
+    ctx2.fillText("  level " + level, 465,113);
+
   }
   if(ctx2.isPointInPath(themeButton, XY.x, XY.y)) {
     // Do Something with the click
@@ -96,53 +116,48 @@ document.addEventListener("click",  function (e) {
     var title = document.getElementById("Title");
     if (theme == 0)
     {
+        color = 'black'
+        secondColor = 'white'
         title.style.color = '#000000';
-        ctx2.fillStyle = 'white'
+        ctx2.fillStyle = secondColor
         ctx2.fill(restartButton)
         ctx2.fill(levelButton)
         ctx2.fill(themeButton)
-        ctx2.fillStyle = 'black';
+        ctx2.fillStyle = color;
         ctx2.font = "20px Georgia";
         ctx2.fillText(" restart", 465,63);
-        ctx2.fillText("   level", 465,113);
+        ctx2.fillText("  level " + level, 465,113);
         ctx2.fillText(" theme", 467,163);
+        ctx2.fillText(compterur_de_coups, 145,133);
         ctx2.fillStyle = '#000000';
         ctx2.font = "30px Georgia";
-        ctx2.fillText("score", 120,60);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ1, 50,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(":",140,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ2, 203,140);
+        ctx2.fillText("compteur", 90,60);
         document.body.style.backgroundColor = 'white';
         document.body.style.backgroundImage = 'none';
     }
     else if (theme == 1)
     {
+        color = 'white'
+        secondColor = '#0407A6'
         title.style.color = '#0407A6';
         ctx2.fillStyle = '#0407A6'
         ctx2.fill(restartButton)
         ctx2.fill(levelButton)
         ctx2.fill(themeButton)
-        ctx2.fillStyle = 'white';
+        ctx2.fillStyle = color;
         ctx2.font = "20px Georgia";
         ctx2.fillText(" restart", 465,63);
-        ctx2.fillText("   level", 465,113);
+        ctx2.fillText("  level " + level, 465,113);
         ctx2.fillText(" theme", 467,163);
+        ctx2.fillText(compterur_de_coups, 145,133);
         ctx2.fillStyle = '#0407A6';
         ctx2.font = "30px Georgia";
-        ctx2.fillText("score", 120,60);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ1, 50,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(":",140,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ2, 203,140);
+        ctx2.fillText("compteur", 90,60);
         document.body.style.backgroundImage = "url('https://media0.giphy.com/media/mX1bWOEGPIAY1yhmKI/giphy.gif')";
     }
     else if (theme == 2)
     {
+        secondColor = '#2EA847'
         title.style.color = '#2EA847';
         ctx2.fillStyle = '#2EA847'
         ctx2.fill(restartButton)
@@ -151,22 +166,18 @@ document.addEventListener("click",  function (e) {
         ctx2.fillStyle = 'white';
         ctx2.font = "20px Georgia";
         ctx2.fillText(" restart", 465,63);
-        ctx2.fillText("   level", 465,113);
+        ctx2.fillText("  level " + level, 465,113);
         ctx2.fillText(" theme", 467,163);
+        ctx2.fillText(compterur_de_coups, 145,133);
         ctx2.fillStyle = '#2EA847';
         ctx2.font = "30px Georgia";
-        ctx2.fillText("score", 120,60);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ1, 50,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(":",140,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ2, 203,140);
+        ctx2.fillText("compteur", 90,60);
         document.body.style.backgroundImage = "url('https://images.alphacoders.com/477/477025.jpg')";
 
     }
     else if (theme == 3)
     {
+        secondColor = '#FF7930'
         title.style.color = '#FF7930';
         ctx2.fillStyle = '#FF7930'
         ctx2.fill(restartButton)
@@ -175,21 +186,17 @@ document.addEventListener("click",  function (e) {
         ctx2.fillStyle = 'white';
         ctx2.font = "20px Georgia";
         ctx2.fillText(" restart", 465,63);
-        ctx2.fillText("   level", 465,113);
+        ctx2.fillText("  level " + level, 465,113);
         ctx2.fillText(" theme", 467,163);
+        ctx2.fillText(compterur_de_coups, 145,133);
         ctx2.fillStyle = '#FF7930';
         ctx2.font = "30px Georgia";
-        ctx2.fillText("score", 120,60);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ1, 50,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(":",140,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ2, 203,140);
+        ctx2.fillText("compteur", 90,60);
         document.body.style.backgroundImage = "url('https://media.giphy.com/media/iikb3dTQ0Skne/giphy.gif')";
     }
     else if (theme == 4)
     {
+        secondColor = '#6832E0'
         title.style.color = '#6832E0';
         ctx2.fillStyle = '#6832E0'
         ctx2.fill(restartButton)
@@ -198,21 +205,17 @@ document.addEventListener("click",  function (e) {
         ctx2.fillStyle = 'white';
         ctx2.font = "20px Georgia";
         ctx2.fillText(" restart", 465,63);
-        ctx2.fillText("   level", 465,113);
+        ctx2.fillText("  level " + level, 465,113);
         ctx2.fillText(" theme", 467,163);
+        ctx2.fillText(compterur_de_coups, 145,133);
         ctx2.fillStyle = '#6832E0';
         ctx2.font = "30px Georgia";
-        ctx2.fillText("score", 120,60);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ1, 50,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(":",140,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ2, 203,140);
+        ctx2.fillText("compteur", 90,60);
         document.body.style.backgroundImage = "url('https://i.redd.it/c0emei8n03w01.jpg')";
     }
     else if (theme == 5)
     {
+        secondColor = '#2EBBF6'
         title.style.color = '#2EBBF6';
         ctx2.fillStyle = '#2EBBF6'
         ctx2.fill(restartButton)
@@ -221,17 +224,12 @@ document.addEventListener("click",  function (e) {
         ctx2.fillStyle = 'white';
         ctx2.font = "20px Georgia";
         ctx2.fillText(" restart", 465,63);
-        ctx2.fillText("   level", 465,113);
+        ctx2.fillText("  level " + level, 465,113);
         ctx2.fillText(" theme", 467,163);
+        ctx2.fillText(compterur_de_coups, 145,133);
         ctx2.fillStyle = '#2EBBF6';
         ctx2.font = "30px Georgia";
-        ctx2.fillText("score", 120,60);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ1, 50,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(":",140,140);
-        ctx2.font = "90px Georgia";
-        ctx2.fillText(scoreJ2, 203,140);
+        ctx2.fillText("compteur", 90,60);
         document.body.style.backgroundImage = "url('https://natewren.com/themes/wallpaper2/radpack/radpack_8.jpg')";
         theme = -1;
     }
@@ -243,15 +241,9 @@ var scoreJ1 = 0;
 var scoreJ2 = 0;
 function scoring() {
     //text
-    ctx2.fillStyle = 'black';
+    ctx2.fillStyle = color;
     ctx2.font = "30px Georgia";
-    ctx2.fillText("score", 120,60);
-    ctx2.font = "90px Georgia";
-    ctx2.fillText(scoreJ1, 50,140);
-    ctx2.font = "90px Georgia";
-    ctx2.fillText(":",140,140);
-    ctx2.font = "90px Georgia";
-    ctx2.fillText(scoreJ2, 203,140);
+    ctx2.fillText("compteur", 90,60);
     //text
 }
 //end scoring

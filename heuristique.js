@@ -151,7 +151,7 @@ function	check_five(i, j, player)
 	counti = 0;
 	countj = 0;
 	space = 0;
-	while ((i+counti > 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && counti > -5 || (board[i+counti][j] == player && i+counti > 0 && j+countj > 0))
+	while ((i+counti > 0 && i+counti <= 18 && j+countj > 0 && j+countj <= 18) && counti > -5 || (board[i+counti][j] == player && i+counti > 0 && j+countj > 0))
 	{
 		counti--;
 		countj--;
@@ -171,7 +171,7 @@ function	check_five(i, j, player)
 	counti = 0;
 	countj = 0;
 	space = 0;
-	while ((i+counti > 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18) && countj > -5 || (board[i+counti][j] == player && j+countj > 0))
+	while ((i+counti > 0 && i+counti <= 18 && j+countj > 0 && j+countj <= 18) && countj > -5 || (board[i+counti][j] == player && j+countj > 0))
 		countj--;
 	while(i+counti >= 0 && i+counti <= 18 && j+countj >= 0 && j+countj <= 18)
 	{
@@ -187,7 +187,7 @@ function	check_five(i, j, player)
 	counti = 0;
 	countj = 0;
 	space = 0;
-	while ((i+counti > 0 && i+counti < 18 && j+countj >= 0 && j+countj <= 18) && countj > -5 || (board[i+counti][j] == player && i+counti < 18 && j+countj > 0))
+	while ((i+counti > 0 && i+counti < 18 && j+countj > 0 && j+countj <= 18) && countj > -5 || (board[i+counti][j] == player && i+counti < 18 && j+countj > 0))
 	{
 		counti++;
 		countj--;

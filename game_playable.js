@@ -118,6 +118,29 @@ function checkCapture()
 	}
 }
 
+function checkCapturePrio(i, j, player, other)
+{
+	var	ret = false;
+
+	if (i <= 15 && board[i + 3][j] == player && board[i + 1][j] == other && board[i + 2][j] == other) // droite
+		ret = true;
+	else if (i >= 3 && board[i - 3][j] == player && board[i - 1][j] == other && board[i - 2][j] == other) // gauche
+		ret = true;
+	else if (j <= 15 && board[i][j + 3] == player && board[i][j + 2] == other && board[i][j + 1] == other) // bas
+		ret = true;
+	else if (j >= 3 && board[i][j - 3] == player && board[i][j - 2] == other && board[i][j - 1] == other) // haut
+		ret = true;
+	else if (i <= 15 && j >= 3 && board[i + 3][j - 3] == player && board[i + 1][j - 1] == other && board[i + 2][j - 2] == other) // haut droite
+		ret = true;
+	else if (i >= 3 && j >= 3 && board[i - 3][j - 3] == player && board[i - 1][j - 1] == other && board[i - 2][j - 2] == other) // haut gauche
+		ret = true;
+	else if (i >= 3 && j <= 15 && board[i - 3][j + 3] == player && board[i - 1][j + 1] == other && board[i - 2][j + 2] == other) // bas gauche
+		ret = true;
+	else if (i <= 15 && j <= 15 && board[i + 3][j + 3] == player && board[i + 1][j + 1] == other && board[i + 2][j + 2] == other) // bas droite
+		ret = true;
+	return ret;
+}
+
 function checkCaptureSim(i, j, player, other)
 {
 	var	ret = [];
@@ -443,7 +466,7 @@ async function click()
 	//else
 	//{
 	//	setTimeout(function(){
-	//		var ret_ia = minmax([8, 8], 10, -999999, 999999, current_player, 0);
+	//		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
 	//		x = ret_ia[0];
 	//		y = ret_ia[1];
 	//		click();

@@ -78,6 +78,21 @@ function	getBotRight()
 
 var	test = false;
 
+function	getPrioritiesCapture(topLeft, botRight, player, other)
+{
+	var	ret = [];
+
+	for (var i = topLeft[0]; i < botRight[0]; i++)
+	{
+		for (var j = topLeft[1]; j < botRight[1]; j++)
+		{
+			if (checkCapturePrio(i, j, player, other))
+				ret.push([i, j]);
+		}
+	}
+	return ret;
+}
+
 function	getPriorities(topLeft, botRight, target)
 {
 	var		free = [];
@@ -114,12 +129,9 @@ function	minmax(position, depth, alpha, beta, player, nbcap)
 	var	prio_checked = false;
 	var nb_prio = 0;
 	var prio = getPriorities(topLeft, botRight, 4);
-	var	captures;
+	var	captures = getPrioritiesCapture(topLeft, botRight, player, ((player == 1) ? 2 : 1));
 
-	//if (depth == 10)
-	//{
-	//	console.log(prio);
-	//}
+	prio = fusion_tab(prio, captures);
 	test = true;
 	nbaa++;
 	if ((win1 = checkWin(position[0], position[1], current_player)))

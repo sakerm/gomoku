@@ -54,7 +54,7 @@ function	getPrioritiesVertical(free, locked, topLeft, botRight, target)
 	{
 		if (is_valuable_line_v(i, target, topLeft[1], botRight[1]))
 		{
-			for (var j = topLeft[1]; j <= botRight[1] - target; j++)
+			for (var j = topLeft[1]; j <= botRight[1] - (target - 1); j++)
 			{
 				tmpCoords = [];
 				nbPieces = 0;
@@ -133,8 +133,10 @@ function	getPrioritiesHorizontal(free, locked, topLeft, botRight, target)
 	{
 		if (is_valuable_line_h(i, target, topLeft[0], botRight[0]))
 		{
-			for (var j = topLeft[0]; j <= botRight[0] - target; j++)
+			for (var j = topLeft[0]; j <= botRight[0] - (target - 1); j++)
 			{
+				if (j == 16 && i == 1)
+					console.log("nani ?");
 				tmpCoords = [];
 				nbPieces = 0;
 				current_color = 0;
@@ -169,6 +171,8 @@ function	getPrioritiesHorizontal(free, locked, topLeft, botRight, target)
 						}
 					}
 				}
+				if (j == 16 && i == 1)
+					console.log("caca", tmpCoords);
 			}
 		}
 	}

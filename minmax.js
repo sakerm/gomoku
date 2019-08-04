@@ -134,6 +134,8 @@ function	minmax(position, depth, alpha, beta, player, nbcap)
 	prio = fusion_tab(prio, captures);
 	test = true;
 	nbaa++;
+	if (depth == level)
+		console.log(prio);
 	if ((win1 = checkWin(position[0], position[1], current_player)))
 	{
 		win2 = false;

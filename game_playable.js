@@ -274,20 +274,72 @@ function fiveInRowDiag2(i, j, player)
 	return false;
 }
 
-function checkWin(i, j, player)
+function checkWin(i, j, player, ultraprio)
 {
-	var win = false;
+	var win = [false, false, false, false];
 
 	nbaa++;
 	if (fiveInRow(1, 0, 0, j, player)) // horizontal
-		win = true;
+		win[0] = true;
 	else if (fiveInRow(0, 1, i, 0, player)) // vertcial
-		win = true;
+		win[1] = true;
 	else if (fiveInRowDiag1(i, j, player))
-		win = true;
+		win[2] = true;
 	else if (fiveInRowDiag2(i, j, player))
-		win = true;
-	return win;
+		win[3] = true;
+	for (var k = 0; k < 4; k++)
+	{
+		if (win[k] == true)
+		{
+			var other = ((player == current_player) ? opponent : current_player);
+			for (var o = 0; o < 19; o++)
+			{
+				for (var q = 0; q < 19; q++)
+				{
+					if (board[o][q] == 0)
+					{
+						board[o][q] = other;
+						if (checkCapturePrio(o, q, other, player))
+						{
+							if (nbCaptured[other] >= 8)
+							{
+								board[o][q] = 0;
+								return true;
+							}
+							else
+							{
+								var	tmp = checkCaptureSim(o, q, other, player);
+								var ret = false;
+	
+								for (var p = 0; p < tmp.length; p++)
+									board[tmp[p][0]][tmp[p][1]] = 0;
+								if (k == 0)
+									ret = fiveInRow(1, 0, 0, j, player);
+								else if (k == 1)
+									ret = fiveInRow(0, 1, i, 0, player);
+								else if (k == 2)
+									ret = fiveInRowDiag1(i, j, player);
+								else if (k == 3)
+									ret = fiveInRowDiag2(i, j, player);
+								for (var p = 0; p < tmp.length; p++)
+									board[tmp[p][0]][tmp[p][1]] = player;
+								board[o][q] = 0;
+								ultraprio.push([o, q]);
+								return ret;
+							}
+						}
+						board[o][q] = 0;
+					}
+				}
+			}
+		}
+	}
+	for (var k = 0; k < 4; k++)
+	{
+		if (win[k] == true)
+			return true;
+	}
+	return false;
 }
 
 function checkside(it, xx, yy, offset, nospace, nbspace, player, ii, jj)
@@ -425,6 +477,7 @@ var	nbDetect = 0;
 
 async function click()
 {
+	var	ultraprio = [];
 	compterur_de_coups++;
 	ctx2.clearRect(103,105,100,40)
   ctx2.fillStyle = secondColor;
@@ -441,7 +494,7 @@ async function click()
 	ctxx.fill();
 	ctxx.stroke();
 	board[x][y] = current_player;
-	if (checkWin(x, y, current_player))
+	if (checkWin(x, y, current_player, ultraprio))
 	{
 		alert("player " + current_player.toString(10) + " won !");
 		window.location.reload(true);
@@ -462,7 +515,7 @@ async function click()
 	if (current_player == 2)
 	{
 		setTimeout(function(){
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio);
 			x = ret_ia[0];
 			y = ret_ia[1];
 			click();

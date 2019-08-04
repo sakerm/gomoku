@@ -60,8 +60,8 @@ setInterval(function() {
     boxCounter += (1/60);
   }
     var boxMinutes = boxCounter.toString().split(".")[0];
-    boxMinutes = boxMinutes.length == 1 ? "0" + boxMinutes : boxMinutes;
-    var boxMilMinutes = boxCounter.toString().split(".")[1].substring(0, 3);
+    boxMinutes = time.toFixed(4)//boxMinutes.length == 1 ? "0" + boxMinutes : boxMinutes;
+    
     ctx2.clearRect(700, 0, 900, 300);
     
     ctx2.fillStyle = color;
@@ -69,17 +69,12 @@ setInterval(function() {
     ctx2.fillText(boxMinutes, 805, (height/2) + 25);
     //text
     ctx2.font = "20px Georgia"
-    ctx2.fillText("timer", 805,55);
+    ctx2.fillText("timer in millisecond", 805,55);
     ctx2.font = "30px Verdana";
     //text
     ctx2.font = milMinuteFontSize+"px Arial";
-    ctx2.fillText(boxMilMinutes, 805, (height/2)+(minuteFontSize/1.5) + 30);
+  
     ctx2.beginPath();
-    var arcLength = (boxCounter*2*Math.PI) % (2*Math.PI);
-    ctx2.arc(825, 90, width/4, arcStart, (2*Math.PI) - (0.5*Math.PI) + arcLength);
-    ctx2.moveTo(width/2,0);
-    ctx2.moveTo(0,height/2);
-    ctx2.stroke();
   }, 1000/60);
 //ok -------------------------------------------------------------------------------------------------
 

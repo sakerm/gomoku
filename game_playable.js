@@ -474,6 +474,7 @@ function resolveAfter2Seconds() {
 }
 
 var	nbDetect = 0;
+var time = 0;
 
 async function click()
 {
@@ -512,14 +513,16 @@ async function click()
 		opponent = 2;
 	}
 	await resolveAfter2Seconds();
+	var t0 = performance.now();
 	if (current_player == 2)
 	{
-		setTimeout(function(){
 			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio);
 			x = ret_ia[0];
 			y = ret_ia[1];
 			click();
-		}, 50);
+			var t1 = performance.now();
+			time = t1 - t0;
+
 //		console.log("nb heuristique: ", nbHeuristique);
 //		console.log("nb minmax: ", nbaa);
 //		console.log("nb distance: ", nbDistance);

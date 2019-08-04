@@ -146,6 +146,12 @@ function	minmax(position, depth, alpha, beta, player, nbcap)
 		win1 = false;
 		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap)];
 	}
+	if (nbCaptured[player] >= 10)
+	{
+		win1 = true;
+		win2 = false;
+		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap)];
+	}
 	if (depth == 0)
 		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2, prio, nbcap)];
 	if (player == current_player && prio)
@@ -163,7 +169,9 @@ function	minmax(position, depth, alpha, beta, player, nbcap)
 						{
 							board[prio[h][0]][prio[h][1]] = player;
 							captures = checkCaptureSim(prio[h][0], prio[h][1], current_player, opponent);
+							nbCaptured[player] += captures.length;
 							score = minmax(prio[h], depth - 1, alpha, beta, opponent, captures.length + nbcap);
+							nbCaptured[player] -= captures.length;
 							for (var p = 0; p < captures.length; p++)
 								board[captures[p][0]][captures[p][1]] = captures[p][2];
 							board[prio[h][0]][prio[h][1]] = 0;
@@ -182,10 +190,12 @@ function	minmax(position, depth, alpha, beta, player, nbcap)
 				{
 					board[i][j] = player;
 					captures = checkCaptureSim(i, j, current_player, opponent);
+					nbCaptured[player] += captures.length;
 					if (depth >= 8)
 						score = minmax([i, j], depth - 5, alpha, beta, opponent, captures.length + nbcap);
 					else
 						score = minmax([i, j], depth - 1, alpha, beta, opponent, captures.length + nbcap);
+					nbCaptured[player] -= captures.length;
 					for (var p = 0; p < captures.length; p++)
 						board[captures[p][0]][captures[p][1]] = captures[p][2];
 					board[i][j] = 0;
@@ -217,7 +227,9 @@ function	minmax(position, depth, alpha, beta, player, nbcap)
 						{
 							board[prio[h][0]][prio[h][1]] = player;
 							captures = checkCaptureSim(prio[h][0], prio[h][1], opponent, current_player);
+							nbCaptured[player] += captures.length;
 							score = minmax(prio[h], depth - 1, alpha, beta, current_player, captures.length + nbcap);
+							nbCaptured[player] -= captures.length;
 							for (var p = 0; p < captures.length; p++)
 								board[captures[p][0]][captures[p][1]] = captures[p][2];
 							board[prio[h][0]][prio[h][1]] = 0;
@@ -236,10 +248,12 @@ function	minmax(position, depth, alpha, beta, player, nbcap)
 				{
 					board[i][j] = player;
 					captures = checkCaptureSim(i, j, opponent, current_player);
+					nbCaptured[player] += captures.length;
 					if (depth >= 8)
 						score = minmax([i, j], depth - 5, alpha, beta, current_player, captures.length + nbcap);
 					else
 						score = minmax([i, j], depth - 1, alpha, beta, current_player, captures.length + nbcap);
+					nbCaptured[player] -= captures.length;
 					for (var p = 0; p < captures.length; p++)
 						board[captures[p][0]][captures[p][1]] = captures[p][2];
 					board[i][j] = 0;

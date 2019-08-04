@@ -30,6 +30,7 @@ var	ctxx = game_canvas.getContext("2d");
 var w = game_canvas.width;
 var h = game_canvas.height;
 //var	compterur_de_coups = 0;
+var	nbCaptured = [0, 0, 0];
 
 function getCursorPosition(canvas, event) {
 		const rect = canvas.getBoundingClientRect();
@@ -80,41 +81,54 @@ function checkCapture()
 	{
 		deleteCase(x + 1, y);
 		deleteCase(x + 2, y);
+		nbCaptured[current_player] += 2;
 	}
 	if (x >= 3 && board[x - 3][y] == current_player && board[x - 1][y] == opponent && board[x - 2][y] == opponent) // gauche
 	{
 		deleteCase(x - 1, y);
 		deleteCase(x - 2, y);
+		nbCaptured[current_player] += 2;
 	}
 	if (y <= 15 && board[x][y + 3] == current_player && board[x][y + 2] == opponent && board[x][y + 1] == opponent) // bas
 	{
 		deleteCase(x, y + 1);
 		deleteCase(x, y + 2);
+		nbCaptured[current_player] += 2;
 	}
 	if (y >= 3 && board[x][y - 3] == current_player && board[x][y - 2] == opponent && board[x][y - 1] == opponent) // haut
 	{
 		deleteCase(x, y - 1);
 		deleteCase(x, y - 2);
+		nbCaptured[current_player] += 2;
 	}
 	if (x <= 15 && y >= 3 && board[x + 3][y - 3] == current_player && board[x + 1][y - 1] == opponent && board[x + 2][y - 2] == opponent) // haut droite
 	{
 		deleteCase(x + 1, y - 1);
 		deleteCase(x + 2, y - 2);
+		nbCaptured[current_player] += 2;
 	}
 	if (x >= 3 && y >= 3 && board[x - 3][y - 3] == current_player && board[x - 1][y - 1] == opponent && board[x - 2][y - 2] == opponent) // haut gauche
 	{
 		deleteCase(x - 1, y - 1);
 		deleteCase(x - 2, y - 2);
+		nbCaptured[current_player] += 2;
 	}
 	if (x >= 3 && y <= 15 && board[x - 3][y + 3] == current_player && board[x - 1][y + 1] == opponent && board[x - 2][y + 2] == opponent) // bas gauche
 	{
 		deleteCase(x - 1, y + 1);
 		deleteCase(x - 2, y + 2);
+		nbCaptured[current_player] += 2;
 	}
 	if (x <= 15 && y <= 15 && board[x + 3][y + 3] == current_player && board[x + 1][y + 1] == opponent && board[x + 2][y + 2] == opponent) // bas droite
 	{
 		deleteCase(x + 1, y + 1);
 		deleteCase(x + 2, y + 2);
+		nbCaptured[current_player] += 2;
+	}
+	if (nbCaptured[1] >= 10 || nbCaptured[2] >= 10)
+	{
+		alert("player " + current_player.toString(10) + " won !");
+		window.location.reload(true);
 	}
 }
 
@@ -463,15 +477,15 @@ async function click()
 //		nbDetect = 0;
 //		test = false;
 	}
-	//else
-	//{
-	//	setTimeout(function(){
-	//		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
-	//		x = ret_ia[0];
-	//		y = ret_ia[1];
-	//		click();
-	//	}, 50);
-	//}
+	else
+	{
+		setTimeout(function(){
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
+			x = ret_ia[0];
+			y = ret_ia[1];
+			click();
+		}, 50);
+	}
 }
 
 drawCanvas();

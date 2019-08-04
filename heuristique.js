@@ -229,7 +229,7 @@ function	heuristique(i, j, player, win1, win2, prio, nbcap)
 	if (check_five(i, j, player) == true)
 		score -= 1000;
 	nb = checkNbPieces(i, j, player);
-	score += nb * 10 + nbcap*2;
+	score += nb * 10 + nbcap*50;
 	nbHeuristique++;
 	if (player == current_player)
 		return score;

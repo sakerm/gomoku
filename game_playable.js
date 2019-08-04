@@ -479,12 +479,12 @@ async function click()
 	}
 	else
 	{
-		setTimeout(function(){
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
-			x = ret_ia[0];
-			y = ret_ia[1];
-			click();
-		}, 50);
+		//setTimeout(function(){
+		//	var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
+		//	x = ret_ia[0];
+		//	y = ret_ia[1];
+		//	click();
+		//}, 50);
 	}
 }
 

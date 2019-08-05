@@ -471,12 +471,10 @@ function resolveAfter2Seconds() {
 }
 
 var	nbDetect = 0;
-var time = 0;
 
 async function click()
 {
 	//console.log(test);
-	var	ultraprio = [];
 	compterur_de_coups++;
 	ctx2.clearRect(103,105,100,40)
   ctx2.fillStyle = secondColor;
@@ -494,7 +492,7 @@ async function click()
 	ctxx.stroke();
 	board[x][y] = current_player;
 	checkCapture();
-	if (checkWin(x, y, current_player, ultraprio))
+	if (checkWin(x, y, current_player, []))
 	{
 		console.log("la");
 		alert("player " + current_player.toString(10) + " won !");
@@ -516,7 +514,7 @@ async function click()
 	if (current_player == 2 && document.getElementById("PVP").checked == false)
 	{
 			ctx2.clearRect(75,165,125,40)
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio, 0);
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);
 			x = ret_ia[0];
 			y = ret_ia[1];
 			click();
@@ -536,16 +534,16 @@ async function click()
 	}
 	else
 	{
-		//setTimeout(function(){
-		//	var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0);
-		//	x = ret_ia[0];
-		//	y = ret_ia[1];
-		//	click();
-		//}, 50);
+		setTimeout(function(){
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);
+			x = ret_ia[0];
+			y = ret_ia[1];
+			click();
+		}, 50);
 	}
 	if (document.getElementById("PVP").checked == true)
 	{
-		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio, 0);
+		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);
 		x = ret_ia[0];
 		y = ret_ia[1];
 		console.log(ret_ia[2]);

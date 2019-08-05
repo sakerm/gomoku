@@ -11,7 +11,7 @@ var color = "black"
 var secondColor = 'white'
 var Xconseil = 0;
 var Yconseil = 0;
-//var time = 0;
+var time = 0;
 //end counter
 
 //scoring

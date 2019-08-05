@@ -9,6 +9,8 @@ var timerStart = false;
 var level = 2;
 var color = "black"
 var secondColor = 'white'
+var Xconseil = 0;
+var Yconseil = 0;
 //end counter
 
 //scoring
@@ -34,6 +36,10 @@ const compteur = new Path2D()
 compteur.rect(103,105,100,40)
 compteur.closePath()
 
+const conseil = new Path2D()
+conseil.rect(80,170,115,30)
+conseil.closePath()
+
 //draw your shape data to the context
 ctx2.fillStyle = "#FFFFFF"
 ctx2.fillStyle = "rgba(225,225,225,0)"
@@ -52,6 +58,7 @@ ctx2.fillText(" restart", 465,63);
 ctx2.fillText("  level " + level, 465,113);
 ctx2.fillText(" theme", 467,163);
 ctx2.fillText(compterur_de_coups, 145,133);
+
 
 //ok-----------------------------------------------------------------------------------------------------
 setInterval(function() {

@@ -478,6 +478,7 @@ var time = 0;
 
 async function click()
 {
+	console.log(test);
 	var	ultraprio = [];
 	compterur_de_coups++;
 	ctx2.clearRect(103,105,100,40)
@@ -514,8 +515,9 @@ async function click()
 	}
 	await resolveAfter2Seconds();
 	var t0 = performance.now();
-	if (current_player == 2)
+	if (current_player == 2 && document.getElementById("PVP").checked == false)
 	{
+			ctx2.clearRect(75,165,125,40)
 			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio);
 			x = ret_ia[0];
 			y = ret_ia[1];
@@ -541,6 +543,18 @@ async function click()
 		//	y = ret_ia[1];
 		//	click();
 		//}, 50);
+	}
+	if (document.getElementById("PVP").checked == true)
+	{
+		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio);
+		x = ret_ia[0];
+		y = ret_ia[1];
+
+		ctx2.clearRect(80,170,115,30)
+		ctx2.fillStyle = color;
+		ctx2.font = "20px Georgia";
+		ctx2.fillText("x : "  + x + "     y : " + y, 85,190);
+		ctx2.stroke(conseil)
 	}
 }
 

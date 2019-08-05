@@ -538,13 +538,13 @@ async function click()
 	if (document.getElementById("IAvsIA").checked == true)
 	{
 		setTimeout(function(){
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
 			x = ret_ia[0];
 			y = ret_ia[1];
 			click();
 		}, 50);
 	}
-	if (document.getElementById("PVP").checked == true)
+	else if (document.getElementById("PVP").checked == true)
 	{
 		if (prio.length >= 1)
 			playerprio = prio[0].slice();

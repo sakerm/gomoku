@@ -532,7 +532,7 @@ async function click()
 //		nbDetect = 0;
 //		test = false;
 	}
-	else
+	if (document.getElementById("IAvsIA").checked == true)
 	{
 		setTimeout(function(){
 			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);

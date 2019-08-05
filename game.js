@@ -86,6 +86,18 @@ setInterval(function() {
   }, 1000/60);
 //ok -------------------------------------------------------------------------------------------------
 
+function  onclickmydear()
+{  
+  if (document.getElementById("PVP").checked == true)
+    document.getElementById("IAvsIA").checked = false
+}
+
+function  onclickmytotoro()
+{  
+  if (document.getElementById("IAvsIA").checked == true)
+    document.getElementById("PVP").checked = false
+}
+
 function getXY(score, event){ //adjust mouse click to score coordinates
   const rect = score.getBoundingClientRect()
   const y = event.clientY - rect.top
@@ -113,6 +125,7 @@ document.addEventListener("click",  function (e) {
     ctx2.fillText("  level " + level, 465,113);
 
   }
+
   if(ctx2.isPointInPath(themeButton, XY.x, XY.y)) {
     // Do Something with the click
     theme +=1;

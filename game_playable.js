@@ -125,11 +125,6 @@ function checkCapture()
 		deleteCase(x + 2, y + 2);
 		nbCaptured[current_player] += 2;
 	}
-	if (nbCaptured[1] >= 10 || nbCaptured[2] >= 10)
-	{
-		alert("player " + current_player.toString(10) + " won !");
-		window.location.reload(true);
-	}
 }
 
 function checkCapturePrio(i, j, player, other)
@@ -279,6 +274,8 @@ function checkWin(i, j, player, ultraprio)
 	var win = [false, false, false, false];
 
 	nbaa++;
+	if (nbCaptured[player] >= 10)
+		return true;
 	if (fiveInRow(1, 0, 0, j, player)) // horizontal
 		win[0] = true;
 	else if (fiveInRow(0, 1, i, 0, player)) // vertcial
@@ -478,7 +475,7 @@ var time = 0;
 
 async function click()
 {
-	console.log(test);
+	//console.log(test);
 	var	ultraprio = [];
 	compterur_de_coups++;
 	ctx2.clearRect(103,105,100,40)
@@ -496,13 +493,14 @@ async function click()
 	ctxx.fill();
 	ctxx.stroke();
 	board[x][y] = current_player;
+	checkCapture();
 	if (checkWin(x, y, current_player, ultraprio))
 	{
+		console.log("la");
 		alert("player " + current_player.toString(10) + " won !");
 		window.location.reload(true);
 		return ;
 	}
-	checkCapture();
 	if (current_player == 1)
 	{
 		current_player = 2;
@@ -518,13 +516,14 @@ async function click()
 	if (current_player == 2 && document.getElementById("PVP").checked == false)
 	{
 			ctx2.clearRect(75,165,125,40)
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio);
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio, 0);
 			x = ret_ia[0];
 			y = ret_ia[1];
 			click();
 			var t1 = performance.now();
 			time = t1 - t0;
 
+			console.log(ret_ia[2]);
 //		console.log("nb heuristique: ", nbHeuristique);
 //		console.log("nb minmax: ", nbaa);
 //		console.log("nb distance: ", nbDistance);
@@ -546,9 +545,10 @@ async function click()
 	}
 	if (document.getElementById("PVP").checked == true)
 	{
-		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio);
+		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, ultraprio, 0);
 		x = ret_ia[0];
 		y = ret_ia[1];
+		console.log(ret_ia[2]);
 
 		ctx2.clearRect(80,170,115,30)
 		ctx2.fillStyle = color;

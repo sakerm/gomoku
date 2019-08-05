@@ -126,7 +126,7 @@ function checkNbPieces(i, j, player)
 		countj++;
 		counti--;
 	}
-	return(nbpieces);
+	return(-nbpieces);
 }
 
 function	check_five(i, j, player)
@@ -207,7 +207,7 @@ function	check_five(i, j, player)
 	return(false)
 }
 
-function	heuristique(i, j, player, win1, win2, prio, nbcap)
+function	heuristique(i, j, player, win1, win2, prio, nbcap, nbcapOpponent)
 {
 	var	score = 0;
 	var nb = 0;
@@ -227,10 +227,11 @@ function	heuristique(i, j, player, win1, win2, prio, nbcap)
 			score -= 50000;
 	}
 	if (check_five(i, j, player) == true)
-		score -= 1000;
+		score -= 100;
 	nb = checkNbPieces(i, j, player);
-	score += nb * 10 + nbcap*50;
+	score += nb * 10 + ((player == current_player) ? (nbcap*500 - nbcapOpponent*1000) : (nbcapOpponent*500-nbcap*1000));
 	nbHeuristique++;
+	//console.log(i, j, nb, nbcap, nbcapOpponent, score);
 	if (player == current_player)
 		return score;
 	return -score;

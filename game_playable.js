@@ -472,8 +472,11 @@ function resolveAfter2Seconds() {
 
 var	nbDetect = 0;
 
+var playerprio = [];
+
 async function click()
 {
+	var prio = [];
 	//console.log(test);
 	compterur_de_coups++;
 	ctx2.clearRect(103,105,100,40)
@@ -492,7 +495,7 @@ async function click()
 	ctxx.stroke();
 	board[x][y] = current_player;
 	checkCapture();
-	if (checkWin(x, y, current_player, []))
+	if (checkWin(x, y, current_player, prio))
 	{
 		console.log("la");
 		alert("player " + current_player.toString(10) + " won !");
@@ -514,7 +517,7 @@ async function click()
 	if (current_player == 2 && document.getElementById("PVP").checked == false)
 	{
 			ctx2.clearRect(75,165,125,40)
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);
+			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
 			x = ret_ia[0];
 			y = ret_ia[1];
 			click();
@@ -532,18 +535,22 @@ async function click()
 //		nbDetect = 0;
 //		test = false;
 	}
-	else
-	{
-		setTimeout(function(){
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);
-			x = ret_ia[0];
-			y = ret_ia[1];
-			click();
-		}, 50);
-	}
+//	else
+//	{
+//		setTimeout(function(){
+//			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
+//			x = ret_ia[0];
+//			y = ret_ia[1];
+//			click();
+//		}, 50);
+//	}
 	if (document.getElementById("PVP").checked == true)
 	{
-		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, [], 0);
+		if (prio.length >= 1)
+			playerprio = prio[0].slice();
+		else
+			playerprio = [];
+		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
 		x = ret_ia[0];
 		y = ret_ia[1];
 		console.log(ret_ia[2]);
@@ -552,13 +559,14 @@ async function click()
 		ctx2.fillStyle = color;
 		ctx2.font = "20px Georgia";
 		ctx2.fillText("x : "  + x + "     y : " + y, 85,190);
-		ctx2.stroke(conseil)
+		ctx2.stroke(conseil);
 	}
 }
 
 drawCanvas();
 game_canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(game_canvas, e);
-    if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree(x, y, current_player) <= 1)
-    	click();
+    if (playerprio.length == 0 || (x == playerprio[0] && y == playerprio[1]))
+    	if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree(x, y, current_player) <= 1)
+    		click();
 });

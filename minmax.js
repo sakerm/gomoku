@@ -139,16 +139,16 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 		console.log(prio);
 	if (ultraprio.length > 0 && depth == level)
 	{
-		var	ultrapriocoord = [ultraprio[0][0], ultraprio[0][1], heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];
+		var	ultrapriocoord = [ultraprio[0][0], ultraprio[0][1], 999999*((player==current_player) ? 1 : -1)];
 		ultraprio = [];
 		return ultrapriocoord;
 	}
-	if ((win1 = checkWin(position[0], position[1], current_player, ultraprio)))
+	if (ultraprio.length == 0 && (win1 = checkWin(position[0], position[1], current_player, ultraprio)))
 	{
 		win2 = false;
 		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];
 	}
-	if ((win2 = checkWin(position[0], position[1], opponent, ultraprio)))
+	if (ultraprio.length == 0 && (win2 = checkWin(position[0], position[1], opponent, ultraprio)))
 	{
 		win1 = false;
 		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];
@@ -157,7 +157,7 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 		return [position[0], position[1], heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];
 	if (player == current_player)
 	{
-		RetScore = [0, 0, -10000000];
+		RetScore = [0, 0, -100000000];
 		for (var i = topLeft[0]; i <= botRight[0]; i++)
 		{
 			for (var j = topLeft[1]; j <= botRight[1]; j++)
@@ -217,7 +217,7 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 	}
 	else
 	{
-		RetScore = [0, 0, 10000000];
+		RetScore = [0, 0, 100000000];
 		for (var i = topLeft[0]; i <= botRight[0]; i++)
 		{
 			for (var j = topLeft[1]; j <= botRight[1]; j++)

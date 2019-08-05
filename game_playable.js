@@ -31,6 +31,7 @@ var w = game_canvas.width;
 var h = game_canvas.height;
 //var	compterur_de_coups = 0;
 var	nbCaptured = [0, 0, 0];
+var	finished = false;
 
 function getCursorPosition(canvas, event) {
 		const rect = canvas.getBoundingClientRect();
@@ -476,55 +477,58 @@ var playerprio = [];
 
 async function click()
 {
-	var prio = [];
-	//console.log(test);
-	compterur_de_coups++;
-	ctx2.clearRect(103,105,100,40)
-  ctx2.fillStyle = secondColor;
-	ctx2.fillStyle = color;
-  ctx2.font = "20px Georgia";
-	ctx2.fillText(compterur_de_coups, 145,133);
-	timerStart = true;
-	ctxx.beginPath();
-	ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
-	if (current_player == 1)
-		ctxx.fillStyle = "blue";
-	else
-		ctxx.fillStyle = "red";
-	ctxx.fill();
-	ctxx.stroke();
-	board[x][y] = current_player;
-	checkCapture();
-	if (checkWin(x, y, current_player, prio))
+	if (!finished)
 	{
-		console.log("la");
-		alert("player " + current_player.toString(10) + " won !");
-		window.location.reload(true);
-		return ;
-	}
-	if (current_player == 1)
-	{
-		current_player = 2;
-		opponent = 1;
-	}
-	else
-	{
-		current_player = 1;
-		opponent = 2;
-	}
-	await resolveAfter2Seconds();
-	var t0 = performance.now();
-	if (current_player == 2 && document.getElementById("PVP").checked == false)
-	{
-			ctx2.clearRect(75,165,125,40)
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
-			x = ret_ia[0];
-			y = ret_ia[1];
-			click();
-			var t1 = performance.now();
-			time = t1 - t0;
+		var prio = [];
+		//console.log(test);
+		compterur_de_coups++;
+		ctx2.clearRect(103,105,100,40)
+		ctx2.fillStyle = secondColor;
+		ctx2.fillStyle = color;
+		ctx2.font = "20px Georgia";
+		ctx2.fillText(compterur_de_coups, 145,133);
+		timerStart = true;
+		ctxx.beginPath();
+		ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
+		if (current_player == 1)
+			ctxx.fillStyle = "blue";
+		else
+			ctxx.fillStyle = "red";
+		ctxx.fill();
+		ctxx.stroke();
+		board[x][y] = current_player;
+		checkCapture();
+		if (checkWin(x, y, current_player, prio))
+		{
+			console.log("la");
+			alert("player " + current_player.toString(10) + " won !");
+			finished = true;
+			window.location.reload(true);
+			return ;
+		}
+		if (current_player == 1)
+		{
+			current_player = 2;
+			opponent = 1;
+		}
+		else
+		{
+			current_player = 1;
+			opponent = 2;
+		}
+		await resolveAfter2Seconds();
+		var t0 = performance.now();
+		if (current_player == 2 && document.getElementById("PVP").checked == false && !finished)
+		{
+				ctx2.clearRect(75,165,125,40)
+				var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
+				x = ret_ia[0];
+				y = ret_ia[1];
+				click();
+				var t1 = performance.now();
+				time = t1 - t0;
 
-			console.log(ret_ia[2]);
+				console.log(ret_ia[2]);
 //		console.log("nb heuristique: ", nbHeuristique);
 //		console.log("nb minmax: ", nbaa);
 //		console.log("nb distance: ", nbDistance);
@@ -534,39 +538,40 @@ async function click()
 //		nbDistance = 0;
 //		nbDetect = 0;
 //		test = false;
-	}
-	if (document.getElementById("IAvsIA").checked == true)
-	{
-		setTimeout(function(){
+		}
+		if (document.getElementById("IAvsIA").checked == true && !finished)
+		{
+			setTimeout(function(){
+				var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
+				x = ret_ia[0];
+				y = ret_ia[1];
+				click();
+			}, 50);
+		}
+		else if (document.getElementById("PVP").checked == true && !finished)
+		{
+			if (prio.length >= 1)
+				playerprio = prio[0].slice();
+			else
+				playerprio = [];
 			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
 			x = ret_ia[0];
 			y = ret_ia[1];
-			click();
-		}, 50);
-	}
-	else if (document.getElementById("PVP").checked == true)
-	{
-		if (prio.length >= 1)
-			playerprio = prio[0].slice();
-		else
-			playerprio = [];
-		var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
-		x = ret_ia[0];
-		y = ret_ia[1];
-		console.log(ret_ia[2]);
+			console.log(ret_ia[2]);
 
-		ctx2.clearRect(80,170,115,30)
-		ctx2.fillStyle = color;
-		ctx2.font = "20px Georgia";
-		ctx2.fillText("x : "  + x + "     y : " + y, 85,190);
-		ctx2.stroke(conseil);
+			ctx2.clearRect(80,170,115,30)
+			ctx2.fillStyle = color;
+			ctx2.font = "20px Georgia";
+			ctx2.fillText("x : "  + x + "     y : " + y, 85,190);
+			ctx2.stroke(conseil);
+		}
 	}
 }
 
 drawCanvas();
 game_canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(game_canvas, e);
-    if (playerprio.length == 0 || (x == playerprio[0] && y == playerprio[1]))
+    if ((playerprio.length == 0 || (x == playerprio[0] && y == playerprio[1])) && !finished)
     	if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree(x, y, current_player) <= 1)
     		click();
 });

@@ -215,21 +215,21 @@ function	heuristique(i, j, player, win1, win2, prio, nbcap, nbcapOpponent)
 	if (win1)
 	{
 		if (current_player == player)
-			score += 50000;
+			score += 500000;
 		else
-			score -= 50000;
+			score -= 500000;
 	}
 	if (win2)
 	{
 		if (opponent == player)
-			score += 50000;
+			score += 500000;
 		else
-			score -= 50000;
+			score -= 500000;
 	}
 	if (check_five(i, j, player) == true)
 		score -= 100;
 	nb = checkNbPieces(i, j, player);
-	score += nb * 10 + ((player == current_player) ? (nbcap*500 - nbcapOpponent*1000) : (nbcapOpponent*500-nbcap*1000));
+	score += nb * 10 + ((player == current_player) ? (nbcap*1000 - nbcapOpponent*500) : (nbcapOpponent*1000-nbcap*500));
 	nbHeuristique++;
 	//console.log(i, j, nb, nbcap, nbcapOpponent, score);
 	if (player == current_player)

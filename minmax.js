@@ -139,16 +139,16 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 		console.log(prio);
 	if (ultraprio.length > 0 && depth == level)
 	{
-		var	ultrapriocoord = [ultraprio[0][0], ultraprio[0][1], 999999*((player==current_player) ? 1 : -1)];
+		var	ultrapriocoord = [ultraprio[0][0], ultraprio[0][1], 9999999*((player==current_player) ? 1 : -1)];
 		ultraprio = [];
 		return ultrapriocoord;
 	}
-	if (ultraprio.length == 0 && (win1 = checkWin(position[0], position[1], current_player, ultraprio)))
+	if ((win1 = checkWinBourrin(position[0], position[1], current_player, ultraprio)))
 	{
 		win2 = false;
 		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];
 	}
-	if (ultraprio.length == 0 && (win2 = checkWin(position[0], position[1], opponent, ultraprio)))
+	if ((win2 = checkWinBourrin(position[0], position[1], opponent, ultraprio)))
 	{
 		win1 = false;
 		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];

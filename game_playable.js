@@ -340,6 +340,29 @@ function checkWin(i, j, player, ultraprio)
 	return false;
 }
 
+function checkWinBourrin(i, j, player, ultraprio)
+{
+	var win = [false, false, false, false];
+
+	nbaa++;
+	if (nbCaptured[player] >= 10)
+		return true;
+	if (fiveInRow(1, 0, 0, j, player)) // horizontal
+		win[0] = true;
+	else if (fiveInRow(0, 1, i, 0, player)) // vertcial
+		win[1] = true;
+	else if (fiveInRowDiag1(i, j, player))
+		win[2] = true;
+	else if (fiveInRowDiag2(i, j, player))
+		win[3] = true;
+	for (var k = 0; k < 4; k++)
+	{
+		if (win[k] == true)
+			return true;
+	}
+	return false;
+}
+
 function checkside(it, xx, yy, offset, nospace, nbspace, player, ii, jj)
 {
 	var ret = 0;
@@ -522,6 +545,7 @@ async function click()
 		{
 				ctx2.clearRect(75,165,125,40)
 				var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
+				//prio = [];
 				x = ret_ia[0];
 				y = ret_ia[1];
 				click();
@@ -548,7 +572,7 @@ async function click()
 				click();
 			}, 50);
 		}
-		else if (document.getElementById("PVP").checked == true && !finished)
+		if (!finished)
 		{
 			if (prio.length >= 1)
 				playerprio = prio[0].slice();

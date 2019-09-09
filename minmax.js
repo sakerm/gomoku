@@ -128,8 +128,6 @@ function	getPriorities(topLeft, botRight, target)
 	return [];
 }
 
-var g_ultraprios = [];
-
 function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpponent)
 {
 	var	score;
@@ -153,9 +151,8 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 //		console.log(prio);
 	if (ultraprio.length > 0 && depth == level)
 	{
-		console.log(ultraprio.length);
+		//console.log(ultraprio.length);
 		var	ultrapriocoord = [ultraprio[0][0], ultraprio[0][1], 9999999*((player==current_player) ? 1 : -1)];
-		g_ultraprios = ultraprio.slice();
 		ultraprio = [];
 		return ultrapriocoord;
 	}

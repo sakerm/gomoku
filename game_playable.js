@@ -490,6 +490,7 @@ function detectThree(i, j, player)
 	var	nb = 0;
 	var tmp;
 
+	return 0;
 	nbDetect++;
 	nb = threeAll(1, 0, i, j, player);
 	if (nb >= 2)
@@ -569,10 +570,10 @@ async function click()
 				var t1 = performance.now();
 				time = t1 - t0;
 
-//		console.log("nb heuristique: ", nbHeuristique);
-//		console.log("nb minmax: ", nbaa);
-//		console.log("nb distance: ", nbDistance);
-//		console.log("nb detect: ", nbDetect);
+		console.log("nb heuristique: ", nbHeuristique);
+		console.log("nb minmax: ", nbaa);
+		console.log("nb distance: ", nbDistance);
+		console.log("nb detect: ", nbDetect);
 //		nbaa = 0;
 //		nbHeuristique = 0;
 //		nbDistance = 0;
@@ -593,15 +594,19 @@ async function click()
 			playerprio = [];
 			for (var i = 0; i < prio.length; i++)
 				playerprio.push(prio[i].slice());
-			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
-			x = ret_ia[0];
-			y = ret_ia[1];
+			if (document.getElementById("IAvsIA").checked == false)
+			{
+				var conseil_strength = (level >= 6) ? 6 : level;
+				var ret_ia = minmax([8, 8], conseil_strength, -999999, 999999, current_player, 0, prio, 0);
+				x = ret_ia[0];
+				y = ret_ia[1];
 
-			ctx2.clearRect(80,170,115,30)
-			ctx2.fillStyle = color;
-			ctx2.font = "20px Georgia";
-			ctx2.fillText("x : "  + x + "     y : " + y, 85,190);
-			ctx2.stroke(conseil);
+				ctx2.clearRect(80,170,115,30)
+				ctx2.fillStyle = color;
+				ctx2.font = "20px Georgia";
+				ctx2.fillText("x : "  + x + "     y : " + y, 85,190);
+				ctx2.stroke(conseil);
+			}
 		}
 	}
 }

@@ -570,10 +570,10 @@ async function click()
 				var t1 = performance.now();
 				time = t1 - t0;
 
-		console.log("nb heuristique: ", nbHeuristique);
-		console.log("nb minmax: ", nbaa);
-		console.log("nb distance: ", nbDistance);
-		console.log("nb detect: ", nbDetect);
+//		console.log("nb heuristique: ", nbHeuristique);
+//		console.log("nb minmax: ", nbaa);
+//		console.log("nb distance: ", nbDistance);
+//		console.log("nb detect: ", nbDetect);
 //		nbaa = 0;
 //		nbHeuristique = 0;
 //		nbDistance = 0;
@@ -596,7 +596,7 @@ async function click()
 				playerprio.push(prio[i].slice());
 			if (document.getElementById("IAvsIA").checked == false)
 			{
-				var conseil_strength = (level >= 6) ? 6 : level;
+				var conseil_strength = (level >= 4) ? 4 : level;
 				var ret_ia = minmax([8, 8], conseil_strength, -999999, 999999, current_player, 0, prio, 0);
 				x = ret_ia[0];
 				y = ret_ia[1];

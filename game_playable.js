@@ -285,6 +285,8 @@ function fiveInRowDiag2(i, j, player)
 function checkWin(i, j, player, ultraprio)
 {
 	var win = [false, false, false, false];
+	var ret = false;
+	var	take_ret = false;
 
 	nbaa++;
 	if (nbCaptured[player] >= 10)
@@ -319,29 +321,33 @@ function checkWin(i, j, player, ultraprio)
 							else
 							{
 								var	tmp = checkCaptureSim(o, q, other, player);
-								var ret = false;
 	
 								for (var p = 0; p < tmp.length; p++)
 									board[tmp[p][0]][tmp[p][1]] = 0;
-								if (k == 0)
-									ret = fiveInRow(1, 0, 0, j, player);
-								else if (k == 1)
-									ret = fiveInRow(0, 1, i, 0, player);
-								else if (k == 2)
-									ret = fiveInRowDiag1(i, j, player);
-								else if (k == 3)
-									ret = fiveInRowDiag2(i, j, player);
+								if (!ret)
+								{
+									if (k == 0)
+										ret = fiveInRow(1, 0, 0, j, player);
+									else if (k == 1)
+										ret = fiveInRow(0, 1, i, 0, player);
+									else if (k == 2)
+										ret = fiveInRowDiag1(i, j, player);
+									else if (k == 3)
+										ret = fiveInRowDiag2(i, j, player);
+								}
 								for (var p = 0; p < tmp.length; p++)
 									board[tmp[p][0]][tmp[p][1]] = player;
 								board[o][q] = 0;
 								ultraprio.push([o, q]);
-								return ret;
+								take_ret = true;
 							}
 						}
 						board[o][q] = 0;
 					}
 				}
 			}
+			if (take_ret)
+				return ret;
 		}
 	}
 	for (var k = 0; k < 4; k++)
@@ -352,7 +358,7 @@ function checkWin(i, j, player, ultraprio)
 	return false;
 }
 
-function checkWinBourrin(i, j, player, ultraprio)
+function checkWinBourrin(i, j, player)
 {
 	var win = [false, false, false, false];
 
@@ -535,7 +541,6 @@ async function click()
 		checkCapture();
 		if (checkWin(x, y, current_player, prio))
 		{
-			console.log("la");
 			alert("player " + current_player.toString(10) + " won !");
 			finished = true;
 			window.location.reload(true);
@@ -564,7 +569,6 @@ async function click()
 				var t1 = performance.now();
 				time = t1 - t0;
 
-				console.log(ret_ia[2]);
 //		console.log("nb heuristique: ", nbHeuristique);
 //		console.log("nb minmax: ", nbaa);
 //		console.log("nb distance: ", nbDistance);
@@ -586,14 +590,12 @@ async function click()
 		}
 		if (!finished)
 		{
-			if (prio.length >= 1)
-				playerprio = prio[0].slice();
-			else
-				playerprio = [];
+			playerprio = [];
+			for (var i = 0; i < prio.length; i++)
+				playerprio.push(prio[i].slice());
 			var ret_ia = minmax([8, 8], level, -999999, 999999, current_player, 0, prio, 0);
 			x = ret_ia[0];
 			y = ret_ia[1];
-			console.log(ret_ia[2]);
 
 			ctx2.clearRect(80,170,115,30)
 			ctx2.fillStyle = color;
@@ -604,10 +606,20 @@ async function click()
 	}
 }
 
+function	inplayerprio()
+{
+	for (var i = 0; i < playerprio.length; i++)
+	{
+		if (x == playerprio[i][0] && y == playerprio[i][1])
+			return true;
+	}
+	return false;
+}
+
 drawCanvas();
 game_canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(game_canvas, e);
-    if ((playerprio.length == 0 || (x == playerprio[0] && y == playerprio[1])) && !finished)
+    if ((playerprio.length == 0 || inplayerprio()) && !finished)
     	if ((current_player == 1 || ia == false) && playing == true && board[x][y] == 0 && detectThree(x, y, current_player) <= 1)
     		click();
 });

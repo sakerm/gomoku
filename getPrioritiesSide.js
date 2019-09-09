@@ -147,8 +147,6 @@ function	getPrioritiesHorizontal(free, locked, topLeft, botRight, target)
 		{
 			for (var j = topLeft[0]; j <= botRight[0] - (target - 1); j++)
 			{
-				if (j == 16 && i == 1)
-					console.log("nani ?");
 				tmpCoords = [];
 				nbPieces = 0;
 				current_color = 0;
@@ -183,8 +181,6 @@ function	getPrioritiesHorizontal(free, locked, topLeft, botRight, target)
 						}
 					}
 				}
-				if (j == 16 && i == 1)
-					console.log("caca", tmpCoords);
 			}
 		}
 	}

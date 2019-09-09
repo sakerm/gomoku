@@ -128,6 +128,8 @@ function	getPriorities(topLeft, botRight, target)
 	return [];
 }
 
+var g_ultraprios = [];
+
 function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpponent)
 {
 	var	score;
@@ -147,20 +149,22 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 	prio = fusion_tab(prio, getPrioritiesCapture(topLeft, botRight, ((player == 1) ? 2 : 1), player));
 	test = true;
 	nbaa++;
-	if (depth == level)
-		console.log(prio);
+//	if (depth == level)
+//		console.log(prio);
 	if (ultraprio.length > 0 && depth == level)
 	{
+		console.log(ultraprio.length);
 		var	ultrapriocoord = [ultraprio[0][0], ultraprio[0][1], 9999999*((player==current_player) ? 1 : -1)];
+		g_ultraprios = ultraprio.slice();
 		ultraprio = [];
 		return ultrapriocoord;
 	}
-	if ((win1 = checkWinBourrin(position[0], position[1], current_player, ultraprio)))
+	if ((win1 = checkWinBourrin(position[0], position[1], current_player)))
 	{
 		win2 = false;
 		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];
 	}
-	if ((win2 = checkWinBourrin(position[0], position[1], opponent, ultraprio)))
+	if ((win2 = checkWinBourrin(position[0], position[1], opponent)))
 	{
 		win1 = false;
 		return [position[0], position[1], (depth+1)*heuristique(position[0], position[1], player, win1, win2, prio, nbcap, nbcapOpponent)];
@@ -184,8 +188,8 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 							captures = checkCaptureSim(prio[h][0], prio[h][1], current_player, opponent);
 							nbCaptured[player] += captures.length;
 							score = minmax(prio[h], depth - 1, alpha, beta, opponent, captures.length + nbcap, ultraprio, nbcapOpponent);
-							if (depth == level)
-								console.log(depth, "score:", [prio[h][0], prio[h][1], score[2]]);
+							//if (depth == level)
+							//	console.log(depth, "score:", [prio[h][0], prio[h][1], score[2]]);
 							nbCaptured[player] -= captures.length;
 							for (var p = 0; p < captures.length; p++)
 								board[captures[p][0]][captures[p][1]] = captures[p][2];
@@ -244,8 +248,8 @@ function	minmax(position, depth, alpha, beta, player, nbcap, ultraprio, nbcapOpp
 							captures = checkCaptureSim(prio[h][0], prio[h][1], opponent, current_player);
 							nbCaptured[player] += captures.length;
 							score = minmax(prio[h], depth - 1, alpha, beta, current_player, nbcap, ultraprio, captures.length + nbcapOpponent);
-							if (depth == level)
-								console.log(depth, "score:", [prio[h][0], prio[h][1], score[2]]);
+							//if (depth == level)
+							//	console.log(depth, "score:", [prio[h][0], prio[h][1], score[2]]);
 							nbCaptured[player] -= captures.length;
 							for (var p = 0; p < captures.length; p++)
 								board[captures[p][0]][captures[p][1]] = captures[p][2];

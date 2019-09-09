@@ -215,7 +215,6 @@ function	check_five(i, j, player)
 		counti--;
 		countj++;
 	}
-
 	return(false)
 }
 

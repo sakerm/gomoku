@@ -574,18 +574,21 @@ async function click()
 			{
 				x = getRandomInt(19);
 				y = getRandomInt(19);
-				ctxx.beginPath();
-				ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
-				ctxx.fillStyle = (current_player == 1) ? "blue" : "red";
-				ctxx.fill();
-				ctxx.stroke();
-				board[x][y] = current_player;
-				if (checkWin(x, y, current_player, prio))
+				if (board[x][y] == 0)
 				{
-					alert("player " + current_player.toString(10) + " won !");
-					finished = true;
-					window.location.reload(true);
-					return ;
+					ctxx.beginPath();
+					ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
+					ctxx.fillStyle = (current_player == 1) ? "blue" : "red";
+					ctxx.fill();
+					ctxx.stroke();
+					board[x][y] = current_player;
+					if (checkWin(x, y, current_player, prio))
+					{
+						alert("player " + current_player.toString(10) + " won !");
+						finished = true;
+						window.location.reload(true);
+						return ;
+					}
 				}
 			}
 		}

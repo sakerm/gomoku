@@ -44,6 +44,7 @@ var h = game_canvas.height;
 //var	compterur_de_coups = 0;
 var	nbCaptured = [0, 0, 0];
 var	finished = false;
+var	leveling = [0,0,0];
 
 function getCursorPosition(canvas, event) {
 		const rect = canvas.getBoundingClientRect();
@@ -95,48 +96,64 @@ function checkCapture()
 		deleteCase(x + 1, y);
 		deleteCase(x + 2, y);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 	if (x >= 3 && board[x - 3][y] == current_player && board[x - 1][y] == opponent && board[x - 2][y] == opponent) // gauche
 	{
 		deleteCase(x - 1, y);
 		deleteCase(x - 2, y);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 	if (y <= 15 && board[x][y + 3] == current_player && board[x][y + 2] == opponent && board[x][y + 1] == opponent) // bas
 	{
 		deleteCase(x, y + 1);
 		deleteCase(x, y + 2);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 	if (y >= 3 && board[x][y - 3] == current_player && board[x][y - 2] == opponent && board[x][y - 1] == opponent) // haut
 	{
 		deleteCase(x, y - 1);
 		deleteCase(x, y - 2);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 	if (x <= 15 && y >= 3 && board[x + 3][y - 3] == current_player && board[x + 1][y - 1] == opponent && board[x + 2][y - 2] == opponent) // haut droite
 	{
 		deleteCase(x + 1, y - 1);
 		deleteCase(x + 2, y - 2);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 	if (x >= 3 && y >= 3 && board[x - 3][y - 3] == current_player && board[x - 1][y - 1] == opponent && board[x - 2][y - 2] == opponent) // haut gauche
 	{
 		deleteCase(x - 1, y - 1);
 		deleteCase(x - 2, y - 2);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 	if (x >= 3 && y <= 15 && board[x - 3][y + 3] == current_player && board[x - 1][y + 1] == opponent && board[x - 2][y + 2] == opponent) // bas gauche
 	{
 		deleteCase(x - 1, y + 1);
 		deleteCase(x - 2, y + 2);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 	if (x <= 15 && y <= 15 && board[x + 3][y + 3] == current_player && board[x + 1][y + 1] == opponent && board[x + 2][y + 2] == opponent) // bas droite
 	{
 		deleteCase(x + 1, y + 1);
 		deleteCase(x + 2, y + 2);
 		nbCaptured[current_player] += 2;
+		if (document.getElementById("leveling").checked == true)
+			leveling[current_player]++;
 	}
 }
 
@@ -517,6 +534,10 @@ var	nbDetect = 0;
 
 var playerprio = [];
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 async function click()
 {
 	if (!finished)
@@ -546,6 +567,27 @@ async function click()
 			finished = true;
 			window.location.reload(true);
 			return ;
+		}
+		if (document.getElementById("leveling").checked == true)
+		{
+			for (var i = 0; i < leveling[current_player]; i++)
+			{
+				x = getRandomInt(19);
+				y = getRandomInt(19);
+				ctxx.beginPath();
+				ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
+				ctxx.fillStyle = (current_player == 1) ? "blue" : "red";
+				ctxx.fill();
+				ctxx.stroke();
+				board[x][y] = current_player;
+				if (checkWin(x, y, current_player, prio))
+				{
+					alert("player " + current_player.toString(10) + " won !");
+					finished = true;
+					window.location.reload(true);
+					return ;
+				}
+			}
 		}
 		if (current_player == 1)
 		{
@@ -607,6 +649,17 @@ async function click()
 				ctx2.fillText("x : "  + x + "     y : " + y, 85,190);
 				ctx2.stroke(conseil);
 			}
+		}
+		if (document.getElementById("apocalypse").checked == true)
+		{
+			x = getRandomInt(19);
+			y = getRandomInt(19);
+			ctxx.beginPath();
+			ctxx.arc(x*(w/19)+(w/19/2), y*(h/19)+(h/19/2), w/19/2.3, 0, 2*Math.PI);
+			ctxx.fillStyle = "grey";	
+			ctxx.fill();
+			ctxx.stroke();
+			board[x][y] = 3;
 		}
 	}
 }
